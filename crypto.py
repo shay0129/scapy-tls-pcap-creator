@@ -42,10 +42,3 @@ def decrypt_pre_master_secret(encrypted_pre_master_secret: bytes, server_private
         encrypted_pre_master_secret,
         asymmetric_padding.PKCS1v15()
     )
-    
-def compute_mac(mac_key, data):
-    """Computes HMAC-SHA256 over the data."""
-    h = hmac.HMAC(mac_key, hashes.SHA256())
-    h.update(data)
-    return h.finalize()
-

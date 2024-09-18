@@ -18,7 +18,7 @@ class CustomPcapWriter:
         self.setup_logging()
 
     def setup_logging(self):
-        logging.basicConfig(filename='pcap_generator.log', level=logging.INFO,
+        logging.basicConfig(filename='../api/pcap_generator.log', level=logging.INFO,
                             format='%(asctime)s - %(levelname)s - %(message)s')
 
     def update_seq_ack(self, src_ip, dst_ip, sport, dport, payload_size, flags):

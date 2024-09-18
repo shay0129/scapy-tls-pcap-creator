@@ -25,14 +25,14 @@ def flags_to_int(flags):
     return sum(flag_map[f] for f in flags.upper() if f in flag_map)
 
 # Setup logging to a file
-logging.basicConfig(filename='pcap_generator.log', 
+logging.basicConfig(filename='../api/pcap_generator.log', 
                     level=logging.INFO, 
                     format='%(asctime)s - %(levelname)s - %(message)s',
                     filemode='w')
 
 
 def log_ssl_key(client_random: str, master_secret: str) -> None:
-    with open("SSLKEYLOG.LOG", "w") as f:
+    with open("../api/SSLKEYLOG.LOG", "w") as f:
         f.write(f"CLIENT_RANDOM {client_random} {master_secret}\n")
     logging.info(f"Logged SSL key: CLIENT_RANDOM {client_random} {master_secret}")
 

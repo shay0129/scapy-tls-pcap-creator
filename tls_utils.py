@@ -98,13 +98,10 @@ def verify_key_pair(private_key, public_key) -> bool:
     except:
         return False
 
-
-
-
 def load_server_cert_keys(cert_path: str, key_path: str) -> Tuple[x509.Certificate, rsa.RSAPrivateKey, rsa.RSAPublicKey]:
     """Load the certificate and private key from files."""
     try:
-                # Load private key
+        # Load private key
         with open(key_path, "rb") as f:
             key_data = f.read()
             try:
@@ -121,7 +118,6 @@ def load_server_cert_keys(cert_path: str, key_path: str) -> Tuple[x509.Certifica
                     backend=default_backend()
                 )
 
-        
         # Load certificate
         certificate = load_cert(cert_path)
 
@@ -141,13 +137,16 @@ def load_server_cert_keys(cert_path: str, key_path: str) -> Tuple[x509.Certifica
 
         # Check certificate validity
         now = datetime.now(timezone.utc)
-        if now < certificate.not_valid_before_utc or now > certificate.not_valid_after_utc:
+        cert_not_before = certificate.not_valid_before.replace(tzinfo=timezone.utc)
+        cert_not_after = certificate.not_valid_after.replace(tzinfo=timezone.utc)
+        
+        if now < cert_not_before or now > cert_not_after:
             raise ValueError(f"Certificate for {cert_path} is not currently valid")
 
         # Log successful loading
         logging.info(f"Keys and certificate successfully loaded for server: {cert_path}")
         logging.info(f"Certificate subject: {certificate.subject}")
-        logging.info(f"Certificate validity: {certificate.not_valid_before_utc} to {certificate.not_valid_after_utc}")
+        logging.info(f"Certificate validity: {cert_not_before} to {cert_not_after}")
 
         return certificate, private_key, public_key
 
@@ -215,4 +214,7 @@ def decrypt_data(ciphertext: bytes, key: bytes, iv: bytes) -> bytes:
     
     return data
 
-
+def compute_mac(key, message):
+  """Computes the HMAC for the given message using the provided key."""
+  h = hmac.new(key, message, digestmod='sha256')
+  return h.digest()

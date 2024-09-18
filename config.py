@@ -8,5 +8,5 @@ class Config:
     OK_RESPONSE = b"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 12\r\n\r\nHello, world!"
     BAD_REQUEST = b"HTTP/1.1 400 Bad Request\r\nContent-Type: text/plain\r\nContent-Length: 11\r\n\r\nBad Request"
     
-    OUTPUT_PCAP = "output.pcap"
-    SSL_KEYLOG_FILE = "sslkeylog_ctf.log"
+    OUTPUT_PCAP = "../api/output.pcap"
+    SSL_KEYLOG_FILE = "../api/sslkeylog_ctf.log"
