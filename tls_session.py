@@ -5,7 +5,6 @@ from scapy.layers.tls.extensions import TLS_Ext_ServerName, TLS_Ext_EncryptThenM
 from scapy.layers.tls.crypto.suites import TLS_RSA_WITH_AES_128_CBC_SHA256
 from scapy.layers.tls.crypto.prf import PRF
 from scapy.layers.tls.record import TLSChangeCipherSpec
-from scapy.layers.tls.keyexchange import EncryptedPreMasterSecret
 from scapy.layers.tls.extensions import (
     TLS_Ext_ServerName, TLS_Ext_ExtendedMasterSecret, TLS_Ext_EncryptThenMAC, ServerName,
     TLS_Ext_SupportedGroups, TLS_Ext_SignatureAlgorithms
@@ -452,7 +451,7 @@ def main():
     #----------
     logging.info("\n--- Client 1 Session ---")
     client1_session = UnifiedTLSSession(writer, config.CLIENT1_IP, config.SERVER_IP, 12345, 443, use_tls=True, use_client_cert=True)
-    client1_session.run_session(config.GET_REQUEST, config.OK_RESPONSE, '../api/flag.jpeg')
+    client1_session.run_session(config.GET_REQUEST, config.OK_RESPONSE, 'flag.jpeg')
     client1_session.verify_tls_session()  # Verify TLS session for Client 1
 
     #----------
