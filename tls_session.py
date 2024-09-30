@@ -451,7 +451,7 @@ def main():
     #----------
     logging.info("\n--- Client 1 Session ---")
     client1_session = UnifiedTLSSession(writer, config.CLIENT1_IP, config.SERVER_IP, 12345, 443, use_tls=True, use_client_cert=True)
-    client1_session.run_session(config.GET_REQUEST, config.OK_RESPONSE, 'flag.jpeg')
+    client1_session.run_session(config.GET_REQUEST, config.OK_RESPONSE, 'ctf_challenge.gif')
     client1_session.verify_tls_session()  # Verify TLS session for Client 1
 
     #----------
