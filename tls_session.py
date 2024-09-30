@@ -41,7 +41,7 @@ class UnifiedTLSSession:
         self.tls_context = TLS()
 
         # Generate client and server key pairs
-        self.server_cert, self.server_private_key, self.server_public_key = load_server_cert_keys(cert_path="../api/server.der", key_path="../api/server.key")
+        self.server_cert, self.server_private_key, self.server_public_key = load_server_cert_keys(cert_path="../certificates/server.der", key_path="../certificates/server.key")
         self.seq_num = 0
         self.master_secret = None
 
@@ -146,8 +146,8 @@ class UnifiedTLSSession:
         logging.info(f"Generated session_id: {self.session_id.hex()}")
         try:
             
-            cert = load_cert("../api/"+self.server_name+".pem")
-            cert_der = cert.public_bytes(serialization.Encoding.PEM)
+            cert = load_cert("../certificates/"+self.server_name+".der")
+            cert_der = cert.public_bytes(serialization.Encoding.DER)
             # Extract the public key from the certificate
             self.server_public_key = cert.public_key()
 
@@ -215,7 +215,7 @@ class UnifiedTLSSession:
         client_certificate = None
         if self.use_client_cert:
             try:
-                cert = load_cert("../api/Pasdaran.local.crt")
+                cert = load_cert("../certificates/Pasdaran.local.crt")
                 cert_der = cert.public_bytes(serialization.Encoding.DER)
                 client_certificate = TLSCertificate(certs=[(len(cert_der), cert_der)])
 
