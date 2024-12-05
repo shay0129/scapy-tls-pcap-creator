@@ -1,4 +1,5 @@
 # main.py
+# TLS Traffic Generation System Analysis
 import logging
 from tls_session import UnifiedTLSSession
 from pcap_writer import CustomPcapWriter
@@ -19,25 +20,42 @@ def main():
     # Client 1
     #----------
     logging.info("\n--- Client 1 Session ---")
-    client1_session = UnifiedTLSSession(writer, config.CLIENT1_IP, config.SERVER_IP, 12345, 443, use_tls=True, use_client_cert=True)
-    client1_session.run_session(config.GET_REQUEST, config.OK_RESPONSE, 'ctf_challenge.gif')
-    client1_session.verify_tls_session()  # Verify TLS session for Client 1
+    client1_session = UnifiedTLSSession(
+        pcap_writer = writer,
+        client_ip = config.CLIENT1_IP,
+        server_ip = config.SERVER_IP,
+        client_port=12345,
+        server_port=443,
+        use_tls=True,
+        use_client_cert=True
+    )
+    client1_session.run_session(
+        config.GET_REQUEST,
+        config.OK_RESPONSE,
+        'ctf_challenge.gif'
+    )
 
     #----------
     # Client 2
     #----------
     logging.info("\n--- Client 2 Session ---")
-    client2_session = UnifiedTLSSession(writer, config.CLIENT2_IP, config.SERVER_IP, 12346, 443, use_tls=True, use_client_cert=False)
-    client2_session.run_session(config.GET_REQUEST, config.BAD_REQUEST)
-    #client2_session.verify_tls_session()  # Verify TLS session for Client 2
+    client2_session = UnifiedTLSSession(
+        pcap_writer = writer,
+        client_ip = config.CLIENT2_IP,
+        server_ip = config.SERVER_IP,
+        client_port=12346,
+        server_port=443,
+        use_tls=True,
+        use_client_cert=False
+    )
+    client2_session.run_session(
+        config.GET_REQUEST,
+        config.BAD_REQUEST
+    )
 
     writer.save_pcap(config.OUTPUT_PCAP)
     writer.verify_and_log_packets()
 
-    # Optional: Print a summary of the TLS session verifications
-    logging.info("\nTLS Session Verification Summary:")
-    logging.info(f"Client 1: {len(client1_session.encrypted_packets)} packets verified")
-    #logging.info(f"Client 2: {len(client2_session.encrypted_packets)} packets verified")
 #----------------------------------
     
 if __name__ == "__main__":

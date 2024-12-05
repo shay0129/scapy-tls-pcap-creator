@@ -60,8 +60,6 @@ def int_to_bytes_length(n):
     return (n.bit_length() + 7) // 8
 
 
-
-
 def get_key_for_packet(packet_keys:list, packet_index:int):
     if 0 <= packet_index < len(packet_keys):
         return packet_keys[packet_index]

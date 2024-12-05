@@ -24,53 +24,174 @@ from utils import *
 from tls_utils import *
 
 class UnifiedTLSSession:
+    """
+    Simulates a TLS session between a client and server, including the
+    handshake and application data exchange.
+    """
     def __init__(self, pcap_writer, client_ip, server_ip, client_port, server_port, use_tls=True, use_client_cert=False):
-        # Initialize the TLS session
+        
+        # Packet capture writer (PCAP) for saving packets
         self.pcap_writer = pcap_writer
-        # IP addresses and ports
+
+        # Network configuration
         self.client_ip = client_ip
         self.server_ip = server_ip
         self.client_port = client_port
         self.server_port = server_port
+
+        # Default server name for TLS Server Name Indication (SNI)
         self.server_name = "server"
-        self.client_name_1 = "client1"
-    
-        # TLS parameters
+        
+        # Ports for secure and non-secure communication
+        self.https_port = 443
+        self.http_port = 80
+
+        # TLS configuration
         self.use_tls = use_tls
         self.use_client_cert = use_client_cert
-        self.tls_context = TLS()
 
-        # Generate client and server key pairs
-        self.server_cert, self.server_private_key, self.server_public_key = load_server_cert_keys(cert_path="../certificates/server.der", key_path="../certificates/server.key")
+        # Create a TLS context for the session (TLS 1.2 in this case)
+        self.tls_context = TLS(version=0x0303)
+
+        # Load certificates and set up the Certificate Authority (CA) chain
+        self.setup_certificates()
+        
+        # Sequence numbers for TLS session (general, client, server)
         self.seq_num = 0
+        self.client_seq_num = 0
+        self.server_seq_num = 0 
+        
+        # Master secret used in key generation (to be derived during handshake)
         self.master_secret = None
 
         # TLS handshake parameters
         self.handshake_completed = False
-        self.handshake_messages = []  # Initialize the list to store handshake messages
-        self.prf = PRF(hash_name='SHA256', tls_version=0x0303)  # TLS 1.2
+        self.handshake_messages = []
 
-        self.encrypted_packets = []
-        self.original_messages = []
-        self.packet_keys = []
-        self.packet_ivs = []
-        self.packet_mac_keys = []
-
-        self.client_write_mac_key = None
-        self.server_write_mac_key = None
+        # Pseudo-Random Function (PRF) configuration for TLS key generation
+        self.prf = PRF(hash_name='SHA256', tls_version=0x0303)
 
     
+    def verify_certificate_chain(self, chain):
+        """Verify a simple certificate chain"""
+        if len(chain) != 2:  # Server cert and root CA
+            return False
+        
+        server_cert = chain[0]
+        root_ca = chain[1]
+        
+        try:
+            # Check if root CA is the issuer of server cert
+            if server_cert.issuer != root_ca.subject:
+                logging.warning("Server certificate not issued by provided CA")
+                logging.warning(f"Server cert issuer: {server_cert.issuer}")
+                logging.warning(f"Root CA subject: {root_ca.subject}")
+                return False
+                
+            # Verify server cert signature
+            root_public_key = root_ca.public_key()
+            root_public_key.verify(
+                server_cert.signature,
+                server_cert.tbs_certificate_bytes,
+                asymmetric_padding.PKCS1v15(),
+                server_cert.signature_hash_algorithm
+            )
+            logging.info("Certificate chain verification successful")
+            return True
+            
+        except Exception as e:
+            logging.error(f"Certificate signature verification failed: {e}")
+            return False
+
+    def verify_server_public_key(self):
+        """Verify the server's public key matches the one in the certificate"""
+        try:
+            # Extract public key from certificate
+            cert_public_key = self.server_cert.public_key()
+            cert_numbers = cert_public_key.public_numbers()
+            
+            # Get numbers from loaded public key
+            loaded_numbers = self.server_public_key.public_numbers()
+            
+            # Compare modulus (n) and public exponent (e)
+            keys_match = (
+                cert_numbers.n == loaded_numbers.n and 
+                cert_numbers.e == loaded_numbers.e
+            )
+            
+            if keys_match:
+                logging.info("Server public key matches certificate")
+                logging.info(f"Modulus (n): {hex(cert_numbers.n)}")
+                logging.info(f"Public exponent (e): {hex(cert_numbers.e)}")
+            else:
+                raise ValueError("Server public key does not match certificate")
+                
+            return keys_match
+            
+        except Exception as e:
+            logging.error(f"Public key verification failed: {e}")
+            raise
+
+    def setup_certificates(self):
+        """Setup certificate chain and server credentials"""
+        try:
+            # Load the root CA
+            self.ca_cert = load_cert("../certificates/guards-ca.crt")
+            
+            # Load server certificate and keys (only once!)
+            self.server_cert, self.server_private_key, self.server_public_key = load_server_cert_keys(
+                cert_path="../certificates/server.der", 
+                key_path="../certificates/server.key"
+            )
+            """
+            -----BEGIN PUBLIC KEY-----
+            MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAr+2v5nIDcUdr9GCOGfZO
+            Sx2NHKsj24prLap2jZWjo0dOc6UhIRLKnJ/KxUuPpJFagez54ASwE2mzLbmGlWvS
+            ICgaoZbc5RlqILK9cS/jhrmn2CwdT3cVImOQPOQZb29sAstWIMuyZ5i9rqXbegDA
+            Ggxh6iyfHnlGOSka/4HF4JPKhhxaxfeSWtW1aQiphiiktDRZeH2JPujA2J3r1n9/
+            If5sddB9pelJywF+UXQqHmY3icuSDAyy6gG59Xj/LbOgzEq58Canrsp5sWMDLLaw
+            ug0zvcq50+bMt49gQSPsTc5c+X86YzLPCertrbepLjaIkNgtsWeVlWWq6WPBj6MO
+            jQIDAQAB
+            -----END PUBLIC KEY-----
+            """
+            # Build chain with just root CA and server cert
+            self.cert_chain = [
+                self.server_cert,
+                self.ca_cert
+            ]
+            
+            self.verify_server_public_key()
+
+            # Verify the chain
+            if not self.verify_certificate_chain(self.cert_chain):
+                logging.warning("Certificate chain verification failed")
+                logging.warning(f"Server cert issuer: {self.server_cert.issuer}")
+                logging.warning(f"CA cert subject: {self.ca_cert.subject}")
+            else:
+                logging.info("Certificate chain verification passed")
+                
+            logging.info("Certificate chain loaded successfully")
+            logging.info(f"Server cert subject: {self.server_cert.subject}")
+            logging.info(f"Server public key: {self.server_public_key.public_numbers().n}")
+            logging.info(f"CA cert subject: {self.ca_cert.subject}")
+            
+        except Exception as e:
+            logging.error(f"Failed to setup certificates: {e}")
+            raise
+
 
     def perform_handshake(self)-> None:
-        # According to RFC 5246, the TLS handshake process is as follows:
+        """
+        Executes the TLS handshake process according to RFC 5246.
+        """
         try:
             # Step 1: Client Hello
             self.send_client_hello()
             
-            # Step 2: Server Hello, Certificate, ServerKeyExchange (if needed), ServerHelloDone
+            # Step 2: Server Hello, Certificate, Certificate Request, (ServerKeyExchange if needed), ServerHelloDone
             self.send_server_hello()
             
-            # Step 3: Client (RSA) Key Exchange (and Client Certificate if required)
+            # Step 3: (Client Certificate if needed), Client (RSA) Key Exchange
             self.send_client_key_exchange()
             
             # Step 4: Generate Master Secret
@@ -82,33 +203,88 @@ class UnifiedTLSSession:
             # Step 6: Server ChangeCipherSpec and Finished
             self.send_server_change_cipher_spec()
             
-            # Step 7: Log SSL keys for Wireshark
+            # Log SSL keys for Wireshark
             self.handle_ssl_key_log()
             
             logging.info("TLS Handshake completed successfully")
+
+            return True
         except Exception as e:
             logging.error(f"TLS Handshake failed: {str(e)}")
             raise e
     
     def run_session(self, request_data, response_data, file_to_send=None):
+        """
+        Runs a complete client-server session.
+
+        Args:
+            request_data: The data to be sent in the client's request.
+            response_data: The data to be sent in the server's response.
+            file_to_send: Optional; the path to a file that the server
+                          should send to the client.
+        """
         if self.use_tls:
-            self.perform_handshake()
-            self.handshake_completed = True
+            # use port 443
+            self.server_port = self.https_port
+            
+            self.handshake_completed = self.perform_handshake()
+            if not self.handshake_completed:
+                logging.error("TLS Handshake failed. Closing session.")
+                return
+        
+        else:
+            # use port 80
+            self.server_port = self.http_port
         
         if self.handshake_completed and self.use_client_cert:
-            # תקשורת מוצפנת עבור client1
-            self.send_application_data(request_data, is_request=True)
-            self.send_application_data(response_data, is_request=False)
+            # Encrypted HTTP communication for client1 (after TLS handshake)
+            # Client1 sends a GET request and receives a GIF file
+            self.encrypt_and_send_application_data(request_data, is_request=True)
+            # Server sends a GIF file in response
+            self.encrypt_and_send_application_data(response_data, is_request=False)
             if file_to_send:
-                with open(file_to_send, 'rb') as file:
-                    file_data = file.read()
-                    self.send_application_data(file_data, is_request=False)
+                try:
+                    with open(file_to_send, 'rb') as file:
+                        file_data = file.read()
+                        self.encrypt_and_send_application_data(file_data, is_request=False)
+                except FileNotFoundError:
+                    logging.error(f"File {file_to_send} not found.")
+                except IOError as e:
+                    logging.error(f"Error reading file {file_to_send}: {e}")
+
+            logging.info("TLS Handshake completed. Encrypted communication initiated.")
+
         else:
-            # תקשורת HTTP לא מוצפנת עבור client2 (אחרי TLS handshake)
+            # Unencrypted HTTP communication for client2
             self.send_unencrypted_data(request_data, is_request=True)
             self.send_unencrypted_data(response_data, is_request=False)
+            logging.warning("TLS Handshake failed or client certificate missing. Proceeding with unencrypted communication.")
 
-    def send_client_hello(self)-> None:
+    def send_to_client(self, packet):
+        """
+        Simulates sending a packet to the client.
+        Adds logging for tracking packet flows.
+        """
+        try:
+            # Add packet transmission logic here (e.g., send over a socket)
+            logging.info(f"Sending packet to client: {type(packet).__name__}")
+        except Exception as e:
+            logging.error(f"Failed to send packet to client: {str(e)}")
+            raise
+
+    def send_to_server(self, packet):
+        """
+        Simulates sending a packet to the server.
+        Adds logging for tracking packet flows.
+        """
+        try:
+            # Add packet transmission logic here (e.g., send over a socket)
+            logging.info(f"Sending packet to server: {type(packet).__name__}")
+        except Exception as e:
+            logging.error(f"Failed to send packet to server: {str(e)}")
+            raise
+
+    def send_client_hello(self):
     #----------------------------------
     # Client Hello
     #----------------------------------
@@ -128,45 +304,32 @@ class UnifiedTLSSession:
             gmt_unix_time=self.client_GMT_unix_time,
             random_bytes=self.client_random_bytes
         )
-        self.tls_context.msg = [client_hello]
-        self.send_tls_packet(self.client_ip, self.server_ip, self.client_port, self.server_port)
+        self.send_to_server(client_hello)
 
+        # Track handshake message
+        raw_hello = raw(client_hello)
+        self.handshake_messages.append(raw_hello)
+        
+        self.tls_context.msg = [client_hello]
         logging.info(f"Client Hello sent from {self.client_ip}")
+        return self.send_tls_packet(self.client_ip, self.server_ip, self.client_port, self.server_port, 
+                                  is_handshake=True)
     
-    def send_server_hello(self)-> None:
+    def send_server_hello(self):
     #----------------------------------
     # Server Hello
     #----------------------------------
         
+        # Generate a Server Random
         self.server_GMT_unix_time, self.server_random_bytes = generate_random()
         self.server_random = self.server_GMT_unix_time.to_bytes(4, 'big') + self.server_random_bytes
         logging.info(f"Generated server_random: {self.server_random.hex()}")
-
-        self.session_id = os.urandom(32)
-        logging.info(f"Generated session_id: {self.session_id.hex()}")
-        try:
-            
-            cert = load_cert("../certificates/"+self.server_name+".der")
-            cert_der = cert.public_bytes(serialization.Encoding.DER)
-            # Extract the public key from the certificate
-            self.server_public_key = cert.public_key()
-
-            logging.info(f"Server certificate loaded. Subject: {cert.subject}")
-            logging.info(f"Server certificate public key: {self.server_public_key.public_numbers().n}")
-
-        except Exception as e:
-            logging.error(f"Error loading server certificate: {str(e)}")
-            raise
-
-        # recheck the server certificate
-        logging.info(f"Server certificate loaded. Subject: {cert.subject}")
-        logging.info(f"Server certificate public key: {cert.public_key().public_bytes(serialization.Encoding.PEM, serialization.PublicFormat.SubjectPublicKeyInfo).decode()}")
 
         server_hello = TLSServerHello(
             version=0x0303,  # TLS 1.2
             gmt_unix_time=self.server_GMT_unix_time,
             random_bytes=self.server_random_bytes,
-            sid = self.session_id,
+            sid = os.urandom(32),
             cipher=TLS_RSA_WITH_AES_128_CBC_SHA256.val,
             ext=[
                 #TLS_Ext_ServerName(servernames=[ServerName(servername="Pasdaran.local")]), # need fix this extantion
@@ -177,25 +340,7 @@ class UnifiedTLSSession:
                 ]
             )
         
-        # Server Certificate
-        certificate = TLSCertificate(certs=[(len(cert_der), cert_der)])
-        logging.info(f"Sending server certificate. Size: {len(cert_der)} bytes")
-
-        # Log some information for debugging
-        logging.info(f"Server Hello cipher: {server_hello.cipher}")
-        logging.info(f"Server Hello version: {hex(server_hello.version)}")
-        logging.info(f"Server Hello extensions: {server_hello.ext}")
-        logging.info(f"Server selected cipher suite: {server_hello.cipher}")
-        # Make sure the SSL keylog file is being used correctly
-        ssl_keylog_file = self.pcap_writer.config.SSL_KEYLOG_FILE
-        logging.info(f"Using SSL keylog file: {ssl_keylog_file}")
-        if not os.path.exists(ssl_keylog_file):
-            logging.warning(f"SSL keylog file does not exist: {ssl_keylog_file}")
-
-        # Add this line to explicitly set the TLS version for the session
-        self.tls_context.tls_version = 0x0303  # TLS 1.2
-
-        # ECDH key exchange
+         # ECDH key exchange
         """server_key_exchange = TLSServerKeyExchange(
             params=ServerDHParams( #public server key, for play with it ECDH key exchange
                 dh_p=self.server_public_key.public_numbers().n.to_bytes((self.server_public_key.public_numbers().n.bit_length() + 7) // 8, byteorder='big'),
@@ -204,56 +349,100 @@ class UnifiedTLSSession:
             ),
         )"""     
         
-        self.tls_context.msg = [server_hello, certificate, TLSCertificateRequest(), TLSServerHelloDone()]
-        self.send_tls_packet(self.server_ip, self.client_ip, self.server_port, self.client_port)
-        logging.info(f"Server Hello and Certificate sent to {self.client_ip}")
+        # Build certificate chain in correct order
+        cert_entries = []
+        for cert in self.cert_chain:
+            cert_der = cert.public_bytes(serialization.Encoding.DER)
+            cert_entries.append((len(cert_der), cert_der))
+        
+        certificate = TLSCertificate(certs=cert_entries)
+
+        # Check if the server public key matches the certificate
+        server_cert = x509.load_der_x509_certificate(cert_entries[0][1])  # Load server cert
+        cert_public_key = server_cert.public_key()
+        if cert_public_key.public_numbers() != self.server_public_key.public_numbers():
+            raise ValueError("Server public key mismatch!")
+        
+        # Get the Distinguished Name bytes from the CA certificate
+        ca_dn = self.ca_cert.subject.public_bytes()  # Get just the DN bytes
+        
+        cert_request = TLSCertificateRequest(
+            ctypes=[1],  # RSA certificate type
+            sig_algs=[0x0401],  # SHA256 + RSA
+            certauth=[
+                (len(ca_dn), ca_dn)  # Use only the Distinguished Name
+            ]
+        )
+        self.send_to_client(server_hello, certificate, cert_request, TLSServerHelloDone())
+
+        # Track handshake messages
+        self.handshake_messages.extend([
+            raw(server_hello),
+            raw(certificate),
+            raw(cert_request)
+        ])
+        
+        self.tls_context.msg = [server_hello, certificate, cert_request ,TLSServerHelloDone()]
+        return self.send_tls_packet(self.server_ip, self.client_ip, self.server_port, self.client_port, 
+                                  is_handshake=True)
+
 
     def send_client_key_exchange(self)-> None:
     #----------------------------------
     # Client Certificate (if required)
     #----------------------------------
-        client_certificate = None
-        if self.use_client_cert:
-            try:
-                cert = load_cert("../certificates/Pasdaran.local.crt")
+        """Send client key exchange with proper tracking"""
+        try:
+            # Handle client certificate if required
+            if self.use_client_cert:
+                cert = load_cert("../certificates/client.crt")
                 cert_der = cert.public_bytes(serialization.Encoding.DER)
                 client_certificate = TLSCertificate(certs=[(len(cert_der), cert_der)])
-
-                logging.info(f"Client Certificate sent from {self.client_ip}. Certificate size: {len(cert_der)} bytes")
-            except Exception as e:
-                logging.error(f"Error handling client certificate: {str(e)}")
-                raise e
+                # Track the certificate message
+                self.handshake_messages.append(raw(client_certificate))
 
         #----------------------------------
         # Client (RSA) Key Exchange
         #----------------------------------
-        try:
             self.pre_master_secret = generate_pre_master_secret()
-            logging.info(f"Client generated pre_master_secret: {self.pre_master_secret.hex()}")
-
-            # Encrypt pre-master secret with server's public key who extracted from server certificate
-            self.encrypted_pre_master_secret = encrypt_pre_master_secret(self.pre_master_secret, self.server_public_key)
+            self.encrypted_pre_master_secret = encrypt_pre_master_secret(
+                self.pre_master_secret, 
+                self.server_public_key
+            )
             
             if not isinstance(self.encrypted_pre_master_secret, bytes):
                 self.encrypted_pre_master_secret = bytes(self.encrypted_pre_master_secret)
 
             logging.info(f"Encrypted pre_master_secret length: {len(self.encrypted_pre_master_secret)}")
-
+            
+            # Prepare key exchange message
             # validate the length of the encrypted pre-master secret
             length_bytes = len(self.encrypted_pre_master_secret).to_bytes(2, 'big')
 
-            # יצירת המבנה המלא של ClientKeyExchange
-            client_key_exchange_data = length_bytes + self.encrypted_pre_master_secret
-
             client_key_exchange = TLSClientKeyExchange(
-                exchkeys=client_key_exchange_data
+                exchkeys=length_bytes + self.encrypted_pre_master_secret
             )
-            self.tls_context.msg = [client_certificate, client_key_exchange] if client_certificate else [client_key_exchange]
-            self.send_tls_packet(self.client_ip, self.server_ip, self.client_port, self.server_port)
-            logging.info(f"Client Key Exchange sent from {self.client_ip}")
+            self.send_to_server(client_certificate, client_key_exchange)
+
+            # Track the key exchange message
+            self.handshake_messages.append(raw(client_key_exchange))
+            
+            # Send messages
+            if self.use_client_cert:
+                self.tls_context.msg = [client_certificate, client_key_exchange]
+            else:
+                self.tls_context.msg = [client_key_exchange]
+                
+            return self.send_tls_packet(
+                self.client_ip, 
+                self.server_ip, 
+                self.client_port, 
+                self.server_port,
+                is_handshake=True
+            )
 
         except Exception as e:
-            logging.error(f"Error in client key exchange: {str(e)}")
+            logging.error(f"Error in client key exchange: {e}")
             raise e
 
     def handle_master_secret(self)-> None:
@@ -277,20 +466,7 @@ class UnifiedTLSSession:
             self.server_random
         )
         print(f"Master secret: {self.master_secret.hex()}")
-        # Derive key material
-        key_block = self.prf.derive_key_block(
-            self.master_secret,
-            self.server_random,
-            self.client_random,
-            2 * (16 + 32 + 16)  # 2 * (key_length + mac_key_length + iv_length)
-        )
-        self.client_write_key = key_block[:16]
-        self.server_write_key = key_block[16:32]
-        self.client_write_mac_key = key_block[32:64]
-        self.server_write_mac_key = key_block[64:96]
-        self.client_write_IV = key_block[96:112]
-        self.server_write_IV = key_block[112:128]
-
+        logging.info(f"Master secret: {self.master_secret.hex()}")
         
 
     def send_client_change_cipher_spec(self)-> None:
@@ -338,103 +514,142 @@ class UnifiedTLSSession:
     #----------------------------------
     # SSL Key Log
     #----------------------------------
+        """Write keys in correct format for Wireshark"""
         try:
-            # Log SSL key for Wireshark decryption
-            log_line = f"CLIENT_RANDOM {self.client_random.hex()} {self.master_secret.hex()}"
             with open(self.pcap_writer.config.SSL_KEYLOG_FILE, "a") as f:
-                f.write(log_line + "\n")
-            logging.info(f"Logged master secret to {self.pcap_writer.config.SSL_KEYLOG_FILE}: {log_line}")
+                # Log master secret with client random
+                f.write(f"CLIENT_RANDOM {self.client_random.hex()} {self.master_secret.hex()}\n")
+                
+            logging.info(f"SSL keys logged successfully to {self.pcap_writer.config.SSL_KEYLOG_FILE}")
+                
         except Exception as e:
-            logging.error(f"Failed to derive master secret for decryption: {str(e)}")
-            raise e
+            logging.error(f"Failed to log SSL keys: {e}")
+            raise
+
             
-        # check if the SSLKEYLOG's master secret is correct
-        if verify_master_secret(self.client_random, self.master_secret, self.pcap_writer.config.SSL_KEYLOG_FILE):
-            logging.info(f"Derived master_secret: {self.master_secret.hex()}")
-        else:
-            raise Exception("Master secret verification failed")
-            
-        
-    
-    def send_application_data(self, data, is_request):
+    def encrypt_and_send_application_data(self, data, is_request):
+        """Encrypts and sends TLS application data by RFC 5246"""
         is_client = is_request
-        key = self.client_write_key if is_client else self.server_write_key
-        mac_key = self.client_write_mac_key if is_client else self.server_write_mac_key
+        key_block = self.prf.derive_key_block(
+            self.master_secret,
+            self.server_random,
+            self.client_random,
+            2 * (16 + 32)  # 2 * (key_length + mac_key_length)
+        )
         
-        iv = os.urandom(16)  # Generate a new IV for each message
+        # RFC 5246 order:
+        client_mac_key = key_block[0:32]
+        server_mac_key = key_block[32:64] 
+        client_key = key_block[64:80]
+        server_key = key_block[80:96]
         
-        # Encrypt the data using CBC mode with HMAC-SHA256 for integrity
-        encrypted_data = encrypt_tls12_record_cbc(data, key, iv, mac_key)
-        self.encrypted_packets.append(encrypted_data)
-        self.original_messages.append(data)
+        key = client_key if is_client else server_key
+        mac_key = client_mac_key if is_client else server_mac_key
+        explicit_iv = os.urandom(16)
         
-        # שמור את המפתח וה-IV
-        self.packet_keys.append(key)
-        self.packet_ivs.append(iv)
-        self.packet_mac_keys.append(mac_key)
+        # Record format with sequence number
+        seq_num = self.client_seq_num if is_client else self.server_seq_num
+        seq_num_bytes = seq_num.to_bytes(8, byteorder='big')
         
-        # Create a TLS Application Data record
-        tls_data = TLSApplicationData(data=encrypted_data)
+        # Encrypt with sequence number 
+        encrypted_data = encrypt_tls12_record_cbc(data, key, explicit_iv, mac_key, seq_num_bytes)
+        tls_record = explicit_iv + encrypted_data
+        
+        tls_data = TLSApplicationData(data=tls_record)
         self.tls_context.msg = [tls_data]
         
+        # Update sequence numbers
+        if is_client:
+            self.client_seq_num += 1
+        else:
+            self.server_seq_num += 1
+            
         src_ip = self.client_ip if is_request else self.server_ip
         dst_ip = self.server_ip if is_request else self.client_ip
         sport = self.client_port if is_request else self.server_port
         dport = self.server_port if is_request else self.client_port
         
-        # Send the encrypted TLS packet
         self.send_tls_packet(src_ip, dst_ip, sport, dport)
-
     
     
     def send_unencrypted_data(self, data, is_request):
+        """Send unencrypted HTTP data with proper Content-Length handling"""
+        # Convert data to string if it's bytes
+        data_str = data.decode('utf-8') if isinstance(data, bytes) else data
+        
+        # If this is a response, ensure Content-Length header is correct
+        if not is_request:
+            try:
+                # Split headers and body
+                if '\r\n\r\n' in data_str:
+                    headers, body = data_str.split('\r\n\r\n', 1)
+                    header_lines = headers.split('\r\n')
+                    
+                    # Calculate actual content length
+                    body_length = len(body.encode('utf-8'))
+                    
+                    # Update or add Content-Length header
+                    content_length_found = False
+                    new_headers = []
+                    
+                    for line in header_lines:
+                        if line.lower().startswith('content-length:'):
+                            new_headers.append(f'Content-Length: {body_length}')
+                            content_length_found = True
+                        else:
+                            new_headers.append(line)
+                    
+                    if not content_length_found:
+                        new_headers.append(f'Content-Length: {body_length}')
+                    
+                    # Reconstruct the response with correct Content-Length
+                    data_str = '\r\n'.join(new_headers) + '\r\n\r\n' + body
+                    
+                    # Convert back to bytes
+                    data = data_str.encode('utf-8')
+                else:
+                    # If no body separator found, treat entire content as body
+                    body_length = len(data_str.encode('utf-8'))
+                    data = f"HTTP/1.1 200 OK\r\nContent-Length: {body_length}\r\n\r\n{data_str}".encode('utf-8')
+                    
+            except Exception as e:
+                logging.error(f"Error processing HTTP response: {e}")
+                # If any error occurs, ensure we have valid HTTP format
+                data = f"HTTP/1.1 500 Internal Server Error\r\nContent-Length: 21\r\n\r\nInternal Server Error".encode('utf-8')
+        
         src_ip = self.client_ip if is_request else self.server_ip
         dst_ip = self.server_ip if is_request else self.client_ip
-        sport = self.client_port if is_request else self.server_port
-        dport = self.server_port if is_request else self.client_port
+        # http port
+        sport = self.client_port if is_request else self.http_port
+        dport = self.http_port if is_request else self.client_port
         
         packet = self.pcap_writer.create_tcp_packet(src_ip, dst_ip, sport, dport, data, "PA")
         self.pcap_writer.packets.append(packet)
 
-    def send_tls_packet(self, src_ip, dst_ip, sport, dport):
-        packet = self.pcap_writer.create_tls_packet(src_ip, dst_ip, sport, dport, raw(self.tls_context))
+    def send_tls_packet(self, src_ip, dst_ip, sport, dport, is_handshake=False):
+        """Send TLS packet with proper sequence tracking"""
+        tls_data = raw(self.tls_context)
+        
+        # Update sequence number based on direction
+        if src_ip == self.client_ip:
+            seq_num = self.client_seq_num
+            self.client_seq_num += len(tls_data)
+        else:
+            seq_num = self.server_seq_num
+            self.server_seq_num += len(tls_data)
+        
+        packet = self.pcap_writer.create_tls_packet(
+            src_ip=src_ip,
+            dst_ip=dst_ip,
+            sport=sport,
+            dport=dport,
+            tls_data=tls_data,
+            seq_num=seq_num,
+            is_handshake=is_handshake
+        )
+        
         self.pcap_writer.packets.append(packet)
-        self.seq_num += len(packet.payload)
         return packet
-
-
-    def verify_tls_session(self):
-        """Verify the TLS session by decrypting each packet and comparing it with the original message."""
-        logging.info(f"\nStarting TLS session verification for {self.client_ip}")
-        
-        for i, (packet, original_message) in enumerate(zip(self.encrypted_packets, self.original_messages)):
-            logging.info(f"\nVerifying encrypted packet {i+1}")
-            logging.info(f"Original message length: {len(original_message)}")
-            logging.info(f"Encrypted packet length: {len(packet)}")
-            
-            logging.info("Original message:")
-            print_message_content(original_message)
-            
-            try:
-                # Get the key and MAC key for the current packet
-                key = get_key_for_packet(self.packet_keys, i)
-                mac_key = get_mac_key_for_packet(self.packet_mac_keys, i)
-
-                # Decrypt the packet using TLS 1.2 CBC mode
-                decrypted = decrypt_tls12_record_cbc(packet, key, mac_key)
-                
-                # Compare the decrypted message with the original message
-                if compare_to_original(decrypted, original_message):
-                    logging.info("Decrypted message matches original message")
-                    logging.info(f"Decrypted message: {decrypted}")
-                else:
-                    raise("Decrypted message does not match original message.")
-                    
-            except ValueError as e:
-                logging.error(f"Error processing packet {i+1}: {str(e)}")
-        
-        logging.info(f"\nTLS session verification complete for {self.client_ip}")
-        logging.info(f"Total packets verified: {len(self.encrypted_packets)}")
 
 
 
@@ -452,7 +667,6 @@ def main():
     logging.info("\n--- Client 1 Session ---")
     client1_session = UnifiedTLSSession(writer, config.CLIENT1_IP, config.SERVER_IP, 12345, 443, use_tls=True, use_client_cert=True)
     client1_session.run_session(config.GET_REQUEST, config.OK_RESPONSE, 'ctf_challenge.gif')
-    client1_session.verify_tls_session()  # Verify TLS session for Client 1
 
     #----------
     # Client 2
@@ -460,7 +674,6 @@ def main():
     logging.info("\n--- Client 2 Session ---")
     client2_session = UnifiedTLSSession(writer, config.CLIENT2_IP, config.SERVER_IP, 12346, 443, use_tls=True, use_client_cert=False)
     client2_session.run_session(config.GET_REQUEST, config.BAD_REQUEST)
-    #client2_session.verify_tls_session()  # Verify TLS session for Client 2
 
     writer.save_pcap(config.OUTPUT_PCAP)
     writer.verify_and_log_packets()

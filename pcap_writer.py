@@ -20,11 +20,10 @@ class CustomPcapWriter:
 
     def setup_logging(self):
         logging.basicConfig(filename='../api/pcap_generator.log', level=logging.INFO,
-                            format='%(asctime)s - %(levelname)s - %(message)s')
+                          format='%(asctime)s - %(levelname)s - %(message)s')
 
-    def update_seq_ack(self, src_ip, dst_ip, sport, dport, payload_size, flags):
+    def update_seq_ack(self, src_ip, dst_ip, sport, dport, payload_size, flags, is_handshake=False):
         """Update the sequence and acknowledgment numbers"""
-        
         connection_id = (src_ip, dst_ip, sport, dport)
         reverse_id = (dst_ip, src_ip, dport, sport)
 
@@ -41,15 +40,19 @@ class CustomPcapWriter:
         seq = conn['seq']
         ack = conn['ack']
 
-        if flags & 0x02:  # SYN
-            conn['isn'] = seq
-            seq_increment = 1
-        elif flags & 0x01:  # FIN
-            seq_increment = 1
-        elif flags & 0x04:  # RST
-            seq_increment = 0
-        else:
+        # Special handling for handshake packets
+        if is_handshake:
             seq_increment = payload_size
+        else:
+            if flags & 0x02:  # SYN
+                conn['isn'] = seq
+                seq_increment = 1
+            elif flags & 0x01:  # FIN
+                seq_increment = 1
+            elif flags & 0x04:  # RST
+                seq_increment = 0
+            else:
+                seq_increment = payload_size
 
         conn['seq'] = seq + seq_increment
 
@@ -66,10 +69,8 @@ class CustomPcapWriter:
 
         return seq, ack
 
-    
     def create_tcp_packet(self, src_ip, dst_ip, sport, dport, payload, flags):
         """Create a TCP packet"""
-
         payload_size = len(payload)
         flags_int = flags_to_int(flags)
         seq, ack = self.update_seq_ack(src_ip, dst_ip, sport, dport, payload_size, flags_int)
@@ -77,28 +78,63 @@ class CustomPcapWriter:
         ip_layer = IP(src=src_ip, dst=dst_ip)
         tcp_layer = TCP(sport=sport, dport=dport, seq=seq, ack=ack, flags=flags)
         
-        return ip_layer / tcp_layer / Raw(load=payload)
+        packet = ip_layer / tcp_layer / Raw(load=payload)
+        
+        # Log packet creation for debugging
+        logging.debug(f"Created TCP packet: {packet.summary()}")
+        logging.debug(f"SEQ: {seq}, ACK: {ack}, Flags: {flags}")
+        
+        return packet
 
- 
+    def create_tls_packet(self, src_ip, dst_ip, sport, dport, tls_data, seq_num=None, is_handshake=False):
+        """Create a TCP packet with TLS data"""
+        tcp_payload = raw(tls_data)
+        flags = "PA"  # PSH+ACK for all TLS packets
+        
+        payload_size = len(tcp_payload)
+        flags_int = flags_to_int(flags)
+        seq, ack = self.update_seq_ack(src_ip, dst_ip, sport, dport, payload_size, flags_int, is_handshake)
 
-    
-    def create_tls_packet(self, src_ip, dst_ip, sport, dport, tls_payload):
-        """Create a TCP packet with a TLS payload"""
+        # Create packet
+        ip_layer = IP(src=src_ip, dst=dst_ip)
+        tcp_layer = TCP(sport=sport, dport=dport, seq=seq, ack=ack, flags=flags)
+        packet = ip_layer / tcp_layer / Raw(load=tcp_payload)
 
-        tcp_payload = raw(tls_payload)
-        return self.create_tcp_packet(src_ip, dst_ip, sport, dport, tcp_payload, "PA")
-    
+        # Verify TLS record format
+        if len(tcp_payload) > 0:
+            record_type = tcp_payload[0]
+            version = (tcp_payload[1] << 8) | tcp_payload[2]
+            if record_type in [0x16, 0x17]:  # Handshake or Application Data
+                if version != 0x0303:  # TLS 1.2
+                    logging.warning(f"Unexpected TLS version: {hex(version)}")
+                else:
+                    logging.debug(f"Valid TLS 1.2 record: type={hex(record_type)}")
+
+        return packet
 
     def save_pcap(self, filename):
-        """Save the packets to a PCAP file"""
-
+        """Save the packets to a PCAP file with enhanced verification"""
         valid_packets = []
         invalid_packets = []
 
         for idx, pkt in enumerate(self.packets):
             try:
+                # Basic packet validation
                 raw_pkt = bytes(pkt)
+                
+                # Additional TLS validation
+                if Raw in pkt and len(pkt[Raw].load) > 0:
+                    payload = pkt[Raw].load
+                    if payload[0] in [0x16, 0x17]:  # Handshake or Application Data
+                        version = (payload[1] << 8) | payload[2]
+                        length = (payload[3] << 8) | payload[4]
+                        if version != 0x0303:  # TLS 1.2
+                            logging.warning(f"Packet {idx}: Invalid TLS version {hex(version)}")
+                        if length + 5 != len(payload):
+                            logging.warning(f"Packet {idx}: TLS length mismatch")
+                
                 valid_packets.append(pkt)
+                
             except Exception as e:
                 error_message = f"Packet {idx} skipped due to error: {e}"
                 invalid_packets.append((pkt, error_message))
@@ -109,23 +145,23 @@ class CustomPcapWriter:
             logging.info(f"PCAP file '{filename}' saved successfully with {len(valid_packets)} packets.")
         else:
             logging.warning("No valid packets to save.")
-        
-        if invalid_packets:
-            logging.warning(f"{len(invalid_packets)} packets were invalid and not saved.")
-            for pkt, error in invalid_packets:
-                logging.error(f"Invalid packet info: {error}")
 
     def verify_and_log_packets(self):
+        """Enhanced packet verification and logging"""
         logging.info("Starting packet verification and logging...")
+        
         for idx, packet in enumerate(self.packets):
             logging.info(f"Packet {idx + 1}: {packet.summary()}")
-            if TLS in packet:
-                logging.info(f"TLS packet detected: {packet[TLS].summary()}")
+            
+            # Check for TLS content
+            if Raw in packet:
+                payload = packet[Raw].load
+                if len(payload) > 0 and payload[0] in [0x16, 0x17]:
+                    record_type = payload[0]
+                    version = (payload[1] << 8) | payload[2]
+                    length = (payload[3] << 8) | payload[4]
+                    
+                    logging.info(f"TLS Record: type={hex(record_type)}, "
+                               f"version={hex(version)}, length={length}")
+        
         logging.info("Packet verification and logging completed.")
-
-
-    def verify_master_secret(self):
-        """Verify the master secret on the log file"""
-
-        return verify_master_secret(self.client_random, self.master_secret, self.config.SSL_KEYLOG_FILE)
-

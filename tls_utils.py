@@ -4,7 +4,6 @@ from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 from scapy.layers.tls.record import TLS, TLSApplicationData
 from cryptography.hazmat.primitives import padding
-from utils import compute_mac
 from cryptography.hazmat.primitives import constant_time
 from cryptography.hazmat.primitives import serialization
 import datetime
@@ -17,7 +16,9 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives.asymmetric import padding as asymmetric_padding
 import os
-
+from cryptography.hazmat.primitives.padding import PKCS7
+from hmac import HMAC, compare_digest
+from hashlib import sha256
 from utils import *
 from datetime import datetime, timezone
 
@@ -166,55 +167,139 @@ def generate_session_id():
     # Session Resumption, which is not implemented here, would use a different session ID
     return os.urandom(32)
 
-def encrypt_tls12_record_cbc(data, key, iv, mac_key):
-    """Encrypt data using AES-128-CBC and HMAC-SHA256 for integrity."""
-    mac = compute_mac(mac_key, data)
-    ciphertext = encrypt_data(data + mac, key, iv)
-    return iv + ciphertext
-
-def encrypt_data(data: bytes, key: bytes, iv: bytes) -> bytes:
-    """Encrypts data using AES-128-CBC and HMAC-SHA256 for integrity."""
-    # Padding the data to be block-size aligned (16 bytes for AES)
-    padder = padding.PKCS7(128).padder()
-    padded_data = padder.update(data) + padder.finalize()
+def encrypt_tls12_record_cbc(data, key, iv, mac_key, seq_num=b'\x00'*8):
+    """
+    Encrypt TLS 1.2 record using AES-128-CBC and HMAC-SHA256 for integrity.
     
-    # AES-128-CBC encryption
-    cipher = Cipher(algorithms.AES(key), modes.CBC(iv))
+    Args:
+        data (bytes): The plaintext data to encrypt
+        key (bytes): The encryption key (16 bytes for AES-128)
+        iv (bytes): The initialization vector (16 bytes)
+        mac_key (bytes): The key for HMAC-SHA256
+        seq_num (bytes): The TLS sequence number (8 bytes)
+        
+    Returns:
+        bytes: The encrypted data including MAC
+    """
+    # Create HMAC using standard hmac module
+    h = HMAC(mac_key, seq_num + data, sha256)
+    mac = h.digest()
+    
+    # Pad plaintext + MAC
+    plaintext = data + mac
+    padder = PKCS7(128).padder()  # 128 bits = 16 bytes block size
+    padded = padder.update(plaintext) + padder.finalize()
+    
+    # Encrypt with AES-CBC
+    cipher = Cipher(
+        algorithms.AES(key),
+        modes.CBC(iv)
+    )
     encryptor = cipher.encryptor()
-    ciphertext = encryptor.update(padded_data) + encryptor.finalize()
+    ciphertext = encryptor.update(padded) + encryptor.finalize()
     
     return ciphertext
 
-def decrypt_tls12_record_cbc(encrypted_data, key, mac_key):
-    iv = encrypted_data[:16]
-    ciphertext = encrypted_data[16:]
 
-    decrypted_with_mac = decrypt_data(ciphertext, key, iv)
+def load_private_key(key_path):
+    """Load a private key from a PEM or DER file"""
+    try:
+        with open(key_path, 'rb') as key_file:
+            key_data = key_file.read()
+            
+            try:
+                # First try to load as PEM
+                private_key = serialization.load_pem_private_key(
+                    key_data,
+                    password=None,  # If the key is password protected, provide it here
+                    backend=default_backend()
+                )
+            except ValueError:
+                # If PEM fails, try DER format
+                private_key = serialization.load_der_private_key(
+                    key_data,
+                    password=None,
+                    backend=default_backend()
+                )
 
-    # fork the decrypted data from the MAC
-    decrypted = decrypted_with_mac[:-32]
-    received_mac = decrypted_with_mac[-32:]
+            # Verify key type and size
+            if not hasattr(private_key, 'key_size'):
+                raise ValueError("Loaded key does not appear to be an RSA key")
+            
+            if private_key.key_size != 2048:
+                raise ValueError(f"Expected 2048-bit key, got {private_key.key_size}-bit key")
 
-    # MAC verification
-    calculated_mac = compute_mac(mac_key, decrypted)
-    if not constant_time.bytes_eq(calculated_mac, received_mac):
-        raise ValueError("MAC verification failed")
+            logging.info(f"Successfully loaded private key from {key_path}")
+            logging.info(f"Key type: {type(private_key).__name__}")
+            logging.info(f"Key size: {private_key.key_size} bits")
 
-    return decrypted
+            return private_key
 
-def decrypt_data(ciphertext: bytes, key: bytes, iv: bytes) -> bytes:
-    """Decrypts data using AES-128-CBC."""
-    cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend())
-    decryptor = cipher.decryptor()
-    padded_data = decryptor.update(ciphertext) + decryptor.finalize()
+    except FileNotFoundError:
+        logging.error(f"Private key file not found: {key_path}")
+        raise
+    except (ValueError, TypeError) as e:
+        logging.error(f"Invalid private key format: {str(e)}")
+        raise
+    except Exception as e:
+        logging.error(f"Unexpected error loading private key: {str(e)}")
+        raise
+
+def load_cert(cert_path):
+    """Load a certificate from a PEM or DER file"""
+    try:
+        with open(cert_path, 'rb') as cert_file:
+            cert_data = cert_file.read()
+            
+            try:
+                # First try to load as PEM
+                certificate = x509.load_pem_x509_certificate(
+                    cert_data,
+                    backend=default_backend()
+                )
+            except ValueError:
+                # If PEM fails, try DER format
+                certificate = x509.load_der_x509_certificate(
+                    cert_data,
+                    backend=default_backend()
+                )
+
+            logging.info(f"Successfully loaded certificate from {cert_path}")
+            logging.info(f"Subject: {certificate.subject}")
+            logging.info(f"Issuer: {certificate.issuer}")
+            logging.info(f"Valid from: {certificate.not_valid_before}")
+            logging.info(f"Valid until: {certificate.not_valid_after}")
+
+            return certificate
+
+    except FileNotFoundError:
+        logging.error(f"Certificate file not found: {cert_path}")
+        raise
+    except ValueError as e:
+        logging.error(f"Invalid certificate format: {str(e)}")
+        raise
+    except Exception as e:
+        logging.error(f"Unexpected error loading certificate: {str(e)}")
+        raise
+
+def load_certificate_chain(cert_path, intermediate_path=None, root_path=None):
+    """Load a complete certificate chain"""
+    chain = []
     
-    # Remove padding
-    unpadder = padding.PKCS7(128).unpadder()
-    data = unpadder.update(padded_data) + unpadder.finalize()
+    # Load end-entity certificate
+    chain.append(load_cert(cert_path))
     
-    return data
-
-def compute_mac(key, message):
-  """Computes the HMAC for the given message using the provided key."""
-  h = hmac.new(key, message, digestmod='sha256')
-  return h.digest()
+    # Load intermediate certificate if provided
+    if intermediate_path:
+        chain.append(load_cert(intermediate_path))
+    
+    # Load root certificate if provided
+    if root_path:
+        chain.append(load_cert(root_path))
+    
+    # Verify chain
+    for i in range(len(chain)-1):
+        if chain[i].issuer != chain[i+1].subject:
+            logging.warning(f"Certificate chain broken between {i} and {i+1}")
+    
+    return chain
