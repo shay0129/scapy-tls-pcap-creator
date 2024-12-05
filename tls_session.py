@@ -449,17 +449,21 @@ class UnifiedTLSSession:
     #----------------------------------
     # Extracted Master Secret
     #----------------------------------
-        # Before generating the master secret,
-        # try to decrypt the pre-master secret with server's private key
+
         try:
+            # Step 1: Decrypt Pre-Master Secret
             decrypted_pre_master_secret = decrypt_pre_master_secret(self.encrypted_pre_master_secret, self.server_private_key)
             logging.info(f"Server decrypted pre_master_secret: {decrypted_pre_master_secret.hex()}")
+            
+            # Step 2: Validate Pre-Master Secret
             if compare_to_original(decrypted_pre_master_secret, self.pre_master_secret):
                 logging.info("Pre master secret encrypted matches.")
+
         except Exception as e:
             logging.error(f"Pre-master secret decryption failed: {e}")
             raise ValueError("Pre-master secret does not match") from e
-        # Compute master secret
+        
+        # Step 3: Compute Master Secret using PRF
         self.master_secret = self.prf.compute_master_secret(
             self.pre_master_secret,
             self.client_random,
