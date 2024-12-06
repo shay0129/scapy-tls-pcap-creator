@@ -2,12 +2,8 @@
 import logging
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
-from scapy.layers.tls.record import TLS, TLSApplicationData
-from cryptography.hazmat.primitives import padding
-from cryptography.hazmat.primitives import constant_time
 from cryptography.hazmat.primitives import serialization
 import datetime
-from cryptography.x509.oid import NameOID, ExtensionOID
 from cryptography.hazmat.primitives import hashes
 from cryptography import x509
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
@@ -17,7 +13,7 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives.asymmetric import padding as asymmetric_padding
 import os
 from cryptography.hazmat.primitives.padding import PKCS7
-from hmac import HMAC, compare_digest
+from hmac import HMAC
 from hashlib import sha256
 from utils import *
 from datetime import datetime, timezone
@@ -59,9 +55,6 @@ def verify_master_secret(client_random, master_secret, log_file) -> bool:
     return False
 
 
-
-
-
 def verify_key_pair(private_key, public_key) -> bool:
     """Verify that the public key matches the private key"""
     # Create some data to sign
@@ -98,6 +91,7 @@ def verify_key_pair(private_key, public_key) -> bool:
             return True
     except:
         return False
+
 
 def load_server_cert_keys(cert_path: str, key_path: str) -> Tuple[x509.Certificate, rsa.RSAPrivateKey, rsa.RSAPublicKey]:
     """Load the certificate and private key from files."""
@@ -161,25 +155,10 @@ def load_server_cert_keys(cert_path: str, key_path: str) -> Tuple[x509.Certifica
         logging.error(f"Unexpected error loading keys and certificate: {str(e)}")
         raise
 
-def generate_session_id():
-    """Generate a random session ID"""
-    # in this case, we generate a 32-byte random session ID
-    # Session Resumption, which is not implemented here, would use a different session ID
-    return os.urandom(32)
 
 def encrypt_tls12_record_cbc(data, key, iv, mac_key, seq_num=b'\x00'*8):
     """
     Encrypt TLS 1.2 record using AES-128-CBC and HMAC-SHA256 for integrity.
-    
-    Args:
-        data (bytes): The plaintext data to encrypt
-        key (bytes): The encryption key (16 bytes for AES-128)
-        iv (bytes): The initialization vector (16 bytes)
-        mac_key (bytes): The key for HMAC-SHA256
-        seq_num (bytes): The TLS sequence number (8 bytes)
-        
-    Returns:
-        bytes: The encrypted data including MAC
     """
     # Create HMAC using standard hmac module
     h = HMAC(mac_key, seq_num + data, sha256)

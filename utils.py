@@ -5,12 +5,18 @@ from cryptography.hazmat.primitives import constant_time
 from cryptography.hazmat.primitives import hashes
 from cryptography import x509
 from cryptography.hazmat.backends import default_backend
+import os
 
 def encode_length(length, num_bytes) -> bytes:
     """Encode the length of a field"""
 
     return length.to_bytes(num_bytes, byteorder='big')
 
+def generate_session_id():
+    """Generate a random session ID"""
+    # in this case, we generate a 32-byte random session ID
+    # Session Resumption, which is not implemented here, would use a different session ID
+    return os.urandom(32)
 
 def flags_to_int(flags):
     """Convert a string of flags to an integer"""
@@ -54,7 +60,6 @@ def compute_mac(key: bytes, message: bytes) -> bytes:
     return h.finalize()
 
 
-
 def int_to_bytes_length(n):
     """Helper function to calculate the byte length of an integer"""
     return (n.bit_length() + 7) // 8
@@ -83,16 +88,13 @@ def get_mac_key_for_packet(packet_mac_keys:list,packet_index:int)-> bytes:
 
 def print_message_content(message):
         try:
-            # נסה לפענח כ-UTF-8
             decoded = message.decode('utf-8')
-            # הצג את השורות הראשונות של ההודעה (עד 10 שורות)
             lines = decoded.split('\n')
             for line in lines[:10]:
                 logging.info(line)
             if len(lines) > 10:
                 logging.info("...")
         except UnicodeDecodeError:
-            # אם זה לא טקסט UTF-8 (למשל, תמונה), הצג כהקסדצימלי
             logging.info(f"Binary data (first 100 bytes): {message[:100].hex()}")
             if len(message) > 100:
                 logging.info("...")
