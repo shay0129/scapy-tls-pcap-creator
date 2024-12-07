@@ -1,5 +1,4 @@
 # main.py
-# TLS Traffic Generation System Analysis
 import logging
 from tls_session import UnifiedTLSSession
 from pcap_writer import CustomPcapWriter
@@ -32,7 +31,7 @@ def main():
     client1_session.run_session(
         config.GET_REQUEST,
         config.OK_RESPONSE,
-        'ctf_challenge.gif'
+        '../api/ctf_challenge.gif'
     )
 
     #----------

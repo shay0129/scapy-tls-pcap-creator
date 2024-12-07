@@ -603,10 +603,10 @@ class UnifiedTLSSession:
             
     def encrypt_and_send_application_data(self, data, is_request) -> bytes:
         """
-        Encrypts and sends TLS application data by RFC 5246.
+        Encrypts and sends TLS application data as per RFC 5246.
         """
         try:
-            # Determine client or server context
+            # Determine client/server context
             is_client = is_request
             key_block = self.prf.derive_key_block(
                 self.master_secret,
@@ -614,52 +614,51 @@ class UnifiedTLSSession:
                 self.client_random,
                 2 * (16 + 32)  # 2 * (key_length + mac_key_length)
             )
-            
+
             # Extract keys and IV
             client_mac_key = key_block[0:32]
             server_mac_key = key_block[32:64]
             client_key = key_block[64:80]
             server_key = key_block[80:96]
-            
+
             key = client_key if is_client else server_key
             mac_key = client_mac_key if is_client else server_mac_key
             explicit_iv = os.urandom(16)
-            
+
             # Generate sequence number
             seq_num = self.client_seq_num if is_client else self.server_seq_num
             seq_num_bytes = seq_num.to_bytes(8, byteorder='big')
-            
+
             # Encrypt data
             encrypted_data = encrypt_tls12_record_cbc(data, key, explicit_iv, mac_key, seq_num_bytes)
+
+            # Construct TLS record
             tls_record = explicit_iv + encrypted_data
-            
-            # Construct the TLS Application Data message
             tls_data = TLSApplicationData(data=tls_record)
             self.tls_context.msg = [tls_data]
-            
-            # Update sequence numbers
+
+            # Update sequence number
             if is_client:
                 self.client_seq_num += 1
             else:
                 self.server_seq_num += 1
-            
+
             # Determine source and destination
             src_ip = self.client_ip if is_request else self.server_ip
             dst_ip = self.server_ip if is_request else self.client_ip
             sport = self.client_port if is_request else self.server_port
             dport = self.server_port if is_request else self.client_port
-            
-            # Send the packet
+
+            # Send packet
             raw_packet = self.send_tls_packet(src_ip, dst_ip, sport, dport)
-            
-            # Log and return raw packet
+
+            # Log success
             logging.info(f"TLS Application Data sent from {src_ip}:{sport} to {dst_ip}:{dport}")
             return raw(tls_data)
+
         except Exception as e:
             logging.error(f"Error in encrypt_and_send_application_data: {e}")
             raise
-
-    
     
     def send_unencrypted_data(self, data, is_request):
         """Send unencrypted HTTP data with proper Content-Length handling"""

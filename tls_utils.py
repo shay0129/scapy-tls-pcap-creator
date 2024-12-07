@@ -11,12 +11,17 @@ from typing import Tuple
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives.asymmetric import padding as asymmetric_padding
-import os
 from cryptography.hazmat.primitives.padding import PKCS7
-from hmac import HMAC
-from hashlib import sha256
+import struct
 from utils import *
 from datetime import datetime, timezone
+from Crypto.Cipher import AES
+from Crypto.Protocol.KDF import scrypt
+from Crypto.Hash import HMAC, SHA256
+from Crypto.Util.Padding import pad
+
+import struct
+import logging
 
 
 def verify_master_secret(client_random, master_secret, log_file) -> bool:
@@ -156,28 +161,64 @@ def load_server_cert_keys(cert_path: str, key_path: str) -> Tuple[x509.Certifica
         raise
 
 
-def encrypt_tls12_record_cbc(data, key, iv, mac_key, seq_num=b'\x00'*8):
+
+def encrypt_tls12_record_cbc(data, key, iv, mac_key, seq_num=b'\x00' * 8):
     """
     Encrypt TLS 1.2 record using AES-128-CBC and HMAC-SHA256 for integrity.
+
+    Args:
+        data (bytes): Plaintext data to encrypt.
+        key (bytes): AES-128 encryption key (16 bytes).
+        iv (bytes): Initialization vector (16 bytes).
+        mac_key (bytes): HMAC key (32+ bytes for SHA-256).
+        seq_num (bytes): 8-byte sequence number.
+
+    Returns:
+        bytes: The complete encrypted TLS 1.2 record (header + ciphertext).
     """
-    # Create HMAC using standard hmac module
-    h = HMAC(mac_key, seq_num + data, sha256)
-    mac = h.digest()
-    
-    # Pad plaintext + MAC
-    plaintext = data + mac
-    padder = PKCS7(128).padder()  # 128 bits = 16 bytes block size
-    padded = padder.update(plaintext) + padder.finalize()
-    
-    # Encrypt with AES-CBC
-    cipher = Cipher(
-        algorithms.AES(key),
-        modes.CBC(iv)
-    )
-    encryptor = cipher.encryptor()
-    ciphertext = encryptor.update(padded) + encryptor.finalize()
-    
-    return ciphertext
+    try:
+        # Validate input lengths
+        assert len(key) == 16, "Key must be 16 bytes for AES-128"
+        assert len(iv) == 16, "IV must be 16 bytes"
+        assert len(mac_key) >= 32, "MAC key must be at least 32 bytes"
+        assert len(seq_num) == 8, "Sequence number must be 8 bytes"
+
+        # Record Header Components
+        record_type = b'\x17'  # Application Data
+        version = b'\x03\x03'  # TLS 1.2
+        length = struct.pack('!H', len(data))  # Length of plaintext
+
+        # Create HMAC
+        mac_input = seq_num + record_type + version + length + data
+        logging.debug(f"MAC Input (Header + Data): {mac_input.hex()}")
+        mac = HMAC.new(mac_key, mac_input, SHA256).digest()
+        logging.debug(f"Generated MAC: {mac.hex()}")
+
+        # Verify size before padding/encryption
+        max_tls_record_size = 2**14  # 16 KB
+        if len(data) + len(mac) > max_tls_record_size:
+            raise ValueError("TLS record exceeds maximum allowed size")
+
+        # Pad plaintext + MAC
+        plaintext = data + mac
+        padded_plaintext = pad(plaintext, AES.block_size)  # PKCS#7 padding
+        logging.debug(f"Padded Plaintext: {padded_plaintext.hex()}")
+
+        # Encrypt with AES-CBC
+        cipher = AES.new(key, AES.MODE_CBC, iv)
+        ciphertext = cipher.encrypt(padded_plaintext)
+        logging.debug(f"Ciphertext: {ciphertext.hex()}")
+
+        # Combine header and ciphertext
+        record = record_type + version + length + ciphertext
+        logging.debug(f"Final TLS Record: {record.hex()}")
+
+        return record
+
+    except Exception as e:
+        logging.error(f"Error in encrypt_tls12_record_cbc: {str(e)}")
+        raise
+
 
 
 def load_private_key(key_path):

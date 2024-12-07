@@ -1,7 +1,6 @@
 # crypto.py
 from cryptography.hazmat.primitives.asymmetric import rsa
-from cryptography.hazmat.primitives import padding
-from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.asymmetric import padding as asymmetric_padding
 import os
 from typing import Tuple
 import time
@@ -29,7 +28,6 @@ def P_hash(secret, seed, length):
         result += hmac.new(secret, A + seed, hashlib.sha256).digest()
     return result[:length]
 
-from cryptography.hazmat.primitives.asymmetric import padding as asymmetric_padding
 
 def encrypt_pre_master_secret(pre_master_secret: bytes, server_public_key: rsa.RSAPublicKey) -> bytes:
     return server_public_key.encrypt(
