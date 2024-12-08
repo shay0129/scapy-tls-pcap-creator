@@ -22,6 +22,8 @@ from config import Config
 from crypto import *
 from utils import *
 from tls_utils import *
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.asymmetric import padding
 
 class UnifiedTLSSession:
     """
@@ -71,67 +73,6 @@ class UnifiedTLSSession:
         # Pseudo-Random Function (PRF) configuration for TLS key generation
         self.prf = PRF(hash_name='SHA256', tls_version=0x0303)
 
-    
-    def verify_certificate_chain(self, chain):
-        """Verify a simple certificate chain"""
-        if len(chain) != 2:  # Server cert and root CA
-            return False
-        
-        server_cert = chain[0]
-        root_ca = chain[1]
-        
-        try:
-            # Check if root CA is the issuer of server cert
-            if server_cert.issuer != root_ca.subject:
-                logging.warning("Server certificate not issued by provided CA")
-                logging.warning(f"Server cert issuer: {server_cert.issuer}")
-                logging.warning(f"Root CA subject: {root_ca.subject}")
-                return False
-                
-            # Verify server cert signature
-            root_public_key = root_ca.public_key()
-            root_public_key.verify(
-                server_cert.signature,
-                server_cert.tbs_certificate_bytes,
-                asymmetric_padding.PKCS1v15(),
-                server_cert.signature_hash_algorithm
-            )
-            logging.info("Certificate chain verification successful")
-            return True
-            
-        except Exception as e:
-            logging.error(f"Certificate signature verification failed: {e}")
-            return False
-
-    def verify_server_public_key(self):
-        """Verify the server's public key matches the one in the certificate"""
-        try:
-            # Extract public key from certificate
-            cert_public_key = self.server_cert.public_key()
-            cert_numbers = cert_public_key.public_numbers()
-            
-            # Get numbers from loaded public key
-            loaded_numbers = self.server_public_key.public_numbers()
-            
-            # Compare modulus (n) and public exponent (e)
-            keys_match = (
-                cert_numbers.n == loaded_numbers.n and 
-                cert_numbers.e == loaded_numbers.e
-            )
-            
-            if keys_match:
-                logging.info("Server public key matches certificate")
-                logging.info(f"Modulus (n): {hex(cert_numbers.n)}")
-                logging.info(f"Public exponent (e): {hex(cert_numbers.e)}")
-            else:
-                raise ValueError("Server public key does not match certificate")
-                
-            return keys_match
-            
-        except Exception as e:
-            logging.error(f"Public key verification failed: {e}")
-            raise
-
     def setup_certificates(self):
         """Setup certificate chain and server credentials"""
         try:
@@ -160,24 +101,80 @@ class UnifiedTLSSession:
                 self.ca_cert
             ]
             
-            self.verify_server_public_key()
+            # Verify server public key
+            if not self.verify_server_public_key():
+                logging.error("Server public key verification failed")
+                raise ValueError("Public key mismatch between loaded key and certificate")
 
             # Verify the chain
             if not self.verify_certificate_chain(self.cert_chain):
                 logging.warning("Certificate chain verification failed")
                 logging.warning(f"Server cert issuer: {self.server_cert.issuer}")
                 logging.warning(f"CA cert subject: {self.ca_cert.subject}")
+                return # Exit early if chain verification fails
+            
+            
+            # Verify the server name
+            elif not self.verify_server_name(self.server_name):
+                raise ValueError("Server name verification failed")
+            
             else:
                 logging.info("Certificate chain verification passed")
-                
+            
+            # If all checks pass
+            logging.info("Certificate chain verification passed")
             logging.info("Certificate chain loaded successfully")
             logging.info(f"Server cert subject: {self.server_cert.subject}")
-            logging.info(f"Server public key: {self.server_public_key.public_numbers().n}")
+            logging.info(f"Server public key modulus (n): {self.server_public_key.public_numbers().n}")
             logging.info(f"CA cert subject: {self.ca_cert.subject}")
             
         except Exception as e:
             logging.error(f"Failed to setup certificates: {e}")
             raise
+
+    
+        
+    def verify_server_public_key(self) -> bool:
+        """
+        Verify that the server's public key matches the one in the certificate.
+        Returns:
+            bool: True if the keys match, False otherwise.
+        """
+        try:
+            # Extract public key from the certificate
+            cert_public_key = self.server_cert.public_key()
+            cert_numbers = cert_public_key.public_numbers()
+
+            # Ensure loaded public key is valid
+            if not self.server_public_key:
+                raise ValueError("Server public key is missing or not loaded")
+
+            loaded_numbers = self.server_public_key.public_numbers()
+
+            # Compare modulus (n) and public exponent (e)
+            if cert_numbers.n == loaded_numbers.n and cert_numbers.e == loaded_numbers.e:
+                logging.info("Server public key matches certificate")
+                logging.info(f"Modulus (n): {hex(cert_numbers.n)}")
+                logging.info(f"Public exponent (e): {hex(cert_numbers.e)}")
+                return True
+            else:
+                logging.error("Mismatch between server public key and certificate")
+                logging.debug(f"Certificate modulus (n): {hex(cert_numbers.n)}")
+                logging.debug(f"Loaded key modulus (n): {hex(loaded_numbers.n)}")
+                logging.debug(f"Certificate exponent (e): {hex(cert_numbers.e)}")
+                logging.debug(f"Loaded key exponent (e): {hex(loaded_numbers.e)}")
+                return False
+
+        except AttributeError as attr_err:
+            logging.error("Public key extraction failed due to attribute error")
+            logging.debug(f"Error details: {attr_err}")
+            return False
+
+        except Exception as e:
+            logging.error(f"Public key verification failed: {e}")
+            raise
+
+    
 
 
     def perform_handshake(self)-> None:
@@ -433,7 +430,7 @@ class UnifiedTLSSession:
             client_key_exchange = TLSClientKeyExchange(
                 exchkeys=length_bytes + self.encrypted_pre_master_secret
             )
-
+            
             # Send the client certificate (if required) and the key exchange
             if client_certificate:
                 self.send_to_server(client_certificate)
@@ -463,7 +460,7 @@ class UnifiedTLSSession:
         except Exception as e:
             logging.error(f"Error in client key exchange: {e}")
             raise
-
+    
 
     def handle_master_secret(self)-> None:
     #----------------------------------
@@ -475,9 +472,7 @@ class UnifiedTLSSession:
             decrypted_pre_master_secret = decrypt_pre_master_secret(self.encrypted_pre_master_secret, self.server_private_key)
             logging.info(f"Server decrypted pre_master_secret: {decrypted_pre_master_secret.hex()}")
             
-            # Step 2: Validate Pre-Master Secret
-            if compare_to_original(decrypted_pre_master_secret, self.pre_master_secret):
-                logging.info("Pre master secret encrypted matches.")
+            
 
         except Exception as e:
             logging.error(f"Pre-master secret decryption failed: {e}")
@@ -544,7 +539,7 @@ class UnifiedTLSSession:
         Returns the raw packets sent.
         """
         try:
-            # Compute the server verify data for the Finished message
+            # Step 1: Compute the server verify data for the Finished message
             server_verify_data = self.prf.compute_verify_data(
                 'server',
                 'write',
@@ -552,12 +547,24 @@ class UnifiedTLSSession:
                 self.master_secret
             )
 
-            # Decrypt pre-master secret for validation (optional)
+            # Step 2: Decrypt pre-master secret for validation (optional)
             decrypted_pre_master_secret = decrypt_pre_master_secret(
                 self.encrypted_pre_master_secret,
                 self.server_private_key
             )
+            # Validate Pre-Master Secret
+            if compare_to_original(decrypted_pre_master_secret, self.pre_master_secret):
+                logging.info("Pre master secret encrypted matches.")
             logging.debug(f"Decrypted pre-master secret: {decrypted_pre_master_secret.hex()}")
+
+            # Step 3: Generate digital signature
+            signature_data = server_verify_data + b''.join(self.handshake_messages)
+            signature = self.server_private_key.sign(
+                signature_data,
+                padding.PKCS1v15(),
+                hashes.SHA256()
+            )
+            logging.info(f"Generated digital signature: {signature.hex()}")
 
             # Create TLSFinished and ChangeCipherSpec messages
             server_finished = TLSFinished(vdata=server_verify_data)
@@ -714,6 +721,55 @@ class UnifiedTLSSession:
         packet = self.pcap_writer.create_tcp_packet(src_ip, dst_ip, sport, dport, data, "PA")
         self.pcap_writer.packets.append(packet)
 
+    def verify_certificate_chain(self, chain):
+        """Verify a simple certificate chain"""
+        if len(chain) != 2:  # Server cert and root CA
+            return False
+        
+        server_cert = chain[0]
+        root_ca = chain[1]
+        
+        try:
+            # Check if root CA is the issuer of server cert
+            if server_cert.issuer != root_ca.subject:
+                logging.warning("Server certificate not issued by provided CA")
+                logging.warning(f"Server cert issuer: {server_cert.issuer}")
+                logging.warning(f"Root CA subject: {root_ca.subject}")
+                return False
+                
+            # Verify server cert signature
+            root_public_key = root_ca.public_key()
+            root_public_key.verify(
+                server_cert.signature,
+                server_cert.tbs_certificate_bytes,
+                asymmetric_padding.PKCS1v15(),
+                server_cert.signature_hash_algorithm
+            )
+            logging.info("Certificate chain verification successful")
+            return True
+            
+        except Exception as e:
+            logging.error(f"Certificate signature verification failed: {e}")
+            return False
+
+    def verify_server_name(self, expected_server_name):
+        """
+        Verify the server name matches the certificate's Common Name (CN).
+        """
+        try:
+            common_names = [
+                attr.value for attr in self.server_cert.subject
+                if attr.oid == x509.NameOID.COMMON_NAME
+            ]
+            if expected_server_name not in common_names:
+                logging.error(f"Server name mismatch: {expected_server_name} not in {common_names}")
+                return False
+            logging.info("Server name verification passed.")
+            return True
+        except Exception as e:
+            logging.error(f"Error verifying server name: {e}")
+            return False
+        
     def send_tls_packet(self, src_ip, dst_ip, sport, dport, is_handshake=False):
         """Send TLS packet with proper sequence tracking"""
         tls_data = raw(self.tls_context)

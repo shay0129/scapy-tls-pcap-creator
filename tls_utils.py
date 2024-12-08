@@ -177,18 +177,18 @@ def encrypt_tls12_record_cbc(data, key, iv, mac_key, seq_num=b'\x00' * 8):
         bytes: The complete encrypted TLS 1.2 record (header + ciphertext).
     """
     try:
-        # Validate input lengths
+        # Step 1: Validate input lengths
         assert len(key) == 16, "Key must be 16 bytes for AES-128"
         assert len(iv) == 16, "IV must be 16 bytes"
         assert len(mac_key) >= 32, "MAC key must be at least 32 bytes"
         assert len(seq_num) == 8, "Sequence number must be 8 bytes"
 
-        # Record Header Components
+        # Step 2: Record Header Components
         record_type = b'\x17'  # Application Data
         version = b'\x03\x03'  # TLS 1.2
         length = struct.pack('!H', len(data))  # Length of plaintext
 
-        # Create HMAC
+        # Step 3: Create HMAC, for Integrity (not needed in aes-gcm)
         mac_input = seq_num + record_type + version + length + data
         logging.debug(f"MAC Input (Header + Data): {mac_input.hex()}")
         mac = HMAC.new(mac_key, mac_input, SHA256).digest()
