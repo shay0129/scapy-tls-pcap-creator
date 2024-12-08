@@ -42,7 +42,7 @@ class UnifiedTLSSession:
         self.server_port = server_port
 
         # Default server name for TLS Server Name Indication (SNI)
-        self.server_name = "server"
+        self.SNI = "www.ctf-example.org"
         
         # Ports for secure and non-secure communication
         self.https_port = 443
@@ -77,23 +77,24 @@ class UnifiedTLSSession:
         """Setup certificate chain and server credentials"""
         try:
             # Load the root CA
-            self.ca_cert = load_cert("../certificates/guards-ca.crt")
+            self.ca_cert = load_cert("../certificates/ca.crt")
             
             # Load server certificate and keys (only once!)
             self.server_cert, self.server_private_key, self.server_public_key = load_server_cert_keys(
-                cert_path="../certificates/server.der", 
+                cert_path="../certificates/server.crt", 
                 key_path="../certificates/server.key"
             )
             """
             -----BEGIN PUBLIC KEY-----
-            MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAr+2v5nIDcUdr9GCOGfZO
-            Sx2NHKsj24prLap2jZWjo0dOc6UhIRLKnJ/KxUuPpJFagez54ASwE2mzLbmGlWvS
-            ICgaoZbc5RlqILK9cS/jhrmn2CwdT3cVImOQPOQZb29sAstWIMuyZ5i9rqXbegDA
-            Ggxh6iyfHnlGOSka/4HF4JPKhhxaxfeSWtW1aQiphiiktDRZeH2JPujA2J3r1n9/
-            If5sddB9pelJywF+UXQqHmY3icuSDAyy6gG59Xj/LbOgzEq58Canrsp5sWMDLLaw
-            ug0zvcq50+bMt49gQSPsTc5c+X86YzLPCertrbepLjaIkNgtsWeVlWWq6WPBj6MO
-            jQIDAQAB
+            MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtn8cvidMwzXzGGeTmw7V
+            ZQ6ZCW0njqVt4dsUQiBFnNgMC28iU4croBzgeD3vR+oCqML6C/RxcIzIwaTpxftv
+            fSbTBrzFkMczTtKurR87Hxdea0jnltJ+j032iRAQyFToLVec81vxCHSND3gzjnEn
+            HdGHt6sCYCxITTk4A+I5CLpfeattBw4KHQ83ZDRVGCRkK7GYm98jwcpiEH39X+ay
+            +UOBdrLJsfL/K39ox3IoJQh+5g0Nl3oYs1fCmNsclE5YFZs/Mhobsk1nDfQfeH9s
+            8MAp2AFq86slou6wSTLWszFUjpH1gJlCEh+B3LId2v2Wyk3Ik6ueZDhc6P6UxK5F
+            BQIDAQAB
             -----END PUBLIC KEY-----
+
             """
             # Build chain with just root CA and server cert
             self.cert_chain = [
@@ -115,7 +116,7 @@ class UnifiedTLSSession:
             
             
             # Verify the server name
-            elif not self.verify_server_name(self.server_name):
+            elif not self.verify_server_name(self.SNI):
                 raise ValueError("Server name verification failed")
             
             else:
@@ -752,7 +753,7 @@ class UnifiedTLSSession:
             logging.error(f"Certificate signature verification failed: {e}")
             return False
 
-    def verify_server_name(self, expected_server_name):
+    def verify_server_name(self, expected_server_name)-> bool:
         """
         Verify the server name matches the certificate's Common Name (CN).
         """
