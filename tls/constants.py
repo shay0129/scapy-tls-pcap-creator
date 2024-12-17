@@ -1,8 +1,4 @@
-"""
-Constants for TLS session simulation.
-Contains protocol versions, ports, file paths and other configuration values.
-"""
-
+"""Base constants for TLS implementation"""
 from pathlib import Path
 from typing import Final
 import logging
@@ -10,12 +6,17 @@ import logging
 # Base Directory Configuration
 BASE_DIR: Final[Path] = Path(__file__).parent
 
+# Directory Structure
 CERTS_DIR: Final[Path] = BASE_DIR / "certificates" / "certs"
 LOGS_DIR: Final[Path] = BASE_DIR / "logs"
 OUTPUT_DIR: Final[Path] = BASE_DIR / "output"
 DOCUMENTS_DIR: Final[Path] = BASE_DIR / "documents"
 
-# Output file paths
+# Create required directories
+for directory in [CERTS_DIR, LOGS_DIR, OUTPUT_DIR, DOCUMENTS_DIR]:
+    directory.mkdir(parents=True, exist_ok=True)
+
+# Paths for generated files
 OUTPUT_PCAP: Final[Path] = OUTPUT_DIR / "capture.pcap"
 CHALLENGE_FILE: Final[Path] = DOCUMENTS_DIR / "ctf_challenge.gif"
 
@@ -78,7 +79,7 @@ class LoggingPaths:
     TLS_LOG: Final[Path] = LOGS_DIR / "tls.log"
     PCAP_LOG: Final[Path] = LOGS_DIR / "pcap.log"
     ERROR_LOG: Final[Path] = LOGS_DIR / "error.log"
-    SSL_KEYLOG: Final[Path] = LOGS_DIR / "ssl-keys.log"
+    SSL_KEYLOG: Final[Path] = LOGS_DIR / "ssl_key_log.log"
 
 class LoggingConfig:
     """Logging configuration"""

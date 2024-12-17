@@ -8,6 +8,7 @@ from scapy.layers.tls.crypto.prf import PRF
 from scapy.all import raw
 from typing import Optional
 import logging
+from pathlib import Path
 
 from tls.handshake.client import (
     send_client_hello,
@@ -116,20 +117,26 @@ class UnifiedTLSSession:
         response_data: bytes,
         file_to_send: Optional[str] = None
     ) -> None:
-        """Run complete TLS session."""
         try:
             if self.use_tls:
+                logging.info("Starting TLS session")
                 self.server_port = NetworkPorts.HTTPS
                 
                 if not self.perform_handshake():
                     raise TLSSessionError("Handshake failed")
                 
-                self._handle_data_exchange(request_data, response_data, file_to_send)
+                # Check if there's a file to send
+                if file_to_send:
+                    if not Path(file_to_send).exists():
+                        logging.error(f"File not found: {file_to_send}")
+                    else:
+                        logging.info(f"Found file to send: {file_to_send}")
                 
+                self._handle_data_exchange(request_data, response_data, file_to_send)
             else:
+                logging.info("Starting unencrypted session")
                 self.server_port = NetworkPorts.HTTP
-                self._handle_data_exchange(request_data, response_data, file_to_send)
-                
+                self._handle_data_exchange(request_data, response_data, None)  # לא שולחים קבצים בתעבורה לא מוצפנת
         except Exception as e:
             raise TLSSessionError(f"Session failed: {e}")
 
@@ -140,9 +147,16 @@ class UnifiedTLSSession:
         file_to_send: Optional[str]
     ) -> None:
         """Handle data exchange based on session type"""
+        # נוסיף לוגים לבדיקת המצב
+        logging.info(f"Handshake completed: {self.state.handshake_completed}")
+        logging.info(f"Use client cert: {self.use_client_cert}")
+        logging.info(f"File to send: {file_to_send}")
+        
         if self.state.handshake_completed and self.use_client_cert:
+            logging.info("Using encrypted exchange")
             self._handle_encrypted_exchange(request_data, response_data, file_to_send)
         else:
+            logging.info("Using unencrypted exchange")
             self._handle_unencrypted_exchange(request_data, response_data)
 
     def _handle_encrypted_exchange(
@@ -164,7 +178,7 @@ class UnifiedTLSSession:
                 tls_context=self.tls_context, state=self.state
             )
             
-            # שליחת תגובת השרת
+            # Send server response
             logging.info("Sending encrypted response data")
             encrypt_and_send_application_data(
                 self, response_data, is_request=False,

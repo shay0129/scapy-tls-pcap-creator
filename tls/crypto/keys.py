@@ -15,7 +15,7 @@ from scapy.all import raw
 from tls.utils.crypto import encrypt_tls12_record_cbc
 from tls.session_state import SessionState
 from tls.constants import (
-    keys as keys_constants
+    keys as keys_constants, LoggingPaths
 )
 
 
@@ -177,19 +177,26 @@ def encrypt_and_send_application_data(
         logging.error(f"Error in encrypt_and_send_application_data: {e}")
         raise EncryptionError(f"Failed to encrypt and send data: {e}")
 
-def handle_ssl_key_log(self) -> None:
-    """Write SSL/TLS session keys to file for Wireshark decryption"""
+def handle_ssl_key_log(session) -> None:
+    """Write SSL/TLS session keys to Wireshark keylog file"""
     try:
-        # Reset the file
-        with open(self.pcap_writer.config.SSL_KEYLOG_FILE, "w") as f:
-            # Format must be exactly: CLIENT_RANDOM <client_random_hex> <master_secret_hex>
-            f.write(f"CLIENT_RANDOM {self.client_random.hex()} {self.master_secret.hex()}\n")
+        # Make sure directory exists
+        LoggingPaths.SSL_KEYLOG.parent.mkdir(parents=True, exist_ok=True)
+        
+        # Open in write mode to clear previous content
+        with open(LoggingPaths.SSL_KEYLOG, "w") as f:
+            client_random_hex = session.client_random.hex()
+            master_secret_hex = session.master_secret.hex()
+            # Format: CLIENT_RANDOM <client_random_hex> <master_secret_hex>
+            f.write(f"CLIENT_RANDOM {client_random_hex} {master_secret_hex}\n")
             
-        logging.info(f"SSL keys logged to {self.pcap_writer.config.SSL_KEYLOG_FILE}")
-        logging.debug(f"Wrote master secret: {self.master_secret.hex()}")
+        logging.info(f"SSL keys logged to {LoggingPaths.SSL_KEYLOG}")
+        logging.debug(f"Client random: {client_random_hex}")
+        logging.debug(f"Master secret: {master_secret_hex}")
         
     except Exception as e:
         logging.error(f"Failed to write SSL keylog: {e}")
+        raise KeyLoggingError(f"Failed to write to keylog file: {e}")
 
 def verify_key_lengths(
     key_block: KeyBlock,

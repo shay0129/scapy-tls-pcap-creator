@@ -144,49 +144,40 @@ def send_client_hello(session) -> bytes:
     except Exception as e:
         raise ClientHelloError(f"Failed to send Client Hello: {e}")
 
-def prepare_client_certificate(session) -> Optional[TLSCertificate]:
+def prepare_client_certificate(session) -> TLSCertificate:
     """
-    Prepare client certificate if required.
+    Prepare client certificate - empty or with actual certificate.
     
     Args:
         session: TLS session instance
         
     Returns:
-        Optional[TLSCertificate]: Certificate message or None
+        TLSCertificate: Certificate message (empty or with cert)
     """
-    if not session.use_client_cert:
-        return None
-        
     try:
-        client_cert_path = CERTS_DIR / "client.crt"
-        cert = load_cert(client_cert_path)
-        cert_der = cert.public_bytes(serialization.Encoding.DER)
-        return TLSCertificate(certs=[(len(cert_der), cert_der)])
-        
+        if session.use_client_cert:
+            # שליחת תעודת לקוח אמיתית
+            client_cert_path = CERTS_DIR / "client.crt"
+            cert = load_cert(client_cert_path)
+            cert_der = cert.public_bytes(serialization.Encoding.DER)
+            return TLSCertificate(certs=[(len(cert_der), cert_der)])
+        else:
+            # שליחת תעודה ריקה
+            logging.info("Sending empty certificate")
+            return TLSCertificate(certs=[])
+            
     except Exception as e:
         raise KeyExchangeError(f"Failed to prepare client certificate: {e}")
 
 def send_client_key_exchange(session) -> bytes:
-    """
-    Handle client key exchange during TLS handshake.
-    
-    Args:
-        session: TLS session instance
-        
-    Returns:
-        bytes: Raw packet data
-        
-    Raises:
-        KeyExchangeError: If key exchange fails
-    """
+    """Handle client key exchange during TLS handshake."""
     try:
-        # Prepare certificate if required
+        # תמיד שלח תעודה (ריקה או מלאה)
         client_certificate = prepare_client_certificate(session)
-        if client_certificate:
-            session.handshake_messages.append(raw(client_certificate))
-            logging.info("Client certificate prepared")
+        session.handshake_messages.append(raw(client_certificate))
+        logging.info("Client certificate prepared")
 
-        # Generate and encrypt pre-master secret
+        # המשך הקוד כרגיל...
         session.pre_master_secret = generate_pre_master_secret()
         session.encrypted_pre_master_secret = encrypt_pre_master_secret(
             session.pre_master_secret,
@@ -196,10 +187,7 @@ def send_client_key_exchange(session) -> bytes:
         if not isinstance(session.encrypted_pre_master_secret, bytes):
             session.encrypted_pre_master_secret = bytes(session.encrypted_pre_master_secret)
 
-        logging.info(
-            f"Encrypted pre_master_secret length: "
-            f"{len(session.encrypted_pre_master_secret)}"
-        )
+        logging.info(f"Encrypted pre_master_secret length: {len(session.encrypted_pre_master_secret)}")
 
         # Create key exchange message
         length_bytes = len(session.encrypted_pre_master_secret).to_bytes(2, 'big')
@@ -207,19 +195,13 @@ def send_client_key_exchange(session) -> bytes:
             exchkeys=length_bytes + session.encrypted_pre_master_secret
         )
 
-        # Send messages
-        if client_certificate:
-            session.send_to_server(client_certificate)
-            logging.info("Client certificate sent")
-
+        # תמיד שלח קודם את התעודה
+        session.send_to_server(client_certificate)
         session.send_to_server(client_key_exchange)
         session.handshake_messages.append(raw(client_key_exchange))
 
         # Update TLS context
-        session.tls_context.msg = (
-            [client_certificate, client_key_exchange]
-            if client_certificate else [client_key_exchange]
-        )
+        session.tls_context.msg = [client_certificate, client_key_exchange]
 
         return session.send_tls_packet(
             session.client_ip,
