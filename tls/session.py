@@ -79,6 +79,7 @@ class UnifiedTLSSession:
         self.use_client_cert = use_client_cert
         self.tls_context = TLS(version=TLSVersion.TLS_1_2)
         self.SNI = GeneralConfig.DEFAULT_SNI
+        # Initialize PRF for TLS 1.2
         self.prf = PRF(hash_name='SHA256', tls_version=TLSVersion.TLS_1_2)
 
     def _setup_certificates(self) -> None:
@@ -164,7 +165,7 @@ class UnifiedTLSSession:
     ) -> None:
         """Handle encrypted data exchange"""
         try:
-            # שליחת בקשת הלקוח
+            # Send client request
             logging.info("Sending encrypted request data")
             encrypt_and_send_application_data(
                 self, request_data, is_request=True,
@@ -186,7 +187,7 @@ class UnifiedTLSSession:
                 tls_context=self.tls_context, state=self.state
             )
             
-            # שליחת הקובץ
+            # Send file if available
             if file_to_send:
                 logging.info(f"Attempting to send file: {file_to_send}")
                 self._send_file(file_to_send)

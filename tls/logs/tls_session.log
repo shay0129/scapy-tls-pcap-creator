@@ -847,3 +847,1101 @@ MAsGA1UECgwESVJHQzEWMBQGA1UECwwNQ3liZXJzZW
 2024-12-31 15:16:56,248 - INFO - [pcap_writer.py:427] - Verification complete: 15 valid packets, 15 TLS records
 2024-12-31 15:16:56,248 - INFO - [main.py:106] - Results saved to C:\my-CTF\pcap_creator\tls\output\capture.pcap
 2024-12-31 15:16:56,248 - INFO - [main.py:160] - TLS session simulation completed successfully
+2024-12-31 20:58:08,695 - INFO - [logging.py:83] - Logging configured successfully
+2024-12-31 20:58:08,697 - INFO - [logging.py:90] - === Logging Configuration ===
+2024-12-31 20:58:08,697 - INFO - [logging.py:91] - Log file: C:\my-CTF\pcap_creator\tls\logs\tls_session.log
+2024-12-31 20:58:08,698 - INFO - [logging.py:92] - Log level: 20
+2024-12-31 20:58:08,699 - INFO - [logging.py:93] - Timestamp: 2024-12-31T20:58:08.699003
+2024-12-31 20:58:08,700 - INFO - [logging.py:94] - ==========================
+2024-12-31 20:58:08,700 - INFO - [main.py:122] - Starting TLS session simulation
+2024-12-31 20:58:08,702 - INFO - [main.py:87] - 
+--- Client Session (certificate) ---
+2024-12-31 20:58:08,707 - INFO - [cert.py:107] - Loading certificate from: C:\my-CTF\pcap_creator\tls\certificates\certs\ca.crt
+2024-12-31 20:58:08,709 - INFO - [cert.py:108] - File exists: True
+2024-12-31 20:58:08,710 - INFO - [cert.py:109] - File size: 1912 bytes
+2024-12-31 20:58:08,712 - INFO - [cert.py:113] - Read 1912 bytes
+2024-12-31 20:58:08,713 - INFO - [cert.py:117] - First 100 bytes: b'\n-----BEGIN CERTIFICATE-----\nMIIFVjCCAz4CCQDZlfjV/jlm3jANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ\nUjEPMA'
+2024-12-31 20:58:08,714 - INFO - [cert.py:120] - File content as text: 
+-----BEGIN CERTIFICATE-----
+MIIFVjCCAz4CCQDZlfjV/jlm3jANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ
+UjEPMA0GA1UECAwGVGVocmFuMQ8wDQYDVQQHDAZUZWhyYW4xDTALBgNVBAoMBElS
+R0MxFjAUBgNVBAsMDUN5YmVyc2VjdXJpdHkxFTATB
+2024-12-31 20:58:08,731 - INFO - [cert.py:130] - Successfully loaded as PEM
+2024-12-31 20:58:08,733 - INFO - [cert.py:107] - Loading certificate from: C:\my-CTF\pcap_creator\tls\certificates\certs\server.crt
+2024-12-31 20:58:08,735 - INFO - [cert.py:108] - File exists: True
+2024-12-31 20:58:08,736 - INFO - [cert.py:109] - File size: 1643 bytes
+2024-12-31 20:58:08,739 - INFO - [cert.py:113] - Read 1643 bytes
+2024-12-31 20:58:08,740 - INFO - [cert.py:117] - First 100 bytes: b'-----BEGIN CERTIFICATE-----\nMIIEjzCCAncCFCTAuN/v92YqzLPMORcinlGx86nWMA0GCSqGSIb3DQEBCwUAMG0x\nCzAJBgN'
+2024-12-31 20:58:08,744 - INFO - [cert.py:120] - File content as text: -----BEGIN CERTIFICATE-----
+MIIEjzCCAncCFCTAuN/v92YqzLPMORcinlGx86nWMA0GCSqGSIb3DQEBCwUAMG0x
+CzAJBgNVBAYTAklSMQ8wDQYDVQQIDAZUZWhyYW4xDzANBgNVBAcMBlRlaHJhbjEN
+MAsGA1UECgwESVJHQzEWMBQGA1UECwwNQ3liZXJzZW
+2024-12-31 20:58:08,748 - INFO - [cert.py:130] - Successfully loaded as PEM
+2024-12-31 20:58:08,843 - INFO - [cert.py:213] - Successfully loaded private key from C:\my-CTF\pcap_creator\tls\certificates\certs\server.key
+2024-12-31 20:58:08,844 - INFO - [cert.py:214] - Key type: RSAPrivateKey
+2024-12-31 20:58:08,845 - INFO - [cert.py:215] - Key size: 2048 bits
+2024-12-31 20:58:08,845 - INFO - [cert.py:217] - Public exponent: 65537
+2024-12-31 20:58:08,848 - INFO - [cert.py:246] - Certificate and keys loaded and validated successfully
+2024-12-31 20:58:08,848 - INFO - [verify.py:58] - Public key comparison results:
+2024-12-31 20:58:08,848 - INFO - [verify.py:59] - Certificate modulus (n): 0xdb8d24fa298358ec6a55b74c127eddafe1c5d51db0bdae576735f6d21cbde938dc691a0cacb39c0a97ff3d00f544fe971cd81924a9a4cd0a316ae79d57608f6353826f9e12203f1f41fbcaa0a6d3c4d373d4191da7495b71d2d22a087eae48f216e87d87a3554bb0c63fea8902ca6c16fe7b0646f68cfbdcff200463728f68fefd7e865776b59decc6608448145cef528db2e24f71aa507c08c27220e079d67f3ae0c73fb999d06b5c55672252b75686b3a4aef0513e7899425f8de018a54c680b50331fdf84d68f2f1d38d326558b0086e186067f7bc885ed64f4229ff96890c9977cb34f5ba64f487469ce438abacafc250cc667fd530fe1a940a21265bbef
+2024-12-31 20:58:08,849 - INFO - [verify.py:60] - Loaded key modulus (n): 0xdb8d24fa298358ec6a55b74c127eddafe1c5d51db0bdae576735f6d21cbde938dc691a0cacb39c0a97ff3d00f544fe971cd81924a9a4cd0a316ae79d57608f6353826f9e12203f1f41fbcaa0a6d3c4d373d4191da7495b71d2d22a087eae48f216e87d87a3554bb0c63fea8902ca6c16fe7b0646f68cfbdcff200463728f68fefd7e865776b59decc6608448145cef528db2e24f71aa507c08c27220e079d67f3ae0c73fb999d06b5c55672252b75686b3a4aef0513e7899425f8de018a54c680b50331fdf84d68f2f1d38d326558b0086e186067f7bc885ed64f4229ff96890c9977cb34f5ba64f487469ce438abacafc250cc667fd530fe1a940a21265bbef
+2024-12-31 20:58:08,850 - INFO - [verify.py:61] - Certificate exponent (e): 0x10001
+2024-12-31 20:58:08,851 - INFO - [verify.py:62] - Loaded key exponent (e): 0x10001
+2024-12-31 20:58:08,866 - INFO - [verify.py:136] - Certificate chain verification successful
+2024-12-31 20:58:08,867 - INFO - [verify.py:188] - Server name 'Pasdaran.local' verified successfully.
+2024-12-31 20:58:08,868 - INFO - [chain.py:109] - Certificate chain verification passed
+2024-12-31 20:58:08,869 - INFO - [chain.py:116] - Certificate chain loaded successfully
+2024-12-31 20:58:08,869 - INFO - [chain.py:117] - Server cert subject: <Name(C=IR,ST=Tehran,L=Tehran,O=Pasdaran,OU=Cybersecurity,CN=Pasdaran.local,1.2.840.113549.1.9.1=server-ctf@example.com)>
+2024-12-31 20:58:08,870 - INFO - [chain.py:118] - Server public key modulus (n): 27715789706063429807557606224995599859500290360318746177887351772584930700767922060265236908225326034069499061360415721333197892250480074686217368392578391301159860963548062819987980192117154285346649743193735554410844424979329819561349555165843655319142309437602325619944960532107668642823205088719004451766785584250375602116664746909990082155815187624898337966421103740799583791159146718040738723787975829478664380188405278530204082653290083478390920045586534051947651758952646967903767271859712523843899436041916810100575135597588004406500203895849926956188138294164569460185397378003955721604444173706240738049007
+2024-12-31 20:58:08,872 - INFO - [chain.py:122] - CA cert subject: <Name(C=IR,ST=Tehran,L=Tehran,O=IRGC,OU=Cybersecurity,CN=IRGC Root CA)>
+2024-12-31 20:58:08,873 - INFO - [session.py:119] - Starting TLS session
+2024-12-31 20:58:08,875 - INFO - [client.py:95] - Generated client_random: 67743ec0159f5ead8df30427bf8866c897db22b14ba584268293c2a2d369adc9
+2024-12-31 20:58:08,885 - INFO - [client.py:135] - Client Hello sent from 192.168.1.1
+2024-12-31 20:58:08,890 - INFO - [server.py:93] - Generated server_random: 67743ec04fa9b3768a7581c1ee2cecc87770db1e40d63acc6748d2735581a15b
+2024-12-31 20:58:08,902 - INFO - [cert.py:107] - Loading certificate from: C:\my-CTF\pcap_creator\tls\certificates\certs\client.crt
+2024-12-31 20:58:08,904 - INFO - [cert.py:108] - File exists: True
+2024-12-31 20:58:08,905 - INFO - [cert.py:109] - File size: 1915 bytes
+2024-12-31 20:58:08,907 - INFO - [cert.py:113] - Read 1915 bytes
+2024-12-31 20:58:08,909 - INFO - [cert.py:117] - First 100 bytes: b'-----BEGIN CERTIFICATE-----\nMIIFWjCCA0ICCQDOoMV5YsO5TDANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ\nUjEPMA0'
+2024-12-31 20:58:08,911 - INFO - [cert.py:120] - File content as text: -----BEGIN CERTIFICATE-----
+MIIFWjCCA0ICCQDOoMV5YsO5TDANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ
+UjEPMA0GA1UECAwGVGVocmFuMQ8wDQYDVQQHDAZUZWhyYW4xDTALBgNVBAoMBElS
+R0MxFjAUBgNVBAsMDUN5YmVyc2VjdXJpdHkxFTATBg
+2024-12-31 20:58:08,914 - INFO - [cert.py:130] - Successfully loaded as PEM
+2024-12-31 20:58:08,916 - INFO - [client.py:169] - Prepared client certificate
+2024-12-31 20:58:08,917 - INFO - [client.py:184] - Encrypted pre_master_secret length: 256
+2024-12-31 20:58:08,923 - INFO - [chain.py:182] - Decrypted pre_master_secret: 0303be543e1c8522dee1b02c21bbc733746c89b0def843e78684e02e35c08105685962801f811697daa194cd88196e9d
+2024-12-31 20:58:08,925 - INFO - [chain.py:193] - Generated master secret: c456471a7b6c64b3f4cffda8a14e2e99929cf344b315bd19554f63defddb29eae191a90f374f435259696ccf38ad20d1
+2024-12-31 20:58:08,929 - INFO - [client.py:345] - Client ChangeCipherSpec and Finished messages sent
+2024-12-31 20:58:08,933 - INFO - [server.py:254] - Pre-master secret validated successfully
+2024-12-31 20:58:08,936 - INFO - [server.py:272] - Generated digital signature: 54a32a8b92f97eedf953ed211e4467504ec171a9cd80c6aa0b15cb3a28ca91d523255692f72150ebee61fe789b7e0c61b9fea1acb6f93c747b9d82d2d9bf71dd11ae32db1d7c0a984186ecdf493ecb6b593b9388a28114d8966b4100a842965ce51447aee0e215ef464324cb0c16d0ebd66d72aa3f75b3b75686845260e9cf2292dc30993cc94a3b48ef886d04e1da12edb85b76386dbc55908a87761e0b104d3377abadf5ceb64249885d7cf3b8824065c480a63e683fe60fbe5b85b9f7175341caa3967713d1df5ba3dab05db1c7cfd1a3fcf7d79359b1aba76d2235b669518f0fad139679f30ea073b5e6a5284764f1869a50e835a3a344a89f9a5bf9edf7
+2024-12-31 20:58:08,939 - INFO - [server.py:309] - Server ChangeCipherSpec and Finished messages sent
+2024-12-31 20:58:08,950 - INFO - [keys.py:206] - SSL keys logged to C:\my-CTF\pcap_creator\tls\logs\ssl_key_log.log
+2024-12-31 20:58:08,951 - INFO - [session.py:103] - TLS Handshake completed successfully
+2024-12-31 20:58:08,953 - INFO - [session.py:130] - Found file to send: C:\my-CTF\pcap_creator\tls\documents\ctf_challenge.gif
+2024-12-31 20:58:08,955 - INFO - [session.py:148] - Handshake completed: True
+2024-12-31 20:58:08,957 - INFO - [session.py:149] - Use client cert: True
+2024-12-31 20:58:08,958 - INFO - [session.py:150] - File to send: C:\my-CTF\pcap_creator\tls\documents\ctf_challenge.gif
+2024-12-31 20:58:08,960 - INFO - [session.py:153] - Using encrypted exchange
+2024-12-31 20:58:08,962 - INFO - [session.py:168] - Sending encrypted request data
+2024-12-31 20:58:08,966 - ERROR - [keys.py:190] - Error in encrypt_and_send_application_data: name 'explicit_iv' is not defined
+2024-12-31 20:58:08,969 - ERROR - [session.py:196] - Encrypted exchange failed: Failed to encrypt and send data: name 'explicit_iv' is not defined
+2024-12-31 20:58:08,973 - ERROR - [main.py:27] - Session error: Session failed for 192.168.1.1: Session failed: Encrypted exchange failed: Failed to encrypt and send data: name 'explicit_iv' is not defined
+2024-12-31 20:58:14,111 - INFO - [logging.py:83] - Logging configured successfully
+2024-12-31 20:58:14,111 - INFO - [logging.py:90] - === Logging Configuration ===
+2024-12-31 20:58:14,112 - INFO - [logging.py:91] - Log file: C:\my-CTF\pcap_creator\tls\logs\tls_session.log
+2024-12-31 20:58:14,112 - INFO - [logging.py:92] - Log level: 20
+2024-12-31 20:58:14,113 - INFO - [logging.py:93] - Timestamp: 2024-12-31T20:58:14.113160
+2024-12-31 20:58:14,113 - INFO - [logging.py:94] - ==========================
+2024-12-31 20:58:14,113 - INFO - [main.py:122] - Starting TLS session simulation
+2024-12-31 20:58:14,114 - INFO - [main.py:87] - 
+--- Client Session (certificate) ---
+2024-12-31 20:58:14,114 - INFO - [cert.py:107] - Loading certificate from: C:\my-CTF\pcap_creator\tls\certificates\certs\ca.crt
+2024-12-31 20:58:14,115 - INFO - [cert.py:108] - File exists: True
+2024-12-31 20:58:14,115 - INFO - [cert.py:109] - File size: 1912 bytes
+2024-12-31 20:58:14,115 - INFO - [cert.py:113] - Read 1912 bytes
+2024-12-31 20:58:14,116 - INFO - [cert.py:117] - First 100 bytes: b'\n-----BEGIN CERTIFICATE-----\nMIIFVjCCAz4CCQDZlfjV/jlm3jANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ\nUjEPMA'
+2024-12-31 20:58:14,116 - INFO - [cert.py:120] - File content as text: 
+-----BEGIN CERTIFICATE-----
+MIIFVjCCAz4CCQDZlfjV/jlm3jANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ
+UjEPMA0GA1UECAwGVGVocmFuMQ8wDQYDVQQHDAZUZWhyYW4xDTALBgNVBAoMBElS
+R0MxFjAUBgNVBAsMDUN5YmVyc2VjdXJpdHkxFTATB
+2024-12-31 20:58:14,117 - INFO - [cert.py:130] - Successfully loaded as PEM
+2024-12-31 20:58:14,118 - INFO - [cert.py:107] - Loading certificate from: C:\my-CTF\pcap_creator\tls\certificates\certs\server.crt
+2024-12-31 20:58:14,119 - INFO - [cert.py:108] - File exists: True
+2024-12-31 20:58:14,119 - INFO - [cert.py:109] - File size: 1643 bytes
+2024-12-31 20:58:14,120 - INFO - [cert.py:113] - Read 1643 bytes
+2024-12-31 20:58:14,120 - INFO - [cert.py:117] - First 100 bytes: b'-----BEGIN CERTIFICATE-----\nMIIEjzCCAncCFCTAuN/v92YqzLPMORcinlGx86nWMA0GCSqGSIb3DQEBCwUAMG0x\nCzAJBgN'
+2024-12-31 20:58:14,121 - INFO - [cert.py:120] - File content as text: -----BEGIN CERTIFICATE-----
+MIIEjzCCAncCFCTAuN/v92YqzLPMORcinlGx86nWMA0GCSqGSIb3DQEBCwUAMG0x
+CzAJBgNVBAYTAklSMQ8wDQYDVQQIDAZUZWhyYW4xDzANBgNVBAcMBlRlaHJhbjEN
+MAsGA1UECgwESVJHQzEWMBQGA1UECwwNQ3liZXJzZW
+2024-12-31 20:58:14,122 - INFO - [cert.py:130] - Successfully loaded as PEM
+2024-12-31 20:58:14,153 - INFO - [cert.py:213] - Successfully loaded private key from C:\my-CTF\pcap_creator\tls\certificates\certs\server.key
+2024-12-31 20:58:14,154 - INFO - [cert.py:214] - Key type: RSAPrivateKey
+2024-12-31 20:58:14,154 - INFO - [cert.py:215] - Key size: 2048 bits
+2024-12-31 20:58:14,154 - INFO - [cert.py:217] - Public exponent: 65537
+2024-12-31 20:58:14,157 - INFO - [cert.py:246] - Certificate and keys loaded and validated successfully
+2024-12-31 20:58:14,158 - INFO - [verify.py:58] - Public key comparison results:
+2024-12-31 20:58:14,158 - INFO - [verify.py:59] - Certificate modulus (n): 0xdb8d24fa298358ec6a55b74c127eddafe1c5d51db0bdae576735f6d21cbde938dc691a0cacb39c0a97ff3d00f544fe971cd81924a9a4cd0a316ae79d57608f6353826f9e12203f1f41fbcaa0a6d3c4d373d4191da7495b71d2d22a087eae48f216e87d87a3554bb0c63fea8902ca6c16fe7b0646f68cfbdcff200463728f68fefd7e865776b59decc6608448145cef528db2e24f71aa507c08c27220e079d67f3ae0c73fb999d06b5c55672252b75686b3a4aef0513e7899425f8de018a54c680b50331fdf84d68f2f1d38d326558b0086e186067f7bc885ed64f4229ff96890c9977cb34f5ba64f487469ce438abacafc250cc667fd530fe1a940a21265bbef
+2024-12-31 20:58:14,160 - INFO - [verify.py:60] - Loaded key modulus (n): 0xdb8d24fa298358ec6a55b74c127eddafe1c5d51db0bdae576735f6d21cbde938dc691a0cacb39c0a97ff3d00f544fe971cd81924a9a4cd0a316ae79d57608f6353826f9e12203f1f41fbcaa0a6d3c4d373d4191da7495b71d2d22a087eae48f216e87d87a3554bb0c63fea8902ca6c16fe7b0646f68cfbdcff200463728f68fefd7e865776b59decc6608448145cef528db2e24f71aa507c08c27220e079d67f3ae0c73fb999d06b5c55672252b75686b3a4aef0513e7899425f8de018a54c680b50331fdf84d68f2f1d38d326558b0086e186067f7bc885ed64f4229ff96890c9977cb34f5ba64f487469ce438abacafc250cc667fd530fe1a940a21265bbef
+2024-12-31 20:58:14,161 - INFO - [verify.py:61] - Certificate exponent (e): 0x10001
+2024-12-31 20:58:14,161 - INFO - [verify.py:62] - Loaded key exponent (e): 0x10001
+2024-12-31 20:58:14,168 - INFO - [verify.py:136] - Certificate chain verification successful
+2024-12-31 20:58:14,168 - INFO - [verify.py:188] - Server name 'Pasdaran.local' verified successfully.
+2024-12-31 20:58:14,169 - INFO - [chain.py:109] - Certificate chain verification passed
+2024-12-31 20:58:14,169 - INFO - [chain.py:116] - Certificate chain loaded successfully
+2024-12-31 20:58:14,170 - INFO - [chain.py:117] - Server cert subject: <Name(C=IR,ST=Tehran,L=Tehran,O=Pasdaran,OU=Cybersecurity,CN=Pasdaran.local,1.2.840.113549.1.9.1=server-ctf@example.com)>
+2024-12-31 20:58:14,170 - INFO - [chain.py:118] - Server public key modulus (n): 27715789706063429807557606224995599859500290360318746177887351772584930700767922060265236908225326034069499061360415721333197892250480074686217368392578391301159860963548062819987980192117154285346649743193735554410844424979329819561349555165843655319142309437602325619944960532107668642823205088719004451766785584250375602116664746909990082155815187624898337966421103740799583791159146718040738723787975829478664380188405278530204082653290083478390920045586534051947651758952646967903767271859712523843899436041916810100575135597588004406500203895849926956188138294164569460185397378003955721604444173706240738049007
+2024-12-31 20:58:14,170 - INFO - [chain.py:122] - CA cert subject: <Name(C=IR,ST=Tehran,L=Tehran,O=IRGC,OU=Cybersecurity,CN=IRGC Root CA)>
+2024-12-31 20:58:14,171 - INFO - [session.py:119] - Starting TLS session
+2024-12-31 20:58:14,171 - INFO - [client.py:95] - Generated client_random: 67743ec6a90d8e4ae2a6ab497e09310ca7da40f84c3a3fe7671fba8789b19977
+2024-12-31 20:58:14,174 - INFO - [client.py:135] - Client Hello sent from 192.168.1.1
+2024-12-31 20:58:14,177 - INFO - [server.py:93] - Generated server_random: 67743ec6a2e1ecb5f55d9406caca0efdbf6e890676d9538d33fa3234db521db4
+2024-12-31 20:58:14,181 - INFO - [cert.py:107] - Loading certificate from: C:\my-CTF\pcap_creator\tls\certificates\certs\client.crt
+2024-12-31 20:58:14,182 - INFO - [cert.py:108] - File exists: True
+2024-12-31 20:58:14,182 - INFO - [cert.py:109] - File size: 1915 bytes
+2024-12-31 20:58:14,182 - INFO - [cert.py:113] - Read 1915 bytes
+2024-12-31 20:58:14,183 - INFO - [cert.py:117] - First 100 bytes: b'-----BEGIN CERTIFICATE-----\nMIIFWjCCA0ICCQDOoMV5YsO5TDANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ\nUjEPMA0'
+2024-12-31 20:58:14,183 - INFO - [cert.py:120] - File content as text: -----BEGIN CERTIFICATE-----
+MIIFWjCCA0ICCQDOoMV5YsO5TDANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ
+UjEPMA0GA1UECAwGVGVocmFuMQ8wDQYDVQQHDAZUZWhyYW4xDTALBgNVBAoMBElS
+R0MxFjAUBgNVBAsMDUN5YmVyc2VjdXJpdHkxFTATBg
+2024-12-31 20:58:14,184 - INFO - [cert.py:130] - Successfully loaded as PEM
+2024-12-31 20:58:14,184 - INFO - [client.py:169] - Prepared client certificate
+2024-12-31 20:58:14,185 - INFO - [client.py:184] - Encrypted pre_master_secret length: 256
+2024-12-31 20:58:14,187 - INFO - [chain.py:182] - Decrypted pre_master_secret: 0303685949552358b425b734a2e0ac7fe26ec8e801a545d56cb551f0a206e127174d84fa7248aa2be509e06128e2120b
+2024-12-31 20:58:14,187 - INFO - [chain.py:193] - Generated master secret: a56bb4e26edfc73cb9d4f68b4e331055121d15dc33d0ac20f04984101733a39923a95fe482420a7c2eeb59a2b788beed
+2024-12-31 20:58:14,188 - INFO - [client.py:345] - Client ChangeCipherSpec and Finished messages sent
+2024-12-31 20:58:14,190 - INFO - [server.py:254] - Pre-master secret validated successfully
+2024-12-31 20:58:14,192 - INFO - [server.py:272] - Generated digital signature: 304b8a6728b43fbb52b28e9548fc7c854030bacac23ae47376fdb2643aaa1531eecd1a4365dc31f91e68b12c7343ff743f11449ad6e407b56aa08bf28c10ac31995712498374ad4b0a2d2a840fe4cb76dce251e3dc717b2e6798a402588151aaf00385af2ad458c6c74c9eb69f349d3f7e1fdde210f328b3ec19000ec4fbdcc7f36eb766c9cc167509cdb176e06007058c63af050d71283a1d3ff1b0e58e5529b04884278d57fd315acfda3c84bb0b3c8f6fb4c316fd244ccac0abeadb1ce3550e80d4d8e074ae63e10f4d82e024801e9c2e0d18cf7445658765c02c550408d0f547269ff67836ab6db15dcdcc6e179c86f1ccca1ef2d786c042b531bd09c293
+2024-12-31 20:58:14,194 - INFO - [server.py:309] - Server ChangeCipherSpec and Finished messages sent
+2024-12-31 20:58:14,196 - INFO - [keys.py:206] - SSL keys logged to C:\my-CTF\pcap_creator\tls\logs\ssl_key_log.log
+2024-12-31 20:58:14,196 - INFO - [session.py:103] - TLS Handshake completed successfully
+2024-12-31 20:58:14,197 - INFO - [session.py:130] - Found file to send: C:\my-CTF\pcap_creator\tls\documents\ctf_challenge.gif
+2024-12-31 20:58:14,197 - INFO - [session.py:148] - Handshake completed: True
+2024-12-31 20:58:14,198 - INFO - [session.py:149] - Use client cert: True
+2024-12-31 20:58:14,198 - INFO - [session.py:150] - File to send: C:\my-CTF\pcap_creator\tls\documents\ctf_challenge.gif
+2024-12-31 20:58:14,198 - INFO - [session.py:153] - Using encrypted exchange
+2024-12-31 20:58:14,198 - INFO - [session.py:168] - Sending encrypted request data
+2024-12-31 20:58:14,199 - ERROR - [keys.py:190] - Error in encrypt_and_send_application_data: name 'explicit_iv' is not defined
+2024-12-31 20:58:14,199 - ERROR - [session.py:196] - Encrypted exchange failed: Failed to encrypt and send data: name 'explicit_iv' is not defined
+2024-12-31 20:58:14,200 - ERROR - [main.py:27] - Session error: Session failed for 192.168.1.1: Session failed: Encrypted exchange failed: Failed to encrypt and send data: name 'explicit_iv' is not defined
+2024-12-31 20:59:46,745 - INFO - [logging.py:83] - Logging configured successfully
+2024-12-31 20:59:46,746 - INFO - [logging.py:90] - === Logging Configuration ===
+2024-12-31 20:59:46,746 - INFO - [logging.py:91] - Log file: C:\my-CTF\pcap_creator\tls\logs\tls_session.log
+2024-12-31 20:59:46,747 - INFO - [logging.py:92] - Log level: 20
+2024-12-31 20:59:46,747 - INFO - [logging.py:93] - Timestamp: 2024-12-31T20:59:46.747416
+2024-12-31 20:59:46,747 - INFO - [logging.py:94] - ==========================
+2024-12-31 20:59:46,748 - INFO - [main.py:122] - Starting TLS session simulation
+2024-12-31 20:59:46,749 - INFO - [main.py:87] - 
+--- Client Session (certificate) ---
+2024-12-31 20:59:46,750 - INFO - [cert.py:107] - Loading certificate from: C:\my-CTF\pcap_creator\tls\certificates\certs\ca.crt
+2024-12-31 20:59:46,751 - INFO - [cert.py:108] - File exists: True
+2024-12-31 20:59:46,751 - INFO - [cert.py:109] - File size: 1912 bytes
+2024-12-31 20:59:46,752 - INFO - [cert.py:113] - Read 1912 bytes
+2024-12-31 20:59:46,752 - INFO - [cert.py:117] - First 100 bytes: b'\n-----BEGIN CERTIFICATE-----\nMIIFVjCCAz4CCQDZlfjV/jlm3jANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ\nUjEPMA'
+2024-12-31 20:59:46,754 - INFO - [cert.py:120] - File content as text: 
+-----BEGIN CERTIFICATE-----
+MIIFVjCCAz4CCQDZlfjV/jlm3jANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ
+UjEPMA0GA1UECAwGVGVocmFuMQ8wDQYDVQQHDAZUZWhyYW4xDTALBgNVBAoMBElS
+R0MxFjAUBgNVBAsMDUN5YmVyc2VjdXJpdHkxFTATB
+2024-12-31 20:59:46,755 - INFO - [cert.py:130] - Successfully loaded as PEM
+2024-12-31 20:59:46,755 - INFO - [cert.py:107] - Loading certificate from: C:\my-CTF\pcap_creator\tls\certificates\certs\server.crt
+2024-12-31 20:59:46,756 - INFO - [cert.py:108] - File exists: True
+2024-12-31 20:59:46,756 - INFO - [cert.py:109] - File size: 1643 bytes
+2024-12-31 20:59:46,757 - INFO - [cert.py:113] - Read 1643 bytes
+2024-12-31 20:59:46,757 - INFO - [cert.py:117] - First 100 bytes: b'-----BEGIN CERTIFICATE-----\nMIIEjzCCAncCFCTAuN/v92YqzLPMORcinlGx86nWMA0GCSqGSIb3DQEBCwUAMG0x\nCzAJBgN'
+2024-12-31 20:59:46,758 - INFO - [cert.py:120] - File content as text: -----BEGIN CERTIFICATE-----
+MIIEjzCCAncCFCTAuN/v92YqzLPMORcinlGx86nWMA0GCSqGSIb3DQEBCwUAMG0x
+CzAJBgNVBAYTAklSMQ8wDQYDVQQIDAZUZWhyYW4xDzANBgNVBAcMBlRlaHJhbjEN
+MAsGA1UECgwESVJHQzEWMBQGA1UECwwNQ3liZXJzZW
+2024-12-31 20:59:46,759 - INFO - [cert.py:130] - Successfully loaded as PEM
+2024-12-31 20:59:46,790 - INFO - [cert.py:213] - Successfully loaded private key from C:\my-CTF\pcap_creator\tls\certificates\certs\server.key
+2024-12-31 20:59:46,792 - INFO - [cert.py:214] - Key type: RSAPrivateKey
+2024-12-31 20:59:46,792 - INFO - [cert.py:215] - Key size: 2048 bits
+2024-12-31 20:59:46,792 - INFO - [cert.py:217] - Public exponent: 65537
+2024-12-31 20:59:46,795 - INFO - [cert.py:246] - Certificate and keys loaded and validated successfully
+2024-12-31 20:59:46,795 - INFO - [verify.py:58] - Public key comparison results:
+2024-12-31 20:59:46,796 - INFO - [verify.py:59] - Certificate modulus (n): 0xdb8d24fa298358ec6a55b74c127eddafe1c5d51db0bdae576735f6d21cbde938dc691a0cacb39c0a97ff3d00f544fe971cd81924a9a4cd0a316ae79d57608f6353826f9e12203f1f41fbcaa0a6d3c4d373d4191da7495b71d2d22a087eae48f216e87d87a3554bb0c63fea8902ca6c16fe7b0646f68cfbdcff200463728f68fefd7e865776b59decc6608448145cef528db2e24f71aa507c08c27220e079d67f3ae0c73fb999d06b5c55672252b75686b3a4aef0513e7899425f8de018a54c680b50331fdf84d68f2f1d38d326558b0086e186067f7bc885ed64f4229ff96890c9977cb34f5ba64f487469ce438abacafc250cc667fd530fe1a940a21265bbef
+2024-12-31 20:59:46,797 - INFO - [verify.py:60] - Loaded key modulus (n): 0xdb8d24fa298358ec6a55b74c127eddafe1c5d51db0bdae576735f6d21cbde938dc691a0cacb39c0a97ff3d00f544fe971cd81924a9a4cd0a316ae79d57608f6353826f9e12203f1f41fbcaa0a6d3c4d373d4191da7495b71d2d22a087eae48f216e87d87a3554bb0c63fea8902ca6c16fe7b0646f68cfbdcff200463728f68fefd7e865776b59decc6608448145cef528db2e24f71aa507c08c27220e079d67f3ae0c73fb999d06b5c55672252b75686b3a4aef0513e7899425f8de018a54c680b50331fdf84d68f2f1d38d326558b0086e186067f7bc885ed64f4229ff96890c9977cb34f5ba64f487469ce438abacafc250cc667fd530fe1a940a21265bbef
+2024-12-31 20:59:46,798 - INFO - [verify.py:61] - Certificate exponent (e): 0x10001
+2024-12-31 20:59:46,798 - INFO - [verify.py:62] - Loaded key exponent (e): 0x10001
+2024-12-31 20:59:46,801 - INFO - [verify.py:136] - Certificate chain verification successful
+2024-12-31 20:59:46,802 - INFO - [verify.py:188] - Server name 'Pasdaran.local' verified successfully.
+2024-12-31 20:59:46,802 - INFO - [chain.py:109] - Certificate chain verification passed
+2024-12-31 20:59:46,803 - INFO - [chain.py:116] - Certificate chain loaded successfully
+2024-12-31 20:59:46,803 - INFO - [chain.py:117] - Server cert subject: <Name(C=IR,ST=Tehran,L=Tehran,O=Pasdaran,OU=Cybersecurity,CN=Pasdaran.local,1.2.840.113549.1.9.1=server-ctf@example.com)>
+2024-12-31 20:59:46,804 - INFO - [chain.py:118] - Server public key modulus (n): 27715789706063429807557606224995599859500290360318746177887351772584930700767922060265236908225326034069499061360415721333197892250480074686217368392578391301159860963548062819987980192117154285346649743193735554410844424979329819561349555165843655319142309437602325619944960532107668642823205088719004451766785584250375602116664746909990082155815187624898337966421103740799583791159146718040738723787975829478664380188405278530204082653290083478390920045586534051947651758952646967903767271859712523843899436041916810100575135597588004406500203895849926956188138294164569460185397378003955721604444173706240738049007
+2024-12-31 20:59:46,805 - INFO - [chain.py:122] - CA cert subject: <Name(C=IR,ST=Tehran,L=Tehran,O=IRGC,OU=Cybersecurity,CN=IRGC Root CA)>
+2024-12-31 20:59:46,806 - INFO - [session.py:119] - Starting TLS session
+2024-12-31 20:59:46,806 - INFO - [client.py:95] - Generated client_random: 67743f22ca9eba6f88d19e4ac3a9dcf7beded0e6da2c6065a0383199c190eb82
+2024-12-31 20:59:46,811 - INFO - [client.py:135] - Client Hello sent from 192.168.1.1
+2024-12-31 20:59:46,815 - INFO - [server.py:93] - Generated server_random: 67743f22b2c893a905b8571a15b74bd46ab88dcb8df9c508404ac35da9c02661
+2024-12-31 20:59:46,819 - INFO - [cert.py:107] - Loading certificate from: C:\my-CTF\pcap_creator\tls\certificates\certs\client.crt
+2024-12-31 20:59:46,820 - INFO - [cert.py:108] - File exists: True
+2024-12-31 20:59:46,820 - INFO - [cert.py:109] - File size: 1915 bytes
+2024-12-31 20:59:46,821 - INFO - [cert.py:113] - Read 1915 bytes
+2024-12-31 20:59:46,821 - INFO - [cert.py:117] - First 100 bytes: b'-----BEGIN CERTIFICATE-----\nMIIFWjCCA0ICCQDOoMV5YsO5TDANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ\nUjEPMA0'
+2024-12-31 20:59:46,822 - INFO - [cert.py:120] - File content as text: -----BEGIN CERTIFICATE-----
+MIIFWjCCA0ICCQDOoMV5YsO5TDANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ
+UjEPMA0GA1UECAwGVGVocmFuMQ8wDQYDVQQHDAZUZWhyYW4xDTALBgNVBAoMBElS
+R0MxFjAUBgNVBAsMDUN5YmVyc2VjdXJpdHkxFTATBg
+2024-12-31 20:59:46,824 - INFO - [cert.py:130] - Successfully loaded as PEM
+2024-12-31 20:59:46,824 - INFO - [client.py:169] - Prepared client certificate
+2024-12-31 20:59:46,825 - INFO - [client.py:184] - Encrypted pre_master_secret length: 256
+2024-12-31 20:59:46,832 - INFO - [chain.py:182] - Decrypted pre_master_secret: 03038b025e4b288179635c2ca158f240632dbd1980c40a8ad0b94cdba0fa462fb3c9e6919c9a8b6efe436b22f78384ce
+2024-12-31 20:59:46,833 - INFO - [chain.py:193] - Generated master secret: ff6863353add7758e3dcd72490f356b87bf91d5076a486b5ceac64e260472bba51a756eb83f97e7a6f3a174046a5823d
+2024-12-31 20:59:46,834 - INFO - [client.py:345] - Client ChangeCipherSpec and Finished messages sent
+2024-12-31 20:59:46,837 - INFO - [server.py:254] - Pre-master secret validated successfully
+2024-12-31 20:59:46,839 - INFO - [server.py:272] - Generated digital signature: 401e18d3897eb6f1acfa39f45edb0cf506616db7458579e8766c64b1751412271d91dc97d3b1ddc3e37a74f33f51e8783cf18487095b1a665685ffd848d76b0d25d1732cf7b0ef94cce36e1a34fff34f2b789392c9017cdc805b6d49b6dc83220688a976d77928f1cc221e33cbd84c2c3cd788aaf5a93e093f8cb7a8b5a8cd96fbfa73d6ca3b5e2e5bb592473cf159fe3e0c03e2a59a29ae3b9a23780b0f46fbd73c779232f057044d82d83488daea4080ae81799b71133228ff52582ac84b294b84a5e339abdfcd7166f569b2ab30dccd3e045fd189f05fe74cdf947942fd311e965a843029cf3c5843ab956ae45665148e281f4b6ad4784676f4d6872955cb
+2024-12-31 20:59:46,845 - INFO - [server.py:309] - Server ChangeCipherSpec and Finished messages sent
+2024-12-31 20:59:46,876 - INFO - [keys.py:198] - SSL keys logged to C:\my-CTF\pcap_creator\tls\logs\ssl_key_log.log
+2024-12-31 20:59:46,877 - INFO - [session.py:103] - TLS Handshake completed successfully
+2024-12-31 20:59:46,878 - INFO - [session.py:130] - Found file to send: C:\my-CTF\pcap_creator\tls\documents\ctf_challenge.gif
+2024-12-31 20:59:46,880 - INFO - [session.py:148] - Handshake completed: True
+2024-12-31 20:59:46,881 - INFO - [session.py:149] - Use client cert: True
+2024-12-31 20:59:46,885 - INFO - [session.py:150] - File to send: C:\my-CTF\pcap_creator\tls\documents\ctf_challenge.gif
+2024-12-31 20:59:46,886 - INFO - [session.py:153] - Using encrypted exchange
+2024-12-31 20:59:46,889 - INFO - [session.py:168] - Sending encrypted request data
+2024-12-31 20:59:46,914 - INFO - [keys.py:178] - TLS Application Data sent from 192.168.1.1:12345 to 10.0.0.1:443
+2024-12-31 20:59:46,922 - INFO - [session.py:179] - Sending encrypted response data
+2024-12-31 20:59:46,946 - INFO - [keys.py:178] - TLS Application Data sent from 10.0.0.1:443 to 192.168.1.1:12345
+2024-12-31 20:59:46,951 - INFO - [session.py:191] - Attempting to send file: C:\my-CTF\pcap_creator\tls\documents\ctf_challenge.gif
+2024-12-31 20:59:46,955 - INFO - [session.py:202] - Opening file: C:\my-CTF\pcap_creator\tls\documents\ctf_challenge.gif
+2024-12-31 20:59:46,962 - INFO - [session.py:209] - Read 1103 bytes from file
+2024-12-31 20:59:46,977 - INFO - [keys.py:178] - TLS Application Data sent from 10.0.0.1:443 to 192.168.1.1:12345
+2024-12-31 20:59:46,982 - INFO - [session.py:218] - File sent successfully
+2024-12-31 20:59:46,983 - INFO - [session.py:193] - File sent successfully
+2024-12-31 20:59:46,984 - INFO - [main.py:95] - Session completed successfully for 192.168.1.1
+2024-12-31 20:59:46,985 - INFO - [main.py:87] - 
+--- Client Session (no certificate) ---
+2024-12-31 20:59:46,989 - INFO - [cert.py:107] - Loading certificate from: C:\my-CTF\pcap_creator\tls\certificates\certs\ca.crt
+2024-12-31 20:59:46,996 - INFO - [cert.py:108] - File exists: True
+2024-12-31 20:59:46,998 - INFO - [cert.py:109] - File size: 1912 bytes
+2024-12-31 20:59:47,000 - INFO - [cert.py:113] - Read 1912 bytes
+2024-12-31 20:59:47,001 - INFO - [cert.py:117] - First 100 bytes: b'\n-----BEGIN CERTIFICATE-----\nMIIFVjCCAz4CCQDZlfjV/jlm3jANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ\nUjEPMA'
+2024-12-31 20:59:47,003 - INFO - [cert.py:120] - File content as text: 
+-----BEGIN CERTIFICATE-----
+MIIFVjCCAz4CCQDZlfjV/jlm3jANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ
+UjEPMA0GA1UECAwGVGVocmFuMQ8wDQYDVQQHDAZUZWhyYW4xDTALBgNVBAoMBElS
+R0MxFjAUBgNVBAsMDUN5YmVyc2VjdXJpdHkxFTATB
+2024-12-31 20:59:47,006 - INFO - [cert.py:130] - Successfully loaded as PEM
+2024-12-31 20:59:47,010 - INFO - [cert.py:107] - Loading certificate from: C:\my-CTF\pcap_creator\tls\certificates\certs\server.crt
+2024-12-31 20:59:47,013 - INFO - [cert.py:108] - File exists: True
+2024-12-31 20:59:47,015 - INFO - [cert.py:109] - File size: 1643 bytes
+2024-12-31 20:59:47,016 - INFO - [cert.py:113] - Read 1643 bytes
+2024-12-31 20:59:47,018 - INFO - [cert.py:117] - First 100 bytes: b'-----BEGIN CERTIFICATE-----\nMIIEjzCCAncCFCTAuN/v92YqzLPMORcinlGx86nWMA0GCSqGSIb3DQEBCwUAMG0x\nCzAJBgN'
+2024-12-31 20:59:47,019 - INFO - [cert.py:120] - File content as text: -----BEGIN CERTIFICATE-----
+MIIEjzCCAncCFCTAuN/v92YqzLPMORcinlGx86nWMA0GCSqGSIb3DQEBCwUAMG0x
+CzAJBgNVBAYTAklSMQ8wDQYDVQQIDAZUZWhyYW4xDzANBgNVBAcMBlRlaHJhbjEN
+MAsGA1UECgwESVJHQzEWMBQGA1UECwwNQ3liZXJzZW
+2024-12-31 20:59:47,022 - INFO - [cert.py:130] - Successfully loaded as PEM
+2024-12-31 20:59:47,067 - INFO - [cert.py:213] - Successfully loaded private key from C:\my-CTF\pcap_creator\tls\certificates\certs\server.key
+2024-12-31 20:59:47,067 - INFO - [cert.py:214] - Key type: RSAPrivateKey
+2024-12-31 20:59:47,067 - INFO - [cert.py:215] - Key size: 2048 bits
+2024-12-31 20:59:47,068 - INFO - [cert.py:217] - Public exponent: 65537
+2024-12-31 20:59:47,068 - INFO - [cert.py:246] - Certificate and keys loaded and validated successfully
+2024-12-31 20:59:47,068 - INFO - [verify.py:58] - Public key comparison results:
+2024-12-31 20:59:47,069 - INFO - [verify.py:59] - Certificate modulus (n): 0xdb8d24fa298358ec6a55b74c127eddafe1c5d51db0bdae576735f6d21cbde938dc691a0cacb39c0a97ff3d00f544fe971cd81924a9a4cd0a316ae79d57608f6353826f9e12203f1f41fbcaa0a6d3c4d373d4191da7495b71d2d22a087eae48f216e87d87a3554bb0c63fea8902ca6c16fe7b0646f68cfbdcff200463728f68fefd7e865776b59decc6608448145cef528db2e24f71aa507c08c27220e079d67f3ae0c73fb999d06b5c55672252b75686b3a4aef0513e7899425f8de018a54c680b50331fdf84d68f2f1d38d326558b0086e186067f7bc885ed64f4229ff96890c9977cb34f5ba64f487469ce438abacafc250cc667fd530fe1a940a21265bbef
+2024-12-31 20:59:47,070 - INFO - [verify.py:60] - Loaded key modulus (n): 0xdb8d24fa298358ec6a55b74c127eddafe1c5d51db0bdae576735f6d21cbde938dc691a0cacb39c0a97ff3d00f544fe971cd81924a9a4cd0a316ae79d57608f6353826f9e12203f1f41fbcaa0a6d3c4d373d4191da7495b71d2d22a087eae48f216e87d87a3554bb0c63fea8902ca6c16fe7b0646f68cfbdcff200463728f68fefd7e865776b59decc6608448145cef528db2e24f71aa507c08c27220e079d67f3ae0c73fb999d06b5c55672252b75686b3a4aef0513e7899425f8de018a54c680b50331fdf84d68f2f1d38d326558b0086e186067f7bc885ed64f4229ff96890c9977cb34f5ba64f487469ce438abacafc250cc667fd530fe1a940a21265bbef
+2024-12-31 20:59:47,071 - INFO - [verify.py:61] - Certificate exponent (e): 0x10001
+2024-12-31 20:59:47,071 - INFO - [verify.py:62] - Loaded key exponent (e): 0x10001
+2024-12-31 20:59:47,072 - INFO - [verify.py:136] - Certificate chain verification successful
+2024-12-31 20:59:47,072 - INFO - [verify.py:188] - Server name 'Pasdaran.local' verified successfully.
+2024-12-31 20:59:47,073 - INFO - [chain.py:109] - Certificate chain verification passed
+2024-12-31 20:59:47,073 - INFO - [chain.py:116] - Certificate chain loaded successfully
+2024-12-31 20:59:47,073 - INFO - [chain.py:117] - Server cert subject: <Name(C=IR,ST=Tehran,L=Tehran,O=Pasdaran,OU=Cybersecurity,CN=Pasdaran.local,1.2.840.113549.1.9.1=server-ctf@example.com)>
+2024-12-31 20:59:47,074 - INFO - [chain.py:118] - Server public key modulus (n): 27715789706063429807557606224995599859500290360318746177887351772584930700767922060265236908225326034069499061360415721333197892250480074686217368392578391301159860963548062819987980192117154285346649743193735554410844424979329819561349555165843655319142309437602325619944960532107668642823205088719004451766785584250375602116664746909990082155815187624898337966421103740799583791159146718040738723787975829478664380188405278530204082653290083478390920045586534051947651758952646967903767271859712523843899436041916810100575135597588004406500203895849926956188138294164569460185397378003955721604444173706240738049007
+2024-12-31 20:59:47,074 - INFO - [chain.py:122] - CA cert subject: <Name(C=IR,ST=Tehran,L=Tehran,O=IRGC,OU=Cybersecurity,CN=IRGC Root CA)>
+2024-12-31 20:59:47,074 - INFO - [session.py:119] - Starting TLS session
+2024-12-31 20:59:47,074 - INFO - [client.py:95] - Generated client_random: 67743f23fc15afab8115dd81723ea2bd48b8b8592763624ec538725f4ba40555
+2024-12-31 20:59:47,076 - INFO - [client.py:135] - Client Hello sent from 192.168.1.2
+2024-12-31 20:59:47,078 - INFO - [server.py:93] - Generated server_random: 67743f23ff06ed2a178bc5a591b7cfcb67117f3fe04845e2332c058f8e5f9c84
+2024-12-31 20:59:47,081 - INFO - [client.py:172] - Prepared empty certificate
+2024-12-31 20:59:47,082 - INFO - [client.py:184] - Encrypted pre_master_secret length: 256
+2024-12-31 20:59:47,083 - INFO - [chain.py:182] - Decrypted pre_master_secret: 030324909392c11e971b96abf733c7420c64841bc94e0414e40d34f5221962cf74a1f0f5bca919bc984f5608c32cf05b
+2024-12-31 20:59:47,084 - INFO - [chain.py:193] - Generated master secret: 1e089f369f9b768c0c05b573038b5e3942ad94d1b0f9acef853664a95e0c8f990428199bf8877bf4b2edf24828c0505d
+2024-12-31 20:59:47,084 - INFO - [client.py:345] - Client ChangeCipherSpec and Finished messages sent
+2024-12-31 20:59:47,088 - INFO - [server.py:254] - Pre-master secret validated successfully
+2024-12-31 20:59:47,089 - INFO - [server.py:272] - Generated digital signature: 72e5772359cff677a3376122abf6f8d8957f9d17d600b48ef7ef4364f48e765b76bac98c1870ff270daf6e295d333d1043449bff511a1e34f208558f88cb81f99e627818f644463100dd0bedbffe16cea3f81b1a35e66dce54ff4605bb5ccfc20130f037ec4188ad93bf16442151b57f89a6d097bfc9c7ed7928eeac533abec5c83248bb8cb506b44bca2138efd870019a744f13a476de7075520f279892bfbcf6d6344298dfd723501dfe69fa01fe35f26f99c151ea0b662963f21d70143342ac6646998d41a639a9b698f5d5994f7d302dbdbff99fcfdb3bb944b6ce2f748c5695c8954b8e8d89a578c2bde029441fc48668b985b1df643ca3e8a8d1930457
+2024-12-31 20:59:47,090 - INFO - [server.py:309] - Server ChangeCipherSpec and Finished messages sent
+2024-12-31 20:59:47,091 - INFO - [keys.py:198] - SSL keys logged to C:\my-CTF\pcap_creator\tls\logs\ssl_key_log.log
+2024-12-31 20:59:47,092 - INFO - [session.py:103] - TLS Handshake completed successfully
+2024-12-31 20:59:47,092 - INFO - [session.py:148] - Handshake completed: True
+2024-12-31 20:59:47,092 - INFO - [session.py:149] - Use client cert: False
+2024-12-31 20:59:47,093 - INFO - [session.py:150] - File to send: None
+2024-12-31 20:59:47,093 - INFO - [session.py:156] - Using unencrypted exchange
+2024-12-31 20:59:47,093 - INFO - [session.py:256] - Added request packet
+2024-12-31 20:59:47,094 - INFO - [session.py:256] - Added response packet
+2024-12-31 20:59:47,094 - WARNING - [session.py:233] - Using unencrypted communication
+2024-12-31 20:59:47,095 - INFO - [main.py:95] - Session completed successfully for 192.168.1.2
+2024-12-31 20:59:47,095 - INFO - [pcap_writer.py:232] - Packet 13: Valid HTTP message
+2024-12-31 20:59:47,095 - INFO - [pcap_writer.py:232] - Packet 14: Valid HTTP message
+2024-12-31 20:59:47,100 - INFO - [pcap_writer.py:387] - Saved 15 valid packets to C:\my-CTF\pcap_creator\tls\output\capture.pcap
+2024-12-31 20:59:47,101 - INFO - [pcap_writer.py:409] - Verifying 15 packets...
+2024-12-31 20:59:47,101 - INFO - [pcap_writer.py:413] - Packet 1: IP / TCP 192.168.1.1:12345 > 10.0.0.1:https PA / Raw
+2024-12-31 20:59:47,102 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x16, Version: 0x303, Length: 90
+2024-12-31 20:59:47,102 - INFO - [pcap_writer.py:413] - Packet 2: IP / TCP 10.0.0.1:https > 192.168.1.1:12345 PA / Raw
+2024-12-31 20:59:47,103 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x16, Version: 0x303, Length: 2775
+2024-12-31 20:59:47,104 - INFO - [pcap_writer.py:413] - Packet 3: IP / TCP 192.168.1.1:12345 > 10.0.0.1:https PA / Raw
+2024-12-31 20:59:47,105 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x16, Version: 0x303, Length: 1646
+2024-12-31 20:59:47,105 - INFO - [pcap_writer.py:413] - Packet 4: IP / TCP 192.168.1.1:12345 > 10.0.0.1:https PA / Raw
+2024-12-31 20:59:47,106 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x14, Version: 0x303, Length: 17
+2024-12-31 20:59:47,106 - INFO - [pcap_writer.py:413] - Packet 5: IP / TCP 10.0.0.1:https > 192.168.1.1:12345 PA / Raw
+2024-12-31 20:59:47,107 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x14, Version: 0x303, Length: 17
+2024-12-31 20:59:47,107 - INFO - [pcap_writer.py:413] - Packet 6: IP / TCP 192.168.1.1:12345 > 10.0.0.1:https PA / Raw
+2024-12-31 20:59:47,107 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x17, Version: 0x303, Length: 165
+2024-12-31 20:59:47,108 - INFO - [pcap_writer.py:413] - Packet 7: IP / TCP 10.0.0.1:https > 192.168.1.1:12345 PA / Raw
+2024-12-31 20:59:47,108 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x17, Version: 0x303, Length: 133
+2024-12-31 20:59:47,108 - INFO - [pcap_writer.py:413] - Packet 8: IP / TCP 10.0.0.1:https > 192.168.1.1:12345 PA / Raw
+2024-12-31 20:59:47,108 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x17, Version: 0x303, Length: 1157
+2024-12-31 20:59:47,109 - INFO - [pcap_writer.py:413] - Packet 9: IP / TCP 192.168.1.2:12346 > 10.0.0.1:https PA / Raw
+2024-12-31 20:59:47,109 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x16, Version: 0x303, Length: 90
+2024-12-31 20:59:47,109 - INFO - [pcap_writer.py:413] - Packet 10: IP / TCP 10.0.0.1:https > 192.168.1.2:12346 PA / Raw
+2024-12-31 20:59:47,109 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x16, Version: 0x303, Length: 2775
+2024-12-31 20:59:47,109 - INFO - [pcap_writer.py:413] - Packet 11: IP / TCP 192.168.1.2:12346 > 10.0.0.1:https PA / Raw
+2024-12-31 20:59:47,110 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x16, Version: 0x303, Length: 269
+2024-12-31 20:59:47,110 - INFO - [pcap_writer.py:413] - Packet 12: IP / TCP 192.168.1.2:12346 > 10.0.0.1:https PA / Raw
+2024-12-31 20:59:47,110 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x14, Version: 0x303, Length: 17
+2024-12-31 20:59:47,110 - INFO - [pcap_writer.py:413] - Packet 13: IP / TCP 10.0.0.1:https > 192.168.1.2:12346 PA / Raw
+2024-12-31 20:59:47,110 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x14, Version: 0x303, Length: 17
+2024-12-31 20:59:47,110 - INFO - [pcap_writer.py:413] - Packet 14: IP / TCP 192.168.1.2:12346 > 10.0.0.1:http PA / Raw
+2024-12-31 20:59:47,111 - INFO - [pcap_writer.py:420] - TLS Record: HTTP message
+2024-12-31 20:59:47,111 - INFO - [pcap_writer.py:413] - Packet 15: IP / TCP 10.0.0.1:http > 192.168.1.2:12346 PA / Raw
+2024-12-31 20:59:47,112 - INFO - [pcap_writer.py:420] - TLS Record: HTTP message
+2024-12-31 20:59:47,112 - INFO - [pcap_writer.py:427] - Verification complete: 15 valid packets, 15 TLS records
+2024-12-31 20:59:47,112 - INFO - [main.py:106] - Results saved to C:\my-CTF\pcap_creator\tls\output\capture.pcap
+2024-12-31 20:59:47,112 - INFO - [main.py:160] - TLS session simulation completed successfully
+2024-12-31 22:08:41,424 - INFO - [logging.py:83] - Logging configured successfully
+2024-12-31 22:08:41,425 - INFO - [logging.py:90] - === Logging Configuration ===
+2024-12-31 22:08:41,426 - INFO - [logging.py:91] - Log file: C:\my-CTF\pcap_creator\tls\logs\tls_session.log
+2024-12-31 22:08:41,426 - INFO - [logging.py:92] - Log level: 20
+2024-12-31 22:08:41,427 - INFO - [logging.py:93] - Timestamp: 2024-12-31T22:08:41.427104
+2024-12-31 22:08:41,427 - INFO - [logging.py:94] - ==========================
+2024-12-31 22:08:41,428 - INFO - [main.py:122] - Starting TLS session simulation
+2024-12-31 22:08:41,429 - INFO - [main.py:87] - 
+--- Client Session (certificate) ---
+2024-12-31 22:08:41,432 - INFO - [cert.py:107] - Loading certificate from: C:\my-CTF\pcap_creator\tls\certificates\certs\ca.crt
+2024-12-31 22:08:41,433 - INFO - [cert.py:108] - File exists: True
+2024-12-31 22:08:41,433 - INFO - [cert.py:109] - File size: 1912 bytes
+2024-12-31 22:08:41,435 - INFO - [cert.py:113] - Read 1912 bytes
+2024-12-31 22:08:41,436 - INFO - [cert.py:117] - First 100 bytes: b'\n-----BEGIN CERTIFICATE-----\nMIIFVjCCAz4CCQDZlfjV/jlm3jANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ\nUjEPMA'
+2024-12-31 22:08:41,437 - INFO - [cert.py:120] - File content as text: 
+-----BEGIN CERTIFICATE-----
+MIIFVjCCAz4CCQDZlfjV/jlm3jANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ
+UjEPMA0GA1UECAwGVGVocmFuMQ8wDQYDVQQHDAZUZWhyYW4xDTALBgNVBAoMBElS
+R0MxFjAUBgNVBAsMDUN5YmVyc2VjdXJpdHkxFTATB
+2024-12-31 22:08:41,442 - INFO - [cert.py:130] - Successfully loaded as PEM
+2024-12-31 22:08:41,442 - INFO - [cert.py:107] - Loading certificate from: C:\my-CTF\pcap_creator\tls\certificates\certs\server.crt
+2024-12-31 22:08:41,444 - INFO - [cert.py:108] - File exists: True
+2024-12-31 22:08:41,445 - INFO - [cert.py:109] - File size: 1643 bytes
+2024-12-31 22:08:41,446 - INFO - [cert.py:113] - Read 1643 bytes
+2024-12-31 22:08:41,446 - INFO - [cert.py:117] - First 100 bytes: b'-----BEGIN CERTIFICATE-----\nMIIEjzCCAncCFCTAuN/v92YqzLPMORcinlGx86nWMA0GCSqGSIb3DQEBCwUAMG0x\nCzAJBgN'
+2024-12-31 22:08:41,446 - INFO - [cert.py:120] - File content as text: -----BEGIN CERTIFICATE-----
+MIIEjzCCAncCFCTAuN/v92YqzLPMORcinlGx86nWMA0GCSqGSIb3DQEBCwUAMG0x
+CzAJBgNVBAYTAklSMQ8wDQYDVQQIDAZUZWhyYW4xDzANBgNVBAcMBlRlaHJhbjEN
+MAsGA1UECgwESVJHQzEWMBQGA1UECwwNQ3liZXJzZW
+2024-12-31 22:08:41,447 - INFO - [cert.py:130] - Successfully loaded as PEM
+2024-12-31 22:08:41,498 - INFO - [cert.py:213] - Successfully loaded private key from C:\my-CTF\pcap_creator\tls\certificates\certs\server.key
+2024-12-31 22:08:41,498 - INFO - [cert.py:214] - Key type: RSAPrivateKey
+2024-12-31 22:08:41,499 - INFO - [cert.py:215] - Key size: 2048 bits
+2024-12-31 22:08:41,500 - INFO - [cert.py:217] - Public exponent: 65537
+2024-12-31 22:08:41,505 - INFO - [cert.py:246] - Certificate and keys loaded and validated successfully
+2024-12-31 22:08:41,505 - INFO - [verify.py:58] - Public key comparison results:
+2024-12-31 22:08:41,506 - INFO - [verify.py:59] - Certificate modulus (n): 0xdb8d24fa298358ec6a55b74c127eddafe1c5d51db0bdae576735f6d21cbde938dc691a0cacb39c0a97ff3d00f544fe971cd81924a9a4cd0a316ae79d57608f6353826f9e12203f1f41fbcaa0a6d3c4d373d4191da7495b71d2d22a087eae48f216e87d87a3554bb0c63fea8902ca6c16fe7b0646f68cfbdcff200463728f68fefd7e865776b59decc6608448145cef528db2e24f71aa507c08c27220e079d67f3ae0c73fb999d06b5c55672252b75686b3a4aef0513e7899425f8de018a54c680b50331fdf84d68f2f1d38d326558b0086e186067f7bc885ed64f4229ff96890c9977cb34f5ba64f487469ce438abacafc250cc667fd530fe1a940a21265bbef
+2024-12-31 22:08:41,506 - INFO - [verify.py:60] - Loaded key modulus (n): 0xdb8d24fa298358ec6a55b74c127eddafe1c5d51db0bdae576735f6d21cbde938dc691a0cacb39c0a97ff3d00f544fe971cd81924a9a4cd0a316ae79d57608f6353826f9e12203f1f41fbcaa0a6d3c4d373d4191da7495b71d2d22a087eae48f216e87d87a3554bb0c63fea8902ca6c16fe7b0646f68cfbdcff200463728f68fefd7e865776b59decc6608448145cef528db2e24f71aa507c08c27220e079d67f3ae0c73fb999d06b5c55672252b75686b3a4aef0513e7899425f8de018a54c680b50331fdf84d68f2f1d38d326558b0086e186067f7bc885ed64f4229ff96890c9977cb34f5ba64f487469ce438abacafc250cc667fd530fe1a940a21265bbef
+2024-12-31 22:08:41,507 - INFO - [verify.py:61] - Certificate exponent (e): 0x10001
+2024-12-31 22:08:41,507 - INFO - [verify.py:62] - Loaded key exponent (e): 0x10001
+2024-12-31 22:08:41,513 - INFO - [verify.py:136] - Certificate chain verification successful
+2024-12-31 22:08:41,515 - INFO - [verify.py:188] - Server name 'Pasdaran.local' verified successfully.
+2024-12-31 22:08:41,515 - INFO - [chain.py:110] - Certificate chain verification passed
+2024-12-31 22:08:41,515 - INFO - [chain.py:117] - Certificate chain loaded successfully
+2024-12-31 22:08:41,516 - INFO - [chain.py:118] - Server cert subject: <Name(C=IR,ST=Tehran,L=Tehran,O=Pasdaran,OU=Cybersecurity,CN=Pasdaran.local,1.2.840.113549.1.9.1=server-ctf@example.com)>
+2024-12-31 22:08:41,516 - INFO - [chain.py:119] - Server public key modulus (n): 27715789706063429807557606224995599859500290360318746177887351772584930700767922060265236908225326034069499061360415721333197892250480074686217368392578391301159860963548062819987980192117154285346649743193735554410844424979329819561349555165843655319142309437602325619944960532107668642823205088719004451766785584250375602116664746909990082155815187624898337966421103740799583791159146718040738723787975829478664380188405278530204082653290083478390920045586534051947651758952646967903767271859712523843899436041916810100575135597588004406500203895849926956188138294164569460185397378003955721604444173706240738049007
+2024-12-31 22:08:41,517 - INFO - [chain.py:123] - CA cert subject: <Name(C=IR,ST=Tehran,L=Tehran,O=IRGC,OU=Cybersecurity,CN=IRGC Root CA)>
+2024-12-31 22:08:41,518 - INFO - [session.py:120] - Starting TLS session
+2024-12-31 22:08:41,518 - INFO - [client.py:95] - Generated client_random: 67744f4916b384d16d6b4b50f6898c5414f56bdef7384ccd3622f0ccab3d7294
+2024-12-31 22:08:41,521 - INFO - [client.py:135] - Client Hello sent from 192.168.1.1
+2024-12-31 22:08:41,524 - INFO - [server.py:93] - Generated server_random: 67744f495861356c03c371db70a968295ee7cc23afb40dfa2418c1f8e82bf848
+2024-12-31 22:08:41,531 - INFO - [cert.py:107] - Loading certificate from: C:\my-CTF\pcap_creator\tls\certificates\certs\client.crt
+2024-12-31 22:08:41,532 - INFO - [cert.py:108] - File exists: True
+2024-12-31 22:08:41,532 - INFO - [cert.py:109] - File size: 1915 bytes
+2024-12-31 22:08:41,534 - INFO - [cert.py:113] - Read 1915 bytes
+2024-12-31 22:08:41,534 - INFO - [cert.py:117] - First 100 bytes: b'-----BEGIN CERTIFICATE-----\nMIIFWjCCA0ICCQDOoMV5YsO5TDANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ\nUjEPMA0'
+2024-12-31 22:08:41,535 - INFO - [cert.py:120] - File content as text: -----BEGIN CERTIFICATE-----
+MIIFWjCCA0ICCQDOoMV5YsO5TDANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ
+UjEPMA0GA1UECAwGVGVocmFuMQ8wDQYDVQQHDAZUZWhyYW4xDTALBgNVBAoMBElS
+R0MxFjAUBgNVBAsMDUN5YmVyc2VjdXJpdHkxFTATBg
+2024-12-31 22:08:41,536 - INFO - [cert.py:130] - Successfully loaded as PEM
+2024-12-31 22:08:41,537 - INFO - [client.py:169] - Prepared client certificate
+2024-12-31 22:08:41,538 - INFO - [client.py:184] - Encrypted pre_master_secret length: 256
+2024-12-31 22:08:41,541 - INFO - [chain.py:185] - Decrypted pre_master_secret: 0303d3dac765e0c55bfd2ac98130bdd4cb36c689fa75403d842a47194218611ce8b03650cd5fb0129b4382f847142234
+2024-12-31 22:08:41,543 - INFO - [chain.py:195] - Generated master secret: df1613bb0218447c85d6444ad26d5e1a7069d0c710ef4a7a4a9c02ebcb4af11bafee1ed0a21a24f3aab275e4c3c0a4be
+2024-12-31 22:08:41,544 - INFO - [chain.py:196] - Master secret length: 48 bytes
+2024-12-31 22:08:41,546 - INFO - [client.py:345] - Client ChangeCipherSpec and Finished messages sent
+2024-12-31 22:08:41,548 - INFO - [server.py:254] - Pre-master secret validated successfully
+2024-12-31 22:08:41,549 - INFO - [server.py:272] - Generated digital signature: 8887bb93f08b6c60a5bd843182c2fd365ea26a91091dcf608ef1e1e14969bf8553764eaa90a782c7f54ea216808c0602576c4b31314b5fc6f7889e0b1fc6bcda64afdb7f5398185a25a4613e26c8043e5683776ce1ee427d75629ff4d1b88ba8587e1106afa0f50489a492cf82516f015202f30039f19c8130f4abd64c8d61bdc57083ee91d3e412e994b5644bf406013fb169ffd61da7f472f211c0a222acff2cb06ba4c358537926f802fa2dceaad311a6b88858e0b34245f3e390ef1cc0fcf22bc4bd926cf5029434b562a66f3dd02aeb1c7c04bfe2be0b3f07b215e7a0805af719e275e38aab3ebfadd1bcfbc92935eddb4d7c4e744c5973027a3709903d
+2024-12-31 22:08:41,551 - INFO - [server.py:309] - Server ChangeCipherSpec and Finished messages sent
+2024-12-31 22:08:41,554 - INFO - [keys.py:200] - SSL keys logged to C:\my-CTF\pcap_creator\tls\logs\ssl_key_log.log
+2024-12-31 22:08:41,555 - INFO - [session.py:104] - TLS Handshake completed successfully
+2024-12-31 22:08:41,556 - INFO - [session.py:131] - Found file to send: C:\my-CTF\pcap_creator\tls\documents\ctf_challenge.gif
+2024-12-31 22:08:41,557 - INFO - [session.py:149] - Handshake completed: True
+2024-12-31 22:08:41,559 - INFO - [session.py:150] - Use client cert: True
+2024-12-31 22:08:41,560 - INFO - [session.py:151] - File to send: C:\my-CTF\pcap_creator\tls\documents\ctf_challenge.gif
+2024-12-31 22:08:41,560 - INFO - [session.py:154] - Using encrypted exchange
+2024-12-31 22:08:41,561 - INFO - [session.py:169] - Sending encrypted request data
+2024-12-31 22:08:41,563 - INFO - [keys.py:180] - TLS Application Data sent from 192.168.1.1:12345 to 10.0.0.1:443
+2024-12-31 22:08:41,564 - INFO - [session.py:180] - Sending encrypted response data
+2024-12-31 22:08:41,566 - INFO - [keys.py:180] - TLS Application Data sent from 10.0.0.1:443 to 192.168.1.1:12345
+2024-12-31 22:08:41,567 - INFO - [session.py:192] - Attempting to send file: C:\my-CTF\pcap_creator\tls\documents\ctf_challenge.gif
+2024-12-31 22:08:41,567 - INFO - [session.py:203] - Opening file: C:\my-CTF\pcap_creator\tls\documents\ctf_challenge.gif
+2024-12-31 22:08:41,568 - INFO - [session.py:210] - Read 1103 bytes from file
+2024-12-31 22:08:41,570 - INFO - [keys.py:180] - TLS Application Data sent from 10.0.0.1:443 to 192.168.1.1:12345
+2024-12-31 22:08:41,571 - INFO - [session.py:219] - File sent successfully
+2024-12-31 22:08:41,572 - INFO - [session.py:194] - File sent successfully
+2024-12-31 22:08:41,572 - INFO - [main.py:95] - Session completed successfully for 192.168.1.1
+2024-12-31 22:08:41,573 - INFO - [main.py:87] - 
+--- Client Session (no certificate) ---
+2024-12-31 22:08:41,576 - INFO - [cert.py:107] - Loading certificate from: C:\my-CTF\pcap_creator\tls\certificates\certs\ca.crt
+2024-12-31 22:08:41,578 - INFO - [cert.py:108] - File exists: True
+2024-12-31 22:08:41,579 - INFO - [cert.py:109] - File size: 1912 bytes
+2024-12-31 22:08:41,579 - INFO - [cert.py:113] - Read 1912 bytes
+2024-12-31 22:08:41,580 - INFO - [cert.py:117] - First 100 bytes: b'\n-----BEGIN CERTIFICATE-----\nMIIFVjCCAz4CCQDZlfjV/jlm3jANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ\nUjEPMA'
+2024-12-31 22:08:41,581 - INFO - [cert.py:120] - File content as text: 
+-----BEGIN CERTIFICATE-----
+MIIFVjCCAz4CCQDZlfjV/jlm3jANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ
+UjEPMA0GA1UECAwGVGVocmFuMQ8wDQYDVQQHDAZUZWhyYW4xDTALBgNVBAoMBElS
+R0MxFjAUBgNVBAsMDUN5YmVyc2VjdXJpdHkxFTATB
+2024-12-31 22:08:41,582 - INFO - [cert.py:130] - Successfully loaded as PEM
+2024-12-31 22:08:41,582 - INFO - [cert.py:107] - Loading certificate from: C:\my-CTF\pcap_creator\tls\certificates\certs\server.crt
+2024-12-31 22:08:41,583 - INFO - [cert.py:108] - File exists: True
+2024-12-31 22:08:41,583 - INFO - [cert.py:109] - File size: 1643 bytes
+2024-12-31 22:08:41,584 - INFO - [cert.py:113] - Read 1643 bytes
+2024-12-31 22:08:41,585 - INFO - [cert.py:117] - First 100 bytes: b'-----BEGIN CERTIFICATE-----\nMIIEjzCCAncCFCTAuN/v92YqzLPMORcinlGx86nWMA0GCSqGSIb3DQEBCwUAMG0x\nCzAJBgN'
+2024-12-31 22:08:41,585 - INFO - [cert.py:120] - File content as text: -----BEGIN CERTIFICATE-----
+MIIEjzCCAncCFCTAuN/v92YqzLPMORcinlGx86nWMA0GCSqGSIb3DQEBCwUAMG0x
+CzAJBgNVBAYTAklSMQ8wDQYDVQQIDAZUZWhyYW4xDzANBgNVBAcMBlRlaHJhbjEN
+MAsGA1UECgwESVJHQzEWMBQGA1UECwwNQ3liZXJzZW
+2024-12-31 22:08:41,587 - INFO - [cert.py:130] - Successfully loaded as PEM
+2024-12-31 22:08:41,623 - INFO - [cert.py:213] - Successfully loaded private key from C:\my-CTF\pcap_creator\tls\certificates\certs\server.key
+2024-12-31 22:08:41,624 - INFO - [cert.py:214] - Key type: RSAPrivateKey
+2024-12-31 22:08:41,625 - INFO - [cert.py:215] - Key size: 2048 bits
+2024-12-31 22:08:41,625 - INFO - [cert.py:217] - Public exponent: 65537
+2024-12-31 22:08:41,625 - INFO - [cert.py:246] - Certificate and keys loaded and validated successfully
+2024-12-31 22:08:41,626 - INFO - [verify.py:58] - Public key comparison results:
+2024-12-31 22:08:41,626 - INFO - [verify.py:59] - Certificate modulus (n): 0xdb8d24fa298358ec6a55b74c127eddafe1c5d51db0bdae576735f6d21cbde938dc691a0cacb39c0a97ff3d00f544fe971cd81924a9a4cd0a316ae79d57608f6353826f9e12203f1f41fbcaa0a6d3c4d373d4191da7495b71d2d22a087eae48f216e87d87a3554bb0c63fea8902ca6c16fe7b0646f68cfbdcff200463728f68fefd7e865776b59decc6608448145cef528db2e24f71aa507c08c27220e079d67f3ae0c73fb999d06b5c55672252b75686b3a4aef0513e7899425f8de018a54c680b50331fdf84d68f2f1d38d326558b0086e186067f7bc885ed64f4229ff96890c9977cb34f5ba64f487469ce438abacafc250cc667fd530fe1a940a21265bbef
+2024-12-31 22:08:41,627 - INFO - [verify.py:60] - Loaded key modulus (n): 0xdb8d24fa298358ec6a55b74c127eddafe1c5d51db0bdae576735f6d21cbde938dc691a0cacb39c0a97ff3d00f544fe971cd81924a9a4cd0a316ae79d57608f6353826f9e12203f1f41fbcaa0a6d3c4d373d4191da7495b71d2d22a087eae48f216e87d87a3554bb0c63fea8902ca6c16fe7b0646f68cfbdcff200463728f68fefd7e865776b59decc6608448145cef528db2e24f71aa507c08c27220e079d67f3ae0c73fb999d06b5c55672252b75686b3a4aef0513e7899425f8de018a54c680b50331fdf84d68f2f1d38d326558b0086e186067f7bc885ed64f4229ff96890c9977cb34f5ba64f487469ce438abacafc250cc667fd530fe1a940a21265bbef
+2024-12-31 22:08:41,628 - INFO - [verify.py:61] - Certificate exponent (e): 0x10001
+2024-12-31 22:08:41,628 - INFO - [verify.py:62] - Loaded key exponent (e): 0x10001
+2024-12-31 22:08:41,628 - INFO - [verify.py:136] - Certificate chain verification successful
+2024-12-31 22:08:41,629 - INFO - [verify.py:188] - Server name 'Pasdaran.local' verified successfully.
+2024-12-31 22:08:41,629 - INFO - [chain.py:110] - Certificate chain verification passed
+2024-12-31 22:08:41,629 - INFO - [chain.py:117] - Certificate chain loaded successfully
+2024-12-31 22:08:41,630 - INFO - [chain.py:118] - Server cert subject: <Name(C=IR,ST=Tehran,L=Tehran,O=Pasdaran,OU=Cybersecurity,CN=Pasdaran.local,1.2.840.113549.1.9.1=server-ctf@example.com)>
+2024-12-31 22:08:41,630 - INFO - [chain.py:119] - Server public key modulus (n): 27715789706063429807557606224995599859500290360318746177887351772584930700767922060265236908225326034069499061360415721333197892250480074686217368392578391301159860963548062819987980192117154285346649743193735554410844424979329819561349555165843655319142309437602325619944960532107668642823205088719004451766785584250375602116664746909990082155815187624898337966421103740799583791159146718040738723787975829478664380188405278530204082653290083478390920045586534051947651758952646967903767271859712523843899436041916810100575135597588004406500203895849926956188138294164569460185397378003955721604444173706240738049007
+2024-12-31 22:08:41,631 - INFO - [chain.py:123] - CA cert subject: <Name(C=IR,ST=Tehran,L=Tehran,O=IRGC,OU=Cybersecurity,CN=IRGC Root CA)>
+2024-12-31 22:08:41,631 - INFO - [session.py:120] - Starting TLS session
+2024-12-31 22:08:41,632 - INFO - [client.py:95] - Generated client_random: 67744f49600418751b823fcfab8bb5893c831e65f9f634ee1196aa13f79fb844
+2024-12-31 22:08:41,634 - INFO - [client.py:135] - Client Hello sent from 192.168.1.2
+2024-12-31 22:08:41,637 - INFO - [server.py:93] - Generated server_random: 67744f49b76a72ac8a0e85f339d6777fc684474da97529ab5898801043f3631c
+2024-12-31 22:08:41,643 - INFO - [client.py:172] - Prepared empty certificate
+2024-12-31 22:08:41,647 - INFO - [client.py:184] - Encrypted pre_master_secret length: 256
+2024-12-31 22:08:41,649 - INFO - [chain.py:185] - Decrypted pre_master_secret: 03030c7a4d8020ced3ef450282981fae45b6ed6529fcbc3b0282d2eb34c9b61abb4ed4c2856afd156f98d8a66e3dd0b4
+2024-12-31 22:08:41,650 - INFO - [chain.py:195] - Generated master secret: 17f4a955c21dda17523d245cbb28f2efa49e9757c34c4610e510f49baeabd2ce59316f67f0265ec5958e49d9523e50a7
+2024-12-31 22:08:41,650 - INFO - [chain.py:196] - Master secret length: 48 bytes
+2024-12-31 22:08:41,652 - INFO - [client.py:345] - Client ChangeCipherSpec and Finished messages sent
+2024-12-31 22:08:41,654 - INFO - [server.py:254] - Pre-master secret validated successfully
+2024-12-31 22:08:41,655 - INFO - [server.py:272] - Generated digital signature: 09fe35dd287031e84c07c93488d15be282a4fb49196c704b6c538cdda26529c80c532392e2f48a127ab2cd3d8c7a135f39eb2bf27ef1d10a6b63c44c06ba637e7b9f1729af4aa909d4f80e8bd57a5cf9ad467b5ce859a3cd58da2aaa0178e971e5aca9f300a454fa4b0b65f5f524cdd037eee93d151ac173109773b0c0502dc2abd91c4023ddea651453de14c4209e4fc2b80a2bd48b2dab3206560397d58b3adb8525d04c8b2b097c5b99191427a26361daf485661c669d2dbac9ff464d2987029f0b1162126001d226dde41294ccfedf3036bfbed1975d8f18d564bb4b0d87e9f02c73a3897e9e507ab43dc5642221cee3b389ae71b7bcd52387e691e275cf
+2024-12-31 22:08:41,659 - INFO - [server.py:309] - Server ChangeCipherSpec and Finished messages sent
+2024-12-31 22:08:41,661 - INFO - [keys.py:200] - SSL keys logged to C:\my-CTF\pcap_creator\tls\logs\ssl_key_log.log
+2024-12-31 22:08:41,662 - INFO - [session.py:104] - TLS Handshake completed successfully
+2024-12-31 22:08:41,662 - INFO - [session.py:149] - Handshake completed: True
+2024-12-31 22:08:41,662 - INFO - [session.py:150] - Use client cert: False
+2024-12-31 22:08:41,663 - INFO - [session.py:151] - File to send: None
+2024-12-31 22:08:41,663 - INFO - [session.py:157] - Using unencrypted exchange
+2024-12-31 22:08:41,664 - INFO - [session.py:257] - Added request packet
+2024-12-31 22:08:41,664 - INFO - [session.py:257] - Added response packet
+2024-12-31 22:08:41,665 - WARNING - [session.py:234] - Using unencrypted communication
+2024-12-31 22:08:41,665 - INFO - [main.py:95] - Session completed successfully for 192.168.1.2
+2024-12-31 22:08:41,666 - INFO - [pcap_writer.py:232] - Packet 13: Valid HTTP message
+2024-12-31 22:08:41,666 - INFO - [pcap_writer.py:232] - Packet 14: Valid HTTP message
+2024-12-31 22:08:41,672 - INFO - [pcap_writer.py:387] - Saved 15 valid packets to C:\my-CTF\pcap_creator\tls\output\capture.pcap
+2024-12-31 22:08:41,673 - INFO - [pcap_writer.py:409] - Verifying 15 packets...
+2024-12-31 22:08:41,674 - INFO - [pcap_writer.py:413] - Packet 1: IP / TCP 192.168.1.1:12345 > 10.0.0.1:https PA / Raw
+2024-12-31 22:08:41,675 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x16, Version: 0x303, Length: 90
+2024-12-31 22:08:41,676 - INFO - [pcap_writer.py:413] - Packet 2: IP / TCP 10.0.0.1:https > 192.168.1.1:12345 PA / Raw
+2024-12-31 22:08:41,676 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x16, Version: 0x303, Length: 2775
+2024-12-31 22:08:41,677 - INFO - [pcap_writer.py:413] - Packet 3: IP / TCP 192.168.1.1:12345 > 10.0.0.1:https PA / Raw
+2024-12-31 22:08:41,677 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x16, Version: 0x303, Length: 1646
+2024-12-31 22:08:41,677 - INFO - [pcap_writer.py:413] - Packet 4: IP / TCP 192.168.1.1:12345 > 10.0.0.1:https PA / Raw
+2024-12-31 22:08:41,678 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x14, Version: 0x303, Length: 17
+2024-12-31 22:08:41,678 - INFO - [pcap_writer.py:413] - Packet 5: IP / TCP 10.0.0.1:https > 192.168.1.1:12345 PA / Raw
+2024-12-31 22:08:41,678 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x14, Version: 0x303, Length: 17
+2024-12-31 22:08:41,679 - INFO - [pcap_writer.py:413] - Packet 6: IP / TCP 192.168.1.1:12345 > 10.0.0.1:https PA / Raw
+2024-12-31 22:08:41,679 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x17, Version: 0x303, Length: 165
+2024-12-31 22:08:41,680 - INFO - [pcap_writer.py:413] - Packet 7: IP / TCP 10.0.0.1:https > 192.168.1.1:12345 PA / Raw
+2024-12-31 22:08:41,680 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x17, Version: 0x303, Length: 133
+2024-12-31 22:08:41,680 - INFO - [pcap_writer.py:413] - Packet 8: IP / TCP 10.0.0.1:https > 192.168.1.1:12345 PA / Raw
+2024-12-31 22:08:41,680 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x17, Version: 0x303, Length: 1157
+2024-12-31 22:08:41,681 - INFO - [pcap_writer.py:413] - Packet 9: IP / TCP 192.168.1.2:12346 > 10.0.0.1:https PA / Raw
+2024-12-31 22:08:41,681 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x16, Version: 0x303, Length: 90
+2024-12-31 22:08:41,681 - INFO - [pcap_writer.py:413] - Packet 10: IP / TCP 10.0.0.1:https > 192.168.1.2:12346 PA / Raw
+2024-12-31 22:08:41,682 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x16, Version: 0x303, Length: 2775
+2024-12-31 22:08:41,682 - INFO - [pcap_writer.py:413] - Packet 11: IP / TCP 192.168.1.2:12346 > 10.0.0.1:https PA / Raw
+2024-12-31 22:08:41,683 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x16, Version: 0x303, Length: 269
+2024-12-31 22:08:41,683 - INFO - [pcap_writer.py:413] - Packet 12: IP / TCP 192.168.1.2:12346 > 10.0.0.1:https PA / Raw
+2024-12-31 22:08:41,684 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x14, Version: 0x303, Length: 17
+2024-12-31 22:08:41,684 - INFO - [pcap_writer.py:413] - Packet 13: IP / TCP 10.0.0.1:https > 192.168.1.2:12346 PA / Raw
+2024-12-31 22:08:41,685 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x14, Version: 0x303, Length: 17
+2024-12-31 22:08:41,685 - INFO - [pcap_writer.py:413] - Packet 14: IP / TCP 192.168.1.2:12346 > 10.0.0.1:http PA / Raw
+2024-12-31 22:08:41,686 - INFO - [pcap_writer.py:420] - TLS Record: HTTP message
+2024-12-31 22:08:41,686 - INFO - [pcap_writer.py:413] - Packet 15: IP / TCP 10.0.0.1:http > 192.168.1.2:12346 PA / Raw
+2024-12-31 22:08:41,687 - INFO - [pcap_writer.py:420] - TLS Record: HTTP message
+2024-12-31 22:08:41,687 - INFO - [pcap_writer.py:427] - Verification complete: 15 valid packets, 15 TLS records
+2024-12-31 22:08:41,688 - INFO - [main.py:106] - Results saved to C:\my-CTF\pcap_creator\tls\output\capture.pcap
+2024-12-31 22:08:41,688 - INFO - [main.py:160] - TLS session simulation completed successfully
+2024-12-31 22:16:04,446 - INFO - [logging.py:83] - Logging configured successfully
+2024-12-31 22:16:04,447 - INFO - [logging.py:90] - === Logging Configuration ===
+2024-12-31 22:16:04,448 - INFO - [logging.py:91] - Log file: C:\my-CTF\pcap_creator\tls\logs\tls_session.log
+2024-12-31 22:16:04,448 - INFO - [logging.py:92] - Log level: 20
+2024-12-31 22:16:04,449 - INFO - [logging.py:93] - Timestamp: 2024-12-31T22:16:04.449291
+2024-12-31 22:16:04,449 - INFO - [logging.py:94] - ==========================
+2024-12-31 22:16:04,450 - INFO - [main.py:122] - Starting TLS session simulation
+2024-12-31 22:16:04,451 - INFO - [main.py:87] - 
+--- Client Session (certificate) ---
+2024-12-31 22:16:04,453 - INFO - [cert.py:107] - Loading certificate from: C:\my-CTF\pcap_creator\tls\certificates\certs\ca.crt
+2024-12-31 22:16:04,454 - INFO - [cert.py:108] - File exists: True
+2024-12-31 22:16:04,454 - INFO - [cert.py:109] - File size: 1912 bytes
+2024-12-31 22:16:04,456 - INFO - [cert.py:113] - Read 1912 bytes
+2024-12-31 22:16:04,456 - INFO - [cert.py:117] - First 100 bytes: b'\n-----BEGIN CERTIFICATE-----\nMIIFVjCCAz4CCQDZlfjV/jlm3jANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ\nUjEPMA'
+2024-12-31 22:16:04,457 - INFO - [cert.py:120] - File content as text: 
+-----BEGIN CERTIFICATE-----
+MIIFVjCCAz4CCQDZlfjV/jlm3jANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ
+UjEPMA0GA1UECAwGVGVocmFuMQ8wDQYDVQQHDAZUZWhyYW4xDTALBgNVBAoMBElS
+R0MxFjAUBgNVBAsMDUN5YmVyc2VjdXJpdHkxFTATB
+2024-12-31 22:16:04,462 - INFO - [cert.py:130] - Successfully loaded as PEM
+2024-12-31 22:16:04,464 - INFO - [cert.py:107] - Loading certificate from: C:\my-CTF\pcap_creator\tls\certificates\certs\server.crt
+2024-12-31 22:16:04,465 - INFO - [cert.py:108] - File exists: True
+2024-12-31 22:16:04,465 - INFO - [cert.py:109] - File size: 1643 bytes
+2024-12-31 22:16:04,467 - INFO - [cert.py:113] - Read 1643 bytes
+2024-12-31 22:16:04,468 - INFO - [cert.py:117] - First 100 bytes: b'-----BEGIN CERTIFICATE-----\nMIIEjzCCAncCFCTAuN/v92YqzLPMORcinlGx86nWMA0GCSqGSIb3DQEBCwUAMG0x\nCzAJBgN'
+2024-12-31 22:16:04,469 - INFO - [cert.py:120] - File content as text: -----BEGIN CERTIFICATE-----
+MIIEjzCCAncCFCTAuN/v92YqzLPMORcinlGx86nWMA0GCSqGSIb3DQEBCwUAMG0x
+CzAJBgNVBAYTAklSMQ8wDQYDVQQIDAZUZWhyYW4xDzANBgNVBAcMBlRlaHJhbjEN
+MAsGA1UECgwESVJHQzEWMBQGA1UECwwNQ3liZXJzZW
+2024-12-31 22:16:04,472 - INFO - [cert.py:130] - Successfully loaded as PEM
+2024-12-31 22:16:04,661 - INFO - [cert.py:213] - Successfully loaded private key from C:\my-CTF\pcap_creator\tls\certificates\certs\server.key
+2024-12-31 22:16:04,663 - INFO - [cert.py:214] - Key type: RSAPrivateKey
+2024-12-31 22:16:04,663 - INFO - [cert.py:215] - Key size: 2048 bits
+2024-12-31 22:16:04,664 - INFO - [cert.py:217] - Public exponent: 65537
+2024-12-31 22:16:04,669 - INFO - [cert.py:246] - Certificate and keys loaded and validated successfully
+2024-12-31 22:16:04,670 - INFO - [verify.py:58] - Public key comparison results:
+2024-12-31 22:16:04,670 - INFO - [verify.py:59] - Certificate modulus (n): 0xdb8d24fa298358ec6a55b74c127eddafe1c5d51db0bdae576735f6d21cbde938dc691a0cacb39c0a97ff3d00f544fe971cd81924a9a4cd0a316ae79d57608f6353826f9e12203f1f41fbcaa0a6d3c4d373d4191da7495b71d2d22a087eae48f216e87d87a3554bb0c63fea8902ca6c16fe7b0646f68cfbdcff200463728f68fefd7e865776b59decc6608448145cef528db2e24f71aa507c08c27220e079d67f3ae0c73fb999d06b5c55672252b75686b3a4aef0513e7899425f8de018a54c680b50331fdf84d68f2f1d38d326558b0086e186067f7bc885ed64f4229ff96890c9977cb34f5ba64f487469ce438abacafc250cc667fd530fe1a940a21265bbef
+2024-12-31 22:16:04,671 - INFO - [verify.py:60] - Loaded key modulus (n): 0xdb8d24fa298358ec6a55b74c127eddafe1c5d51db0bdae576735f6d21cbde938dc691a0cacb39c0a97ff3d00f544fe971cd81924a9a4cd0a316ae79d57608f6353826f9e12203f1f41fbcaa0a6d3c4d373d4191da7495b71d2d22a087eae48f216e87d87a3554bb0c63fea8902ca6c16fe7b0646f68cfbdcff200463728f68fefd7e865776b59decc6608448145cef528db2e24f71aa507c08c27220e079d67f3ae0c73fb999d06b5c55672252b75686b3a4aef0513e7899425f8de018a54c680b50331fdf84d68f2f1d38d326558b0086e186067f7bc885ed64f4229ff96890c9977cb34f5ba64f487469ce438abacafc250cc667fd530fe1a940a21265bbef
+2024-12-31 22:16:04,672 - INFO - [verify.py:61] - Certificate exponent (e): 0x10001
+2024-12-31 22:16:04,672 - INFO - [verify.py:62] - Loaded key exponent (e): 0x10001
+2024-12-31 22:16:04,677 - INFO - [verify.py:136] - Certificate chain verification successful
+2024-12-31 22:16:04,678 - INFO - [verify.py:188] - Server name 'Pasdaran.local' verified successfully.
+2024-12-31 22:16:04,678 - INFO - [chain.py:110] - Certificate chain verification passed
+2024-12-31 22:16:04,678 - INFO - [chain.py:117] - Certificate chain loaded successfully
+2024-12-31 22:16:04,679 - INFO - [chain.py:118] - Server cert subject: <Name(C=IR,ST=Tehran,L=Tehran,O=Pasdaran,OU=Cybersecurity,CN=Pasdaran.local,1.2.840.113549.1.9.1=server-ctf@example.com)>
+2024-12-31 22:16:04,679 - INFO - [chain.py:119] - Server public key modulus (n): 27715789706063429807557606224995599859500290360318746177887351772584930700767922060265236908225326034069499061360415721333197892250480074686217368392578391301159860963548062819987980192117154285346649743193735554410844424979329819561349555165843655319142309437602325619944960532107668642823205088719004451766785584250375602116664746909990082155815187624898337966421103740799583791159146718040738723787975829478664380188405278530204082653290083478390920045586534051947651758952646967903767271859712523843899436041916810100575135597588004406500203895849926956188138294164569460185397378003955721604444173706240738049007
+2024-12-31 22:16:04,680 - INFO - [chain.py:123] - CA cert subject: <Name(C=IR,ST=Tehran,L=Tehran,O=IRGC,OU=Cybersecurity,CN=IRGC Root CA)>
+2024-12-31 22:16:04,681 - INFO - [session.py:120] - Starting TLS session
+2024-12-31 22:16:04,681 - INFO - [client.py:95] - Generated client_random: 6774510420a4e3addaae43cb39ca630be3b48fff53725bba68748c31d2283293
+2024-12-31 22:16:04,691 - INFO - [client.py:135] - Client Hello sent from 192.168.1.1
+2024-12-31 22:16:04,695 - INFO - [server.py:93] - Generated server_random: 67745104b89fc3234e5db9af08594179e971628c137b5ebed8939103748d51ef
+2024-12-31 22:16:04,702 - INFO - [cert.py:107] - Loading certificate from: C:\my-CTF\pcap_creator\tls\certificates\certs\client.crt
+2024-12-31 22:16:04,704 - INFO - [cert.py:108] - File exists: True
+2024-12-31 22:16:04,705 - INFO - [cert.py:109] - File size: 1915 bytes
+2024-12-31 22:16:04,706 - INFO - [cert.py:113] - Read 1915 bytes
+2024-12-31 22:16:04,707 - INFO - [cert.py:117] - First 100 bytes: b'-----BEGIN CERTIFICATE-----\nMIIFWjCCA0ICCQDOoMV5YsO5TDANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ\nUjEPMA0'
+2024-12-31 22:16:04,708 - INFO - [cert.py:120] - File content as text: -----BEGIN CERTIFICATE-----
+MIIFWjCCA0ICCQDOoMV5YsO5TDANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ
+UjEPMA0GA1UECAwGVGVocmFuMQ8wDQYDVQQHDAZUZWhyYW4xDTALBgNVBAoMBElS
+R0MxFjAUBgNVBAsMDUN5YmVyc2VjdXJpdHkxFTATBg
+2024-12-31 22:16:04,710 - INFO - [cert.py:130] - Successfully loaded as PEM
+2024-12-31 22:16:04,711 - INFO - [client.py:169] - Prepared client certificate
+2024-12-31 22:16:04,712 - INFO - [client.py:184] - Encrypted pre_master_secret length: 256
+2024-12-31 22:16:04,716 - INFO - [chain.py:185] - Decrypted pre_master_secret: 03034b08a31dbe6da443f7176f5472769bd3c50eb3423ee3415b412cc28dd369437d732def7ca7553aee8a9ba03ab4f3
+2024-12-31 22:16:04,717 - INFO - [chain.py:195] - Generated master secret: affbfd13760499e4f2f309b57d7d131240d2e1bcbf6758262f210086449a761987873e31f6410aa17ebba75f2e6a5d24
+2024-12-31 22:16:04,719 - INFO - [chain.py:196] - Master secret length: 48 bytes
+2024-12-31 22:16:04,722 - INFO - [client.py:345] - Client ChangeCipherSpec and Finished messages sent
+2024-12-31 22:16:04,726 - INFO - [server.py:254] - Pre-master secret validated successfully
+2024-12-31 22:16:04,728 - INFO - [server.py:272] - Generated digital signature: 5b296c46a03d4fcd12b435046c06df053378e1bbcada099f4cfae08675c3d9571b7519ad0a12091a97d8500e812812a0689aa331b8a753cb0866a6b392e83e0fb7ef823d68b80ee565a3b65683b012c624e38bef26cb599bb00b24f6db6195356426dfcfd681d8a8d35a4278df4519246d70944a956b854e7af066c4cda8fc5c1f2473dbbcf8e2a840204cf9ded0f6833efd05657c657ecb201c3c5decc8cea8c34b1b23ec491204d8fb679b79cb2fe45eb5dd6be477ac2f67c7a1d1feb86e7c19c9f763902da2ce5de3ecf5331cbd6b094d7ebd632ed28665e2da06fb6a738d7571115534e8cc8afe2c29d9814a9c6a92014014fa52f02bec54360fcc8f2bcd
+2024-12-31 22:16:04,731 - INFO - [server.py:309] - Server ChangeCipherSpec and Finished messages sent
+2024-12-31 22:16:04,734 - INFO - [keys.py:200] - SSL keys logged to C:\my-CTF\pcap_creator\tls\logs\ssl_key_log.log
+2024-12-31 22:16:04,736 - INFO - [session.py:104] - TLS Handshake completed successfully
+2024-12-31 22:16:04,738 - INFO - [session.py:131] - Found file to send: C:\my-CTF\pcap_creator\tls\documents\ctf_challenge.gif
+2024-12-31 22:16:04,740 - INFO - [session.py:149] - Handshake completed: True
+2024-12-31 22:16:04,742 - INFO - [session.py:150] - Use client cert: True
+2024-12-31 22:16:04,743 - INFO - [session.py:151] - File to send: C:\my-CTF\pcap_creator\tls\documents\ctf_challenge.gif
+2024-12-31 22:16:04,745 - INFO - [session.py:154] - Using encrypted exchange
+2024-12-31 22:16:04,746 - INFO - [session.py:169] - Sending encrypted request data
+2024-12-31 22:16:04,750 - INFO - [keys.py:180] - TLS Application Data sent from 192.168.1.1:12345 to 10.0.0.1:443
+2024-12-31 22:16:04,752 - INFO - [session.py:180] - Sending encrypted response data
+2024-12-31 22:16:04,758 - INFO - [keys.py:180] - TLS Application Data sent from 10.0.0.1:443 to 192.168.1.1:12345
+2024-12-31 22:16:04,760 - INFO - [session.py:192] - Attempting to send file: C:\my-CTF\pcap_creator\tls\documents\ctf_challenge.gif
+2024-12-31 22:16:04,761 - INFO - [session.py:203] - Opening file: C:\my-CTF\pcap_creator\tls\documents\ctf_challenge.gif
+2024-12-31 22:16:04,762 - INFO - [session.py:210] - Read 1103 bytes from file
+2024-12-31 22:16:04,764 - INFO - [keys.py:180] - TLS Application Data sent from 10.0.0.1:443 to 192.168.1.1:12345
+2024-12-31 22:16:04,766 - INFO - [session.py:219] - File sent successfully
+2024-12-31 22:16:04,766 - INFO - [session.py:194] - File sent successfully
+2024-12-31 22:16:04,767 - INFO - [main.py:95] - Session completed successfully for 192.168.1.1
+2024-12-31 22:16:04,767 - INFO - [main.py:87] - 
+--- Client Session (no certificate) ---
+2024-12-31 22:16:04,770 - INFO - [cert.py:107] - Loading certificate from: C:\my-CTF\pcap_creator\tls\certificates\certs\ca.crt
+2024-12-31 22:16:04,772 - INFO - [cert.py:108] - File exists: True
+2024-12-31 22:16:04,774 - INFO - [cert.py:109] - File size: 1912 bytes
+2024-12-31 22:16:04,777 - INFO - [cert.py:113] - Read 1912 bytes
+2024-12-31 22:16:04,778 - INFO - [cert.py:117] - First 100 bytes: b'\n-----BEGIN CERTIFICATE-----\nMIIFVjCCAz4CCQDZlfjV/jlm3jANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ\nUjEPMA'
+2024-12-31 22:16:04,779 - INFO - [cert.py:120] - File content as text: 
+-----BEGIN CERTIFICATE-----
+MIIFVjCCAz4CCQDZlfjV/jlm3jANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ
+UjEPMA0GA1UECAwGVGVocmFuMQ8wDQYDVQQHDAZUZWhyYW4xDTALBgNVBAoMBElS
+R0MxFjAUBgNVBAsMDUN5YmVyc2VjdXJpdHkxFTATB
+2024-12-31 22:16:04,781 - INFO - [cert.py:130] - Successfully loaded as PEM
+2024-12-31 22:16:04,782 - INFO - [cert.py:107] - Loading certificate from: C:\my-CTF\pcap_creator\tls\certificates\certs\server.crt
+2024-12-31 22:16:04,783 - INFO - [cert.py:108] - File exists: True
+2024-12-31 22:16:04,784 - INFO - [cert.py:109] - File size: 1643 bytes
+2024-12-31 22:16:04,786 - INFO - [cert.py:113] - Read 1643 bytes
+2024-12-31 22:16:04,787 - INFO - [cert.py:117] - First 100 bytes: b'-----BEGIN CERTIFICATE-----\nMIIEjzCCAncCFCTAuN/v92YqzLPMORcinlGx86nWMA0GCSqGSIb3DQEBCwUAMG0x\nCzAJBgN'
+2024-12-31 22:16:04,789 - INFO - [cert.py:120] - File content as text: -----BEGIN CERTIFICATE-----
+MIIEjzCCAncCFCTAuN/v92YqzLPMORcinlGx86nWMA0GCSqGSIb3DQEBCwUAMG0x
+CzAJBgNVBAYTAklSMQ8wDQYDVQQIDAZUZWhyYW4xDzANBgNVBAcMBlRlaHJhbjEN
+MAsGA1UECgwESVJHQzEWMBQGA1UECwwNQ3liZXJzZW
+2024-12-31 22:16:04,792 - INFO - [cert.py:130] - Successfully loaded as PEM
+2024-12-31 22:16:04,853 - INFO - [cert.py:213] - Successfully loaded private key from C:\my-CTF\pcap_creator\tls\certificates\certs\server.key
+2024-12-31 22:16:04,853 - INFO - [cert.py:214] - Key type: RSAPrivateKey
+2024-12-31 22:16:04,854 - INFO - [cert.py:215] - Key size: 2048 bits
+2024-12-31 22:16:04,854 - INFO - [cert.py:217] - Public exponent: 65537
+2024-12-31 22:16:04,854 - INFO - [cert.py:246] - Certificate and keys loaded and validated successfully
+2024-12-31 22:16:04,855 - INFO - [verify.py:58] - Public key comparison results:
+2024-12-31 22:16:04,855 - INFO - [verify.py:59] - Certificate modulus (n): 0xdb8d24fa298358ec6a55b74c127eddafe1c5d51db0bdae576735f6d21cbde938dc691a0cacb39c0a97ff3d00f544fe971cd81924a9a4cd0a316ae79d57608f6353826f9e12203f1f41fbcaa0a6d3c4d373d4191da7495b71d2d22a087eae48f216e87d87a3554bb0c63fea8902ca6c16fe7b0646f68cfbdcff200463728f68fefd7e865776b59decc6608448145cef528db2e24f71aa507c08c27220e079d67f3ae0c73fb999d06b5c55672252b75686b3a4aef0513e7899425f8de018a54c680b50331fdf84d68f2f1d38d326558b0086e186067f7bc885ed64f4229ff96890c9977cb34f5ba64f487469ce438abacafc250cc667fd530fe1a940a21265bbef
+2024-12-31 22:16:04,856 - INFO - [verify.py:60] - Loaded key modulus (n): 0xdb8d24fa298358ec6a55b74c127eddafe1c5d51db0bdae576735f6d21cbde938dc691a0cacb39c0a97ff3d00f544fe971cd81924a9a4cd0a316ae79d57608f6353826f9e12203f1f41fbcaa0a6d3c4d373d4191da7495b71d2d22a087eae48f216e87d87a3554bb0c63fea8902ca6c16fe7b0646f68cfbdcff200463728f68fefd7e865776b59decc6608448145cef528db2e24f71aa507c08c27220e079d67f3ae0c73fb999d06b5c55672252b75686b3a4aef0513e7899425f8de018a54c680b50331fdf84d68f2f1d38d326558b0086e186067f7bc885ed64f4229ff96890c9977cb34f5ba64f487469ce438abacafc250cc667fd530fe1a940a21265bbef
+2024-12-31 22:16:04,857 - INFO - [verify.py:61] - Certificate exponent (e): 0x10001
+2024-12-31 22:16:04,857 - INFO - [verify.py:62] - Loaded key exponent (e): 0x10001
+2024-12-31 22:16:04,858 - INFO - [verify.py:136] - Certificate chain verification successful
+2024-12-31 22:16:04,859 - INFO - [verify.py:188] - Server name 'Pasdaran.local' verified successfully.
+2024-12-31 22:16:04,859 - INFO - [chain.py:110] - Certificate chain verification passed
+2024-12-31 22:16:04,859 - INFO - [chain.py:117] - Certificate chain loaded successfully
+2024-12-31 22:16:04,860 - INFO - [chain.py:118] - Server cert subject: <Name(C=IR,ST=Tehran,L=Tehran,O=Pasdaran,OU=Cybersecurity,CN=Pasdaran.local,1.2.840.113549.1.9.1=server-ctf@example.com)>
+2024-12-31 22:16:04,860 - INFO - [chain.py:119] - Server public key modulus (n): 27715789706063429807557606224995599859500290360318746177887351772584930700767922060265236908225326034069499061360415721333197892250480074686217368392578391301159860963548062819987980192117154285346649743193735554410844424979329819561349555165843655319142309437602325619944960532107668642823205088719004451766785584250375602116664746909990082155815187624898337966421103740799583791159146718040738723787975829478664380188405278530204082653290083478390920045586534051947651758952646967903767271859712523843899436041916810100575135597588004406500203895849926956188138294164569460185397378003955721604444173706240738049007
+2024-12-31 22:16:04,862 - INFO - [chain.py:123] - CA cert subject: <Name(C=IR,ST=Tehran,L=Tehran,O=IRGC,OU=Cybersecurity,CN=IRGC Root CA)>
+2024-12-31 22:16:04,862 - INFO - [session.py:120] - Starting TLS session
+2024-12-31 22:16:04,863 - INFO - [client.py:95] - Generated client_random: 67745104ef718a202b3a35bb2554f430b2bb65eaefe1e964203dcc4260c433f5
+2024-12-31 22:16:04,866 - INFO - [client.py:135] - Client Hello sent from 192.168.1.2
+2024-12-31 22:16:04,871 - INFO - [server.py:93] - Generated server_random: 677451048fef8ee38cd9017b78f16466e476285e9423aa8ea8a9bab295e8b941
+2024-12-31 22:16:04,877 - INFO - [client.py:172] - Prepared empty certificate
+2024-12-31 22:16:04,878 - INFO - [client.py:184] - Encrypted pre_master_secret length: 256
+2024-12-31 22:16:04,882 - INFO - [chain.py:185] - Decrypted pre_master_secret: 0303fde77fedafee8148cb3ef8515c2622359dc304da12cc783c8d32e1392b1d8bc54c89b65ba16066c1273b4ab4d6a8
+2024-12-31 22:16:04,883 - INFO - [chain.py:195] - Generated master secret: 43e658f50aa193d036c2d0bbabdb2a826240c5b1e8cebc141141ee441d8499b747e59410b562290cd174fd1757474b4d
+2024-12-31 22:16:04,883 - INFO - [chain.py:196] - Master secret length: 48 bytes
+2024-12-31 22:16:04,885 - INFO - [client.py:345] - Client ChangeCipherSpec and Finished messages sent
+2024-12-31 22:16:04,893 - INFO - [server.py:254] - Pre-master secret validated successfully
+2024-12-31 22:16:04,896 - INFO - [server.py:272] - Generated digital signature: 12b12fe507d61f497e6f8cd918cbe6ea178f26c50da7810b123e8a62b0811af89075989180e28e0c699ce127a9415d75caf3116413deb1ce1f08b1e322512b87bfe9b9c1e32a4df93d5b0cce81db5fb0766bdd349eed7969e47c6414bece02d535989328457096180b941e3df11153b3cbfe709b826900897a812184bbf91d80ce6a8056bfe88cada238ce8244d8a1f3fee1098e8c6dd9ce494e8cd664618c3b761ceb04862f8cfd43e7bd1d0b5b1e68cc789c903119fc8bef9a9a9b943cfa4df52e2802b68a6ac33644506f242ab04a1e54d82735dad6368b19739447128376ba61943f49d69c0c03c087043f94f580187f385d6098cc11b51a9ebe5c848de6
+2024-12-31 22:16:04,898 - INFO - [server.py:309] - Server ChangeCipherSpec and Finished messages sent
+2024-12-31 22:16:04,901 - INFO - [keys.py:200] - SSL keys logged to C:\my-CTF\pcap_creator\tls\logs\ssl_key_log.log
+2024-12-31 22:16:04,901 - INFO - [session.py:104] - TLS Handshake completed successfully
+2024-12-31 22:16:04,903 - INFO - [session.py:149] - Handshake completed: True
+2024-12-31 22:16:04,904 - INFO - [session.py:150] - Use client cert: False
+2024-12-31 22:16:04,906 - INFO - [session.py:151] - File to send: None
+2024-12-31 22:16:04,907 - INFO - [session.py:157] - Using unencrypted exchange
+2024-12-31 22:16:04,909 - INFO - [session.py:257] - Added request packet
+2024-12-31 22:16:04,911 - INFO - [session.py:257] - Added response packet
+2024-12-31 22:16:04,912 - WARNING - [session.py:234] - Using unencrypted communication
+2024-12-31 22:16:04,913 - INFO - [main.py:95] - Session completed successfully for 192.168.1.2
+2024-12-31 22:16:04,914 - INFO - [pcap_writer.py:232] - Packet 13: Valid HTTP message
+2024-12-31 22:16:04,914 - INFO - [pcap_writer.py:232] - Packet 14: Valid HTTP message
+2024-12-31 22:16:04,924 - INFO - [pcap_writer.py:387] - Saved 15 valid packets to C:\my-CTF\pcap_creator\tls\output\capture.pcap
+2024-12-31 22:16:04,925 - INFO - [pcap_writer.py:409] - Verifying 15 packets...
+2024-12-31 22:16:04,927 - INFO - [pcap_writer.py:413] - Packet 1: IP / TCP 192.168.1.1:12345 > 10.0.0.1:https PA / Raw
+2024-12-31 22:16:04,927 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x16, Version: 0x303, Length: 90
+2024-12-31 22:16:04,928 - INFO - [pcap_writer.py:413] - Packet 2: IP / TCP 10.0.0.1:https > 192.168.1.1:12345 PA / Raw
+2024-12-31 22:16:04,928 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x16, Version: 0x303, Length: 2775
+2024-12-31 22:16:04,929 - INFO - [pcap_writer.py:413] - Packet 3: IP / TCP 192.168.1.1:12345 > 10.0.0.1:https PA / Raw
+2024-12-31 22:16:04,929 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x16, Version: 0x303, Length: 1646
+2024-12-31 22:16:04,930 - INFO - [pcap_writer.py:413] - Packet 4: IP / TCP 192.168.1.1:12345 > 10.0.0.1:https PA / Raw
+2024-12-31 22:16:04,930 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x14, Version: 0x303, Length: 17
+2024-12-31 22:16:04,930 - INFO - [pcap_writer.py:413] - Packet 5: IP / TCP 10.0.0.1:https > 192.168.1.1:12345 PA / Raw
+2024-12-31 22:16:04,930 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x14, Version: 0x303, Length: 17
+2024-12-31 22:16:04,931 - INFO - [pcap_writer.py:413] - Packet 6: IP / TCP 192.168.1.1:12345 > 10.0.0.1:https PA / Raw
+2024-12-31 22:16:04,931 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x17, Version: 0x303, Length: 165
+2024-12-31 22:16:04,932 - INFO - [pcap_writer.py:413] - Packet 7: IP / TCP 10.0.0.1:https > 192.168.1.1:12345 PA / Raw
+2024-12-31 22:16:04,932 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x17, Version: 0x303, Length: 133
+2024-12-31 22:16:04,933 - INFO - [pcap_writer.py:413] - Packet 8: IP / TCP 10.0.0.1:https > 192.168.1.1:12345 PA / Raw
+2024-12-31 22:16:04,933 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x17, Version: 0x303, Length: 1157
+2024-12-31 22:16:04,934 - INFO - [pcap_writer.py:413] - Packet 9: IP / TCP 192.168.1.2:12346 > 10.0.0.1:https PA / Raw
+2024-12-31 22:16:04,934 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x16, Version: 0x303, Length: 90
+2024-12-31 22:16:04,935 - INFO - [pcap_writer.py:413] - Packet 10: IP / TCP 10.0.0.1:https > 192.168.1.2:12346 PA / Raw
+2024-12-31 22:16:04,935 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x16, Version: 0x303, Length: 2775
+2024-12-31 22:16:04,936 - INFO - [pcap_writer.py:413] - Packet 11: IP / TCP 192.168.1.2:12346 > 10.0.0.1:https PA / Raw
+2024-12-31 22:16:04,937 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x16, Version: 0x303, Length: 269
+2024-12-31 22:16:04,937 - INFO - [pcap_writer.py:413] - Packet 12: IP / TCP 192.168.1.2:12346 > 10.0.0.1:https PA / Raw
+2024-12-31 22:16:04,938 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x14, Version: 0x303, Length: 17
+2024-12-31 22:16:04,938 - INFO - [pcap_writer.py:413] - Packet 13: IP / TCP 10.0.0.1:https > 192.168.1.2:12346 PA / Raw
+2024-12-31 22:16:04,939 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x14, Version: 0x303, Length: 17
+2024-12-31 22:16:04,940 - INFO - [pcap_writer.py:413] - Packet 14: IP / TCP 192.168.1.2:12346 > 10.0.0.1:http PA / Raw
+2024-12-31 22:16:04,941 - INFO - [pcap_writer.py:420] - TLS Record: HTTP message
+2024-12-31 22:16:04,942 - INFO - [pcap_writer.py:413] - Packet 15: IP / TCP 10.0.0.1:http > 192.168.1.2:12346 PA / Raw
+2024-12-31 22:16:04,942 - INFO - [pcap_writer.py:420] - TLS Record: HTTP message
+2024-12-31 22:16:04,943 - INFO - [pcap_writer.py:427] - Verification complete: 15 valid packets, 15 TLS records
+2024-12-31 22:16:04,943 - INFO - [main.py:106] - Results saved to C:\my-CTF\pcap_creator\tls\output\capture.pcap
+2024-12-31 22:16:04,943 - INFO - [main.py:160] - TLS session simulation completed successfully
+2024-12-31 22:19:13,433 - INFO - [logging.py:83] - Logging configured successfully
+2024-12-31 22:19:13,435 - INFO - [logging.py:90] - === Logging Configuration ===
+2024-12-31 22:19:13,435 - INFO - [logging.py:91] - Log file: C:\my-CTF\pcap_creator\tls\logs\tls_session.log
+2024-12-31 22:19:13,436 - INFO - [logging.py:92] - Log level: 20
+2024-12-31 22:19:13,437 - INFO - [logging.py:93] - Timestamp: 2024-12-31T22:19:13.437568
+2024-12-31 22:19:13,438 - INFO - [logging.py:94] - ==========================
+2024-12-31 22:19:13,438 - INFO - [main.py:122] - Starting TLS session simulation
+2024-12-31 22:19:13,440 - INFO - [main.py:87] - 
+--- Client Session (certificate) ---
+2024-12-31 22:19:13,442 - INFO - [cert.py:107] - Loading certificate from: C:\my-CTF\pcap_creator\tls\certificates\certs\ca.crt
+2024-12-31 22:19:13,444 - INFO - [cert.py:108] - File exists: True
+2024-12-31 22:19:13,445 - INFO - [cert.py:109] - File size: 1912 bytes
+2024-12-31 22:19:13,446 - INFO - [cert.py:113] - Read 1912 bytes
+2024-12-31 22:19:13,447 - INFO - [cert.py:117] - First 100 bytes: b'\n-----BEGIN CERTIFICATE-----\nMIIFVjCCAz4CCQDZlfjV/jlm3jANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ\nUjEPMA'
+2024-12-31 22:19:13,447 - INFO - [cert.py:120] - File content as text: 
+-----BEGIN CERTIFICATE-----
+MIIFVjCCAz4CCQDZlfjV/jlm3jANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ
+UjEPMA0GA1UECAwGVGVocmFuMQ8wDQYDVQQHDAZUZWhyYW4xDTALBgNVBAoMBElS
+R0MxFjAUBgNVBAsMDUN5YmVyc2VjdXJpdHkxFTATB
+2024-12-31 22:19:13,456 - INFO - [cert.py:130] - Successfully loaded as PEM
+2024-12-31 22:19:13,457 - INFO - [cert.py:107] - Loading certificate from: C:\my-CTF\pcap_creator\tls\certificates\certs\server.crt
+2024-12-31 22:19:13,458 - INFO - [cert.py:108] - File exists: True
+2024-12-31 22:19:13,461 - INFO - [cert.py:109] - File size: 1643 bytes
+2024-12-31 22:19:13,462 - INFO - [cert.py:113] - Read 1643 bytes
+2024-12-31 22:19:13,463 - INFO - [cert.py:117] - First 100 bytes: b'-----BEGIN CERTIFICATE-----\nMIIEjzCCAncCFCTAuN/v92YqzLPMORcinlGx86nWMA0GCSqGSIb3DQEBCwUAMG0x\nCzAJBgN'
+2024-12-31 22:19:13,467 - INFO - [cert.py:120] - File content as text: -----BEGIN CERTIFICATE-----
+MIIEjzCCAncCFCTAuN/v92YqzLPMORcinlGx86nWMA0GCSqGSIb3DQEBCwUAMG0x
+CzAJBgNVBAYTAklSMQ8wDQYDVQQIDAZUZWhyYW4xDzANBgNVBAcMBlRlaHJhbjEN
+MAsGA1UECgwESVJHQzEWMBQGA1UECwwNQ3liZXJzZW
+2024-12-31 22:19:13,469 - INFO - [cert.py:130] - Successfully loaded as PEM
+2024-12-31 22:19:13,515 - INFO - [cert.py:213] - Successfully loaded private key from C:\my-CTF\pcap_creator\tls\certificates\certs\server.key
+2024-12-31 22:19:13,516 - INFO - [cert.py:214] - Key type: RSAPrivateKey
+2024-12-31 22:19:13,517 - INFO - [cert.py:215] - Key size: 2048 bits
+2024-12-31 22:19:13,519 - INFO - [cert.py:217] - Public exponent: 65537
+2024-12-31 22:19:13,526 - INFO - [cert.py:246] - Certificate and keys loaded and validated successfully
+2024-12-31 22:19:13,527 - INFO - [verify.py:58] - Public key comparison results:
+2024-12-31 22:19:13,528 - INFO - [verify.py:59] - Certificate modulus (n): 0xdb8d24fa298358ec6a55b74c127eddafe1c5d51db0bdae576735f6d21cbde938dc691a0cacb39c0a97ff3d00f544fe971cd81924a9a4cd0a316ae79d57608f6353826f9e12203f1f41fbcaa0a6d3c4d373d4191da7495b71d2d22a087eae48f216e87d87a3554bb0c63fea8902ca6c16fe7b0646f68cfbdcff200463728f68fefd7e865776b59decc6608448145cef528db2e24f71aa507c08c27220e079d67f3ae0c73fb999d06b5c55672252b75686b3a4aef0513e7899425f8de018a54c680b50331fdf84d68f2f1d38d326558b0086e186067f7bc885ed64f4229ff96890c9977cb34f5ba64f487469ce438abacafc250cc667fd530fe1a940a21265bbef
+2024-12-31 22:19:13,530 - INFO - [verify.py:60] - Loaded key modulus (n): 0xdb8d24fa298358ec6a55b74c127eddafe1c5d51db0bdae576735f6d21cbde938dc691a0cacb39c0a97ff3d00f544fe971cd81924a9a4cd0a316ae79d57608f6353826f9e12203f1f41fbcaa0a6d3c4d373d4191da7495b71d2d22a087eae48f216e87d87a3554bb0c63fea8902ca6c16fe7b0646f68cfbdcff200463728f68fefd7e865776b59decc6608448145cef528db2e24f71aa507c08c27220e079d67f3ae0c73fb999d06b5c55672252b75686b3a4aef0513e7899425f8de018a54c680b50331fdf84d68f2f1d38d326558b0086e186067f7bc885ed64f4229ff96890c9977cb34f5ba64f487469ce438abacafc250cc667fd530fe1a940a21265bbef
+2024-12-31 22:19:13,532 - INFO - [verify.py:61] - Certificate exponent (e): 0x10001
+2024-12-31 22:19:13,533 - INFO - [verify.py:62] - Loaded key exponent (e): 0x10001
+2024-12-31 22:19:13,540 - INFO - [verify.py:136] - Certificate chain verification successful
+2024-12-31 22:19:13,543 - INFO - [verify.py:188] - Server name 'Pasdaran.local' verified successfully.
+2024-12-31 22:19:13,545 - INFO - [chain.py:110] - Certificate chain verification passed
+2024-12-31 22:19:13,545 - INFO - [chain.py:117] - Certificate chain loaded successfully
+2024-12-31 22:19:13,546 - INFO - [chain.py:118] - Server cert subject: <Name(C=IR,ST=Tehran,L=Tehran,O=Pasdaran,OU=Cybersecurity,CN=Pasdaran.local,1.2.840.113549.1.9.1=server-ctf@example.com)>
+2024-12-31 22:19:13,547 - INFO - [chain.py:119] - Server public key modulus (n): 27715789706063429807557606224995599859500290360318746177887351772584930700767922060265236908225326034069499061360415721333197892250480074686217368392578391301159860963548062819987980192117154285346649743193735554410844424979329819561349555165843655319142309437602325619944960532107668642823205088719004451766785584250375602116664746909990082155815187624898337966421103740799583791159146718040738723787975829478664380188405278530204082653290083478390920045586534051947651758952646967903767271859712523843899436041916810100575135597588004406500203895849926956188138294164569460185397378003955721604444173706240738049007
+2024-12-31 22:19:13,549 - INFO - [chain.py:123] - CA cert subject: <Name(C=IR,ST=Tehran,L=Tehran,O=IRGC,OU=Cybersecurity,CN=IRGC Root CA)>
+2024-12-31 22:19:13,550 - INFO - [session.py:120] - Starting TLS session
+2024-12-31 22:19:13,551 - INFO - [client.py:95] - Generated client_random: 677451c137dca901fdeb859070950f5827c5717eb1e60926aacbec45cbb0f184
+2024-12-31 22:19:13,567 - INFO - [client.py:135] - Client Hello sent from 192.168.1.1
+2024-12-31 22:19:13,576 - INFO - [server.py:93] - Generated server_random: 677451c1e0c5e1ee626f776289b04838e37ea90d2612fc5d098f160b1800ab18
+2024-12-31 22:19:13,585 - INFO - [cert.py:107] - Loading certificate from: C:\my-CTF\pcap_creator\tls\certificates\certs\client.crt
+2024-12-31 22:19:13,587 - INFO - [cert.py:108] - File exists: True
+2024-12-31 22:19:13,589 - INFO - [cert.py:109] - File size: 1915 bytes
+2024-12-31 22:19:13,592 - INFO - [cert.py:113] - Read 1915 bytes
+2024-12-31 22:19:13,594 - INFO - [cert.py:117] - First 100 bytes: b'-----BEGIN CERTIFICATE-----\nMIIFWjCCA0ICCQDOoMV5YsO5TDANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ\nUjEPMA0'
+2024-12-31 22:19:13,596 - INFO - [cert.py:120] - File content as text: -----BEGIN CERTIFICATE-----
+MIIFWjCCA0ICCQDOoMV5YsO5TDANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ
+UjEPMA0GA1UECAwGVGVocmFuMQ8wDQYDVQQHDAZUZWhyYW4xDTALBgNVBAoMBElS
+R0MxFjAUBgNVBAsMDUN5YmVyc2VjdXJpdHkxFTATBg
+2024-12-31 22:19:13,598 - INFO - [cert.py:130] - Successfully loaded as PEM
+2024-12-31 22:19:13,600 - INFO - [client.py:169] - Prepared client certificate
+2024-12-31 22:19:13,604 - INFO - [client.py:184] - Encrypted pre_master_secret length: 256
+2024-12-31 22:19:13,614 - INFO - [chain.py:185] - Decrypted pre_master_secret: 030355d7ca9cb00242619414ff89f5f9e10b59824dd000b00acbe4f135fc8c8fc78856bc0dd8bd3870f53a36458f6ae7
+2024-12-31 22:19:13,616 - INFO - [chain.py:195] - Generated master secret: 2e0e9e49cddfc943d8c38c574d6d0234559742ffb155a6a44e01577ffdb551cc62d6246e0a7a3fd7460f64a586f3456b
+2024-12-31 22:19:13,617 - INFO - [chain.py:196] - Master secret length: 48 bytes
+2024-12-31 22:19:13,623 - INFO - [client.py:345] - Client ChangeCipherSpec and Finished messages sent
+2024-12-31 22:19:13,627 - INFO - [server.py:254] - Pre-master secret validated successfully
+2024-12-31 22:19:13,631 - INFO - [server.py:272] - Generated digital signature: cbaee375506cf0b81f82f53a3afe007c7e46ee2add273d5e57eef8dec109325eb764afa4180c2a3632fb48ed3faa82e33e6fbef0e5849595bb063057f7c22260126f26cc4355d7f2f4533de95d3136fddf61f36f6f7608ee1b01c9896f2949f5d048b3f00aa865d9ae7d3dfe68eb669b0506d33d07fd61c97d131877dfcb51d4be23a601c1ebb5203cdd5949deb7b31ade793c8cec54146db67658f72f8031f0ad9dcaac1bb21da8febd06b6f225fa8be23750bb41ee26f21172b4c6ebcfa53a440cbe2e07881372c6975bd2ae132fa05106f11b7788f11eb8a374424bbf143798a10091aa9e79407eccfe3a4ad3c6e7a18d49b34e8b31b16ffb38a4eaf3f026
+2024-12-31 22:19:13,634 - INFO - [server.py:309] - Server ChangeCipherSpec and Finished messages sent
+2024-12-31 22:19:13,638 - INFO - [keys.py:200] - SSL keys logged to C:\my-CTF\pcap_creator\tls\logs\ssl_key_log.log
+2024-12-31 22:19:13,640 - INFO - [session.py:104] - TLS Handshake completed successfully
+2024-12-31 22:19:13,642 - INFO - [session.py:131] - Found file to send: C:\my-CTF\pcap_creator\tls\documents\ctf_challenge.gif
+2024-12-31 22:19:13,645 - INFO - [session.py:149] - Handshake completed: True
+2024-12-31 22:19:13,646 - INFO - [session.py:150] - Use client cert: True
+2024-12-31 22:19:13,648 - INFO - [session.py:151] - File to send: C:\my-CTF\pcap_creator\tls\documents\ctf_challenge.gif
+2024-12-31 22:19:13,650 - INFO - [session.py:154] - Using encrypted exchange
+2024-12-31 22:19:13,651 - INFO - [session.py:169] - Sending encrypted request data
+2024-12-31 22:19:13,659 - INFO - [keys.py:180] - TLS Application Data sent from 192.168.1.1:12345 to 10.0.0.1:443
+2024-12-31 22:19:13,662 - INFO - [session.py:180] - Sending encrypted response data
+2024-12-31 22:19:13,668 - INFO - [keys.py:180] - TLS Application Data sent from 10.0.0.1:443 to 192.168.1.1:12345
+2024-12-31 22:19:13,670 - INFO - [session.py:192] - Attempting to send file: C:\my-CTF\pcap_creator\tls\documents\ctf_challenge.gif
+2024-12-31 22:19:13,673 - INFO - [session.py:203] - Opening file: C:\my-CTF\pcap_creator\tls\documents\ctf_challenge.gif
+2024-12-31 22:19:13,678 - INFO - [session.py:210] - Read 1103 bytes from file
+2024-12-31 22:19:13,684 - INFO - [keys.py:180] - TLS Application Data sent from 10.0.0.1:443 to 192.168.1.1:12345
+2024-12-31 22:19:13,686 - INFO - [session.py:219] - File sent successfully
+2024-12-31 22:19:13,688 - INFO - [session.py:194] - File sent successfully
+2024-12-31 22:19:13,689 - INFO - [main.py:95] - Session completed successfully for 192.168.1.1
+2024-12-31 22:19:13,691 - INFO - [main.py:87] - 
+--- Client Session (no certificate) ---
+2024-12-31 22:19:13,695 - INFO - [cert.py:107] - Loading certificate from: C:\my-CTF\pcap_creator\tls\certificates\certs\ca.crt
+2024-12-31 22:19:13,698 - INFO - [cert.py:108] - File exists: True
+2024-12-31 22:19:13,700 - INFO - [cert.py:109] - File size: 1912 bytes
+2024-12-31 22:19:13,701 - INFO - [cert.py:113] - Read 1912 bytes
+2024-12-31 22:19:13,703 - INFO - [cert.py:117] - First 100 bytes: b'\n-----BEGIN CERTIFICATE-----\nMIIFVjCCAz4CCQDZlfjV/jlm3jANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ\nUjEPMA'
+2024-12-31 22:19:13,706 - INFO - [cert.py:120] - File content as text: 
+-----BEGIN CERTIFICATE-----
+MIIFVjCCAz4CCQDZlfjV/jlm3jANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ
+UjEPMA0GA1UECAwGVGVocmFuMQ8wDQYDVQQHDAZUZWhyYW4xDTALBgNVBAoMBElS
+R0MxFjAUBgNVBAsMDUN5YmVyc2VjdXJpdHkxFTATB
+2024-12-31 22:19:13,711 - INFO - [cert.py:130] - Successfully loaded as PEM
+2024-12-31 22:19:13,713 - INFO - [cert.py:107] - Loading certificate from: C:\my-CTF\pcap_creator\tls\certificates\certs\server.crt
+2024-12-31 22:19:13,716 - INFO - [cert.py:108] - File exists: True
+2024-12-31 22:19:13,718 - INFO - [cert.py:109] - File size: 1643 bytes
+2024-12-31 22:19:13,721 - INFO - [cert.py:113] - Read 1643 bytes
+2024-12-31 22:19:13,723 - INFO - [cert.py:117] - First 100 bytes: b'-----BEGIN CERTIFICATE-----\nMIIEjzCCAncCFCTAuN/v92YqzLPMORcinlGx86nWMA0GCSqGSIb3DQEBCwUAMG0x\nCzAJBgN'
+2024-12-31 22:19:13,725 - INFO - [cert.py:120] - File content as text: -----BEGIN CERTIFICATE-----
+MIIEjzCCAncCFCTAuN/v92YqzLPMORcinlGx86nWMA0GCSqGSIb3DQEBCwUAMG0x
+CzAJBgNVBAYTAklSMQ8wDQYDVQQIDAZUZWhyYW4xDzANBgNVBAcMBlRlaHJhbjEN
+MAsGA1UECgwESVJHQzEWMBQGA1UECwwNQ3liZXJzZW
+2024-12-31 22:19:13,728 - INFO - [cert.py:130] - Successfully loaded as PEM
+2024-12-31 22:19:13,778 - INFO - [cert.py:213] - Successfully loaded private key from C:\my-CTF\pcap_creator\tls\certificates\certs\server.key
+2024-12-31 22:19:13,779 - INFO - [cert.py:214] - Key type: RSAPrivateKey
+2024-12-31 22:19:13,780 - INFO - [cert.py:215] - Key size: 2048 bits
+2024-12-31 22:19:13,780 - INFO - [cert.py:217] - Public exponent: 65537
+2024-12-31 22:19:13,781 - INFO - [cert.py:246] - Certificate and keys loaded and validated successfully
+2024-12-31 22:19:13,783 - INFO - [verify.py:58] - Public key comparison results:
+2024-12-31 22:19:13,783 - INFO - [verify.py:59] - Certificate modulus (n): 0xdb8d24fa298358ec6a55b74c127eddafe1c5d51db0bdae576735f6d21cbde938dc691a0cacb39c0a97ff3d00f544fe971cd81924a9a4cd0a316ae79d57608f6353826f9e12203f1f41fbcaa0a6d3c4d373d4191da7495b71d2d22a087eae48f216e87d87a3554bb0c63fea8902ca6c16fe7b0646f68cfbdcff200463728f68fefd7e865776b59decc6608448145cef528db2e24f71aa507c08c27220e079d67f3ae0c73fb999d06b5c55672252b75686b3a4aef0513e7899425f8de018a54c680b50331fdf84d68f2f1d38d326558b0086e186067f7bc885ed64f4229ff96890c9977cb34f5ba64f487469ce438abacafc250cc667fd530fe1a940a21265bbef
+2024-12-31 22:19:13,784 - INFO - [verify.py:60] - Loaded key modulus (n): 0xdb8d24fa298358ec6a55b74c127eddafe1c5d51db0bdae576735f6d21cbde938dc691a0cacb39c0a97ff3d00f544fe971cd81924a9a4cd0a316ae79d57608f6353826f9e12203f1f41fbcaa0a6d3c4d373d4191da7495b71d2d22a087eae48f216e87d87a3554bb0c63fea8902ca6c16fe7b0646f68cfbdcff200463728f68fefd7e865776b59decc6608448145cef528db2e24f71aa507c08c27220e079d67f3ae0c73fb999d06b5c55672252b75686b3a4aef0513e7899425f8de018a54c680b50331fdf84d68f2f1d38d326558b0086e186067f7bc885ed64f4229ff96890c9977cb34f5ba64f487469ce438abacafc250cc667fd530fe1a940a21265bbef
+2024-12-31 22:19:13,786 - INFO - [verify.py:61] - Certificate exponent (e): 0x10001
+2024-12-31 22:19:13,786 - INFO - [verify.py:62] - Loaded key exponent (e): 0x10001
+2024-12-31 22:19:13,787 - INFO - [verify.py:136] - Certificate chain verification successful
+2024-12-31 22:19:13,788 - INFO - [verify.py:188] - Server name 'Pasdaran.local' verified successfully.
+2024-12-31 22:19:13,788 - INFO - [chain.py:110] - Certificate chain verification passed
+2024-12-31 22:19:13,789 - INFO - [chain.py:117] - Certificate chain loaded successfully
+2024-12-31 22:19:13,789 - INFO - [chain.py:118] - Server cert subject: <Name(C=IR,ST=Tehran,L=Tehran,O=Pasdaran,OU=Cybersecurity,CN=Pasdaran.local,1.2.840.113549.1.9.1=server-ctf@example.com)>
+2024-12-31 22:19:13,790 - INFO - [chain.py:119] - Server public key modulus (n): 27715789706063429807557606224995599859500290360318746177887351772584930700767922060265236908225326034069499061360415721333197892250480074686217368392578391301159860963548062819987980192117154285346649743193735554410844424979329819561349555165843655319142309437602325619944960532107668642823205088719004451766785584250375602116664746909990082155815187624898337966421103740799583791159146718040738723787975829478664380188405278530204082653290083478390920045586534051947651758952646967903767271859712523843899436041916810100575135597588004406500203895849926956188138294164569460185397378003955721604444173706240738049007
+2024-12-31 22:19:13,791 - INFO - [chain.py:123] - CA cert subject: <Name(C=IR,ST=Tehran,L=Tehran,O=IRGC,OU=Cybersecurity,CN=IRGC Root CA)>
+2024-12-31 22:19:13,792 - INFO - [session.py:120] - Starting TLS session
+2024-12-31 22:19:13,792 - INFO - [client.py:95] - Generated client_random: 677451c1f5c5e97cc3802da649fd8f37151b6c52775a41bccc77ebff1e5c2e76
+2024-12-31 22:19:13,795 - INFO - [client.py:135] - Client Hello sent from 192.168.1.2
+2024-12-31 22:19:13,800 - INFO - [server.py:93] - Generated server_random: 677451c1bf4f3c048d3df546bb282436af00637959863e965f8de9db7feaeeac
+2024-12-31 22:19:13,805 - INFO - [client.py:172] - Prepared empty certificate
+2024-12-31 22:19:13,805 - INFO - [client.py:184] - Encrypted pre_master_secret length: 256
+2024-12-31 22:19:13,808 - INFO - [chain.py:185] - Decrypted pre_master_secret: 0303e3f821ff675279fd943e79d957fcf19e7da0a4bbf4ee85a0432fcbf9ec165db327848de53c6331e1191cef18e41d
+2024-12-31 22:19:13,808 - INFO - [chain.py:195] - Generated master secret: 38be1b9f6a5df01ce41d6787febfef1b79f4b29c086aa9156877223cd36b9fa01997207e15e013c3f5c00991b99ffe90
+2024-12-31 22:19:13,809 - INFO - [chain.py:196] - Master secret length: 48 bytes
+2024-12-31 22:19:13,810 - INFO - [client.py:345] - Client ChangeCipherSpec and Finished messages sent
+2024-12-31 22:19:13,814 - INFO - [server.py:254] - Pre-master secret validated successfully
+2024-12-31 22:19:13,817 - INFO - [server.py:272] - Generated digital signature: ac929a14db24f67517fb51aaa8c3e79dd47bb4108aab36d3c564070696e7cfe0fdc8860c92f8520cb635e8672186d60b1f96f4b4e2ac4425f5232ac3a11cbe590cfb8aa928dd5cd49e8a9090cd0b415a36f14d8133a1c36024e18ef9d60ee52b6216e0907b875d190a77aaab2c54a5effa847291c21b65e404bf6084e5afdfa406d71cf7f402993e2a781b8c5492c89824836dc6e793833f2c2ec290e432cc878cacb95ead9fa7ace6cb322cd0f8e91c8cd470c2d9f28ebb4dfadcf145362805a105e6e416cd8b639a4113093d15946c6ff3121aea8375b2d1888717be65bec390ad54d4698403d71e5a099274649be238f8f28d281713a5f7deff4a66e1a281
+2024-12-31 22:19:13,819 - INFO - [server.py:309] - Server ChangeCipherSpec and Finished messages sent
+2024-12-31 22:19:13,821 - INFO - [keys.py:200] - SSL keys logged to C:\my-CTF\pcap_creator\tls\logs\ssl_key_log.log
+2024-12-31 22:19:13,821 - INFO - [session.py:104] - TLS Handshake completed successfully
+2024-12-31 22:19:13,822 - INFO - [session.py:149] - Handshake completed: True
+2024-12-31 22:19:13,822 - INFO - [session.py:150] - Use client cert: False
+2024-12-31 22:19:13,822 - INFO - [session.py:151] - File to send: None
+2024-12-31 22:19:13,823 - INFO - [session.py:157] - Using unencrypted exchange
+2024-12-31 22:19:13,824 - INFO - [session.py:257] - Added request packet
+2024-12-31 22:19:13,825 - INFO - [session.py:257] - Added response packet
+2024-12-31 22:19:13,825 - WARNING - [session.py:234] - Using unencrypted communication
+2024-12-31 22:19:13,826 - INFO - [main.py:95] - Session completed successfully for 192.168.1.2
+2024-12-31 22:19:13,826 - INFO - [pcap_writer.py:232] - Packet 13: Valid HTTP message
+2024-12-31 22:19:13,827 - INFO - [pcap_writer.py:232] - Packet 14: Valid HTTP message
+2024-12-31 22:19:13,836 - INFO - [pcap_writer.py:387] - Saved 15 valid packets to C:\my-CTF\pcap_creator\tls\output\capture.pcap
+2024-12-31 22:19:13,837 - INFO - [pcap_writer.py:409] - Verifying 15 packets...
+2024-12-31 22:19:13,837 - INFO - [pcap_writer.py:413] - Packet 1: IP / TCP 192.168.1.1:12345 > 10.0.0.1:https PA / Raw
+2024-12-31 22:19:13,838 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x16, Version: 0x303, Length: 90
+2024-12-31 22:19:13,838 - INFO - [pcap_writer.py:413] - Packet 2: IP / TCP 10.0.0.1:https > 192.168.1.1:12345 PA / Raw
+2024-12-31 22:19:13,839 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x16, Version: 0x303, Length: 2775
+2024-12-31 22:19:13,839 - INFO - [pcap_writer.py:413] - Packet 3: IP / TCP 192.168.1.1:12345 > 10.0.0.1:https PA / Raw
+2024-12-31 22:19:13,840 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x16, Version: 0x303, Length: 1646
+2024-12-31 22:19:13,840 - INFO - [pcap_writer.py:413] - Packet 4: IP / TCP 192.168.1.1:12345 > 10.0.0.1:https PA / Raw
+2024-12-31 22:19:13,841 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x14, Version: 0x303, Length: 17
+2024-12-31 22:19:13,841 - INFO - [pcap_writer.py:413] - Packet 5: IP / TCP 10.0.0.1:https > 192.168.1.1:12345 PA / Raw
+2024-12-31 22:19:13,842 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x14, Version: 0x303, Length: 17
+2024-12-31 22:19:13,842 - INFO - [pcap_writer.py:413] - Packet 6: IP / TCP 192.168.1.1:12345 > 10.0.0.1:https PA / Raw
+2024-12-31 22:19:13,842 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x17, Version: 0x303, Length: 165
+2024-12-31 22:19:13,843 - INFO - [pcap_writer.py:413] - Packet 7: IP / TCP 10.0.0.1:https > 192.168.1.1:12345 PA / Raw
+2024-12-31 22:19:13,843 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x17, Version: 0x303, Length: 133
+2024-12-31 22:19:13,844 - INFO - [pcap_writer.py:413] - Packet 8: IP / TCP 10.0.0.1:https > 192.168.1.1:12345 PA / Raw
+2024-12-31 22:19:13,844 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x17, Version: 0x303, Length: 1157
+2024-12-31 22:19:13,845 - INFO - [pcap_writer.py:413] - Packet 9: IP / TCP 192.168.1.2:12346 > 10.0.0.1:https PA / Raw
+2024-12-31 22:19:13,846 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x16, Version: 0x303, Length: 90
+2024-12-31 22:19:13,849 - INFO - [pcap_writer.py:413] - Packet 10: IP / TCP 10.0.0.1:https > 192.168.1.2:12346 PA / Raw
+2024-12-31 22:19:13,851 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x16, Version: 0x303, Length: 2775
+2024-12-31 22:19:13,852 - INFO - [pcap_writer.py:413] - Packet 11: IP / TCP 192.168.1.2:12346 > 10.0.0.1:https PA / Raw
+2024-12-31 22:19:13,853 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x16, Version: 0x303, Length: 269
+2024-12-31 22:19:13,854 - INFO - [pcap_writer.py:413] - Packet 12: IP / TCP 192.168.1.2:12346 > 10.0.0.1:https PA / Raw
+2024-12-31 22:19:13,854 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x14, Version: 0x303, Length: 17
+2024-12-31 22:19:13,855 - INFO - [pcap_writer.py:413] - Packet 13: IP / TCP 10.0.0.1:https > 192.168.1.2:12346 PA / Raw
+2024-12-31 22:19:13,855 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x14, Version: 0x303, Length: 17
+2024-12-31 22:19:13,856 - INFO - [pcap_writer.py:413] - Packet 14: IP / TCP 192.168.1.2:12346 > 10.0.0.1:http PA / Raw
+2024-12-31 22:19:13,856 - INFO - [pcap_writer.py:420] - TLS Record: HTTP message
+2024-12-31 22:19:13,857 - INFO - [pcap_writer.py:413] - Packet 15: IP / TCP 10.0.0.1:http > 192.168.1.2:12346 PA / Raw
+2024-12-31 22:19:13,857 - INFO - [pcap_writer.py:420] - TLS Record: HTTP message
+2024-12-31 22:19:13,858 - INFO - [pcap_writer.py:427] - Verification complete: 15 valid packets, 15 TLS records
+2024-12-31 22:19:13,858 - INFO - [main.py:106] - Results saved to C:\my-CTF\pcap_creator\tls\output\capture.pcap
+2024-12-31 22:19:13,859 - INFO - [main.py:160] - TLS session simulation completed successfully
+2024-12-31 22:46:04,156 - INFO - [logging.py:83] - Logging configured successfully
+2024-12-31 22:46:04,157 - INFO - [logging.py:90] - === Logging Configuration ===
+2024-12-31 22:46:04,158 - INFO - [logging.py:91] - Log file: C:\my-CTF\pcap_creator\tls\logs\tls_session.log
+2024-12-31 22:46:04,158 - INFO - [logging.py:92] - Log level: 20
+2024-12-31 22:46:04,158 - INFO - [logging.py:93] - Timestamp: 2024-12-31T22:46:04.158529
+2024-12-31 22:46:04,158 - INFO - [logging.py:94] - ==========================
+2024-12-31 22:46:04,159 - INFO - [main.py:122] - Starting TLS session simulation
+2024-12-31 22:46:04,159 - INFO - [main.py:87] - 
+--- Client Session (certificate) ---
+2024-12-31 22:46:04,160 - INFO - [cert.py:107] - Loading certificate from: C:\my-CTF\pcap_creator\tls\certificates\certs\ca.crt
+2024-12-31 22:46:04,161 - INFO - [cert.py:108] - File exists: True
+2024-12-31 22:46:04,161 - INFO - [cert.py:109] - File size: 1912 bytes
+2024-12-31 22:46:04,162 - INFO - [cert.py:113] - Read 1912 bytes
+2024-12-31 22:46:04,162 - INFO - [cert.py:117] - First 100 bytes: b'\n-----BEGIN CERTIFICATE-----\nMIIFVjCCAz4CCQDZlfjV/jlm3jANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ\nUjEPMA'
+2024-12-31 22:46:04,163 - INFO - [cert.py:120] - File content as text: 
+-----BEGIN CERTIFICATE-----
+MIIFVjCCAz4CCQDZlfjV/jlm3jANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ
+UjEPMA0GA1UECAwGVGVocmFuMQ8wDQYDVQQHDAZUZWhyYW4xDTALBgNVBAoMBElS
+R0MxFjAUBgNVBAsMDUN5YmVyc2VjdXJpdHkxFTATB
+2024-12-31 22:46:04,168 - INFO - [cert.py:130] - Successfully loaded as PEM
+2024-12-31 22:46:04,169 - INFO - [cert.py:107] - Loading certificate from: C:\my-CTF\pcap_creator\tls\certificates\certs\server.crt
+2024-12-31 22:46:04,169 - INFO - [cert.py:108] - File exists: True
+2024-12-31 22:46:04,170 - INFO - [cert.py:109] - File size: 1643 bytes
+2024-12-31 22:46:04,171 - INFO - [cert.py:113] - Read 1643 bytes
+2024-12-31 22:46:04,171 - INFO - [cert.py:117] - First 100 bytes: b'-----BEGIN CERTIFICATE-----\nMIIEjzCCAncCFCTAuN/v92YqzLPMORcinlGx86nWMA0GCSqGSIb3DQEBCwUAMG0x\nCzAJBgN'
+2024-12-31 22:46:04,172 - INFO - [cert.py:120] - File content as text: -----BEGIN CERTIFICATE-----
+MIIEjzCCAncCFCTAuN/v92YqzLPMORcinlGx86nWMA0GCSqGSIb3DQEBCwUAMG0x
+CzAJBgNVBAYTAklSMQ8wDQYDVQQIDAZUZWhyYW4xDzANBgNVBAcMBlRlaHJhbjEN
+MAsGA1UECgwESVJHQzEWMBQGA1UECwwNQ3liZXJzZW
+2024-12-31 22:46:04,173 - INFO - [cert.py:130] - Successfully loaded as PEM
+2024-12-31 22:46:04,220 - INFO - [cert.py:213] - Successfully loaded private key from C:\my-CTF\pcap_creator\tls\certificates\certs\server.key
+2024-12-31 22:46:04,221 - INFO - [cert.py:214] - Key type: RSAPrivateKey
+2024-12-31 22:46:04,221 - INFO - [cert.py:215] - Key size: 2048 bits
+2024-12-31 22:46:04,222 - INFO - [cert.py:217] - Public exponent: 65537
+2024-12-31 22:46:04,226 - INFO - [cert.py:246] - Certificate and keys loaded and validated successfully
+2024-12-31 22:46:04,228 - INFO - [verify.py:58] - Public key comparison results:
+2024-12-31 22:46:04,228 - INFO - [verify.py:59] - Certificate modulus (n): 0xdb8d24fa298358ec6a55b74c127eddafe1c5d51db0bdae576735f6d21cbde938dc691a0cacb39c0a97ff3d00f544fe971cd81924a9a4cd0a316ae79d57608f6353826f9e12203f1f41fbcaa0a6d3c4d373d4191da7495b71d2d22a087eae48f216e87d87a3554bb0c63fea8902ca6c16fe7b0646f68cfbdcff200463728f68fefd7e865776b59decc6608448145cef528db2e24f71aa507c08c27220e079d67f3ae0c73fb999d06b5c55672252b75686b3a4aef0513e7899425f8de018a54c680b50331fdf84d68f2f1d38d326558b0086e186067f7bc885ed64f4229ff96890c9977cb34f5ba64f487469ce438abacafc250cc667fd530fe1a940a21265bbef
+2024-12-31 22:46:04,229 - INFO - [verify.py:60] - Loaded key modulus (n): 0xdb8d24fa298358ec6a55b74c127eddafe1c5d51db0bdae576735f6d21cbde938dc691a0cacb39c0a97ff3d00f544fe971cd81924a9a4cd0a316ae79d57608f6353826f9e12203f1f41fbcaa0a6d3c4d373d4191da7495b71d2d22a087eae48f216e87d87a3554bb0c63fea8902ca6c16fe7b0646f68cfbdcff200463728f68fefd7e865776b59decc6608448145cef528db2e24f71aa507c08c27220e079d67f3ae0c73fb999d06b5c55672252b75686b3a4aef0513e7899425f8de018a54c680b50331fdf84d68f2f1d38d326558b0086e186067f7bc885ed64f4229ff96890c9977cb34f5ba64f487469ce438abacafc250cc667fd530fe1a940a21265bbef
+2024-12-31 22:46:04,230 - INFO - [verify.py:61] - Certificate exponent (e): 0x10001
+2024-12-31 22:46:04,231 - INFO - [verify.py:62] - Loaded key exponent (e): 0x10001
+2024-12-31 22:46:04,234 - INFO - [verify.py:136] - Certificate chain verification successful
+2024-12-31 22:46:04,235 - INFO - [verify.py:188] - Server name 'Pasdaran.local' verified successfully.
+2024-12-31 22:46:04,235 - INFO - [chain.py:110] - Certificate chain verification passed
+2024-12-31 22:46:04,236 - INFO - [chain.py:117] - Certificate chain loaded successfully
+2024-12-31 22:46:04,237 - INFO - [chain.py:118] - Server cert subject: <Name(C=IR,ST=Tehran,L=Tehran,O=Pasdaran,OU=Cybersecurity,CN=Pasdaran.local,1.2.840.113549.1.9.1=server-ctf@example.com)>
+2024-12-31 22:46:04,238 - INFO - [chain.py:119] - Server public key modulus (n): 27715789706063429807557606224995599859500290360318746177887351772584930700767922060265236908225326034069499061360415721333197892250480074686217368392578391301159860963548062819987980192117154285346649743193735554410844424979329819561349555165843655319142309437602325619944960532107668642823205088719004451766785584250375602116664746909990082155815187624898337966421103740799583791159146718040738723787975829478664380188405278530204082653290083478390920045586534051947651758952646967903767271859712523843899436041916810100575135597588004406500203895849926956188138294164569460185397378003955721604444173706240738049007
+2024-12-31 22:46:04,240 - INFO - [chain.py:123] - CA cert subject: <Name(C=IR,ST=Tehran,L=Tehran,O=IRGC,OU=Cybersecurity,CN=IRGC Root CA)>
+2024-12-31 22:46:04,243 - INFO - [session.py:120] - Starting TLS session
+2024-12-31 22:46:04,243 - INFO - [client.py:95] - Generated client_random: 6774580c8337f550f70d3b313179da561ac22f2669ec310e23d1eae70c353f4d
+2024-12-31 22:46:04,248 - INFO - [client.py:135] - Client Hello sent from 192.168.1.1
+2024-12-31 22:46:04,254 - INFO - [server.py:93] - Generated server_random: 6774580c37e264a6d78be9b6b29062833c5ac6e35264364405038dc951ff8864
+2024-12-31 22:46:04,276 - INFO - [cert.py:107] - Loading certificate from: C:\my-CTF\pcap_creator\tls\certificates\certs\client.crt
+2024-12-31 22:46:04,278 - INFO - [cert.py:108] - File exists: True
+2024-12-31 22:46:04,279 - INFO - [cert.py:109] - File size: 1915 bytes
+2024-12-31 22:46:04,282 - INFO - [cert.py:113] - Read 1915 bytes
+2024-12-31 22:46:04,283 - INFO - [cert.py:117] - First 100 bytes: b'-----BEGIN CERTIFICATE-----\nMIIFWjCCA0ICCQDOoMV5YsO5TDANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ\nUjEPMA0'
+2024-12-31 22:46:04,284 - INFO - [cert.py:120] - File content as text: -----BEGIN CERTIFICATE-----
+MIIFWjCCA0ICCQDOoMV5YsO5TDANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ
+UjEPMA0GA1UECAwGVGVocmFuMQ8wDQYDVQQHDAZUZWhyYW4xDTALBgNVBAoMBElS
+R0MxFjAUBgNVBAsMDUN5YmVyc2VjdXJpdHkxFTATBg
+2024-12-31 22:46:04,287 - INFO - [cert.py:130] - Successfully loaded as PEM
+2024-12-31 22:46:04,290 - INFO - [client.py:169] - Prepared client certificate
+2024-12-31 22:46:04,293 - INFO - [client.py:184] - Encrypted pre_master_secret length: 256
+2024-12-31 22:46:04,301 - INFO - [chain.py:185] - Decrypted pre_master_secret: 030319890f943abfc7f0b102c064834e46e205909f25c9f94a2c238c6b47dfcf47d53a1cd1da2b52510d5d164761bd46
+2024-12-31 22:46:04,302 - INFO - [chain.py:195] - Generated master secret: b4b0b9b978a5a76cb39e6a92d7bcfbb9ec67ab45c871a534e2f2417cc6c67e88cbcfbeae01f3c7d50712e9616741452a
+2024-12-31 22:46:04,304 - INFO - [chain.py:196] - Master secret length: 48 bytes
+2024-12-31 22:46:04,307 - INFO - [client.py:345] - Client ChangeCipherSpec and Finished messages sent
+2024-12-31 22:46:04,314 - INFO - [server.py:254] - Pre-master secret validated successfully
+2024-12-31 22:46:04,316 - INFO - [server.py:272] - Generated digital signature: 161cbf730260eca4966c72581991e6cb860c320905bbbf4968ec77ee2a9d7b7aa4d73a0286351ee8428e9bedc117270ea22369c07dc2343b6840206ba39944f70e3c89423d117987dd48aaddb4269291918f7646bc6dbd597f067615f6e0de0470fdfc92ccca8e785e1febdd6bf074b28517d39aec557ddf0334450d5c5805992d8e52fc772b46262bb5c77ee9ecc7ecee680e31ec1aac7fdc8650dee45e7dda1b91ed854dbea8c1f3892b98935fd46399fe777ad2706572f9663d2026117d9694c60c1005b0d63fb57191b456cc2bdd8f3c0578cad2781244c75426dda62e6d4958bab7a291708cd9846ba7fc649082372ed9457c6190cf08426713ddcac35e
+2024-12-31 22:46:04,319 - INFO - [server.py:309] - Server ChangeCipherSpec and Finished messages sent
+2024-12-31 22:46:04,325 - INFO - [keys.py:200] - SSL keys logged to C:\my-CTF\pcap_creator\tls\logs\ssl_key_log.log
+2024-12-31 22:46:04,326 - INFO - [session.py:104] - TLS Handshake completed successfully
+2024-12-31 22:46:04,326 - INFO - [session.py:131] - Found file to send: C:\my-CTF\pcap_creator\tls\documents\ctf_challenge.gif
+2024-12-31 22:46:04,327 - INFO - [session.py:149] - Handshake completed: True
+2024-12-31 22:46:04,328 - INFO - [session.py:150] - Use client cert: True
+2024-12-31 22:46:04,328 - INFO - [session.py:151] - File to send: C:\my-CTF\pcap_creator\tls\documents\ctf_challenge.gif
+2024-12-31 22:46:04,329 - INFO - [session.py:154] - Using encrypted exchange
+2024-12-31 22:46:04,329 - INFO - [session.py:169] - Sending encrypted request data
+2024-12-31 22:46:04,331 - INFO - [keys.py:180] - TLS Application Data sent from 192.168.1.1:12345 to 10.0.0.1:443
+2024-12-31 22:46:04,332 - INFO - [session.py:180] - Sending encrypted response data
+2024-12-31 22:46:04,334 - INFO - [keys.py:180] - TLS Application Data sent from 10.0.0.1:443 to 192.168.1.1:12345
+2024-12-31 22:46:04,334 - INFO - [session.py:192] - Attempting to send file: C:\my-CTF\pcap_creator\tls\documents\ctf_challenge.gif
+2024-12-31 22:46:04,335 - INFO - [session.py:203] - Opening file: C:\my-CTF\pcap_creator\tls\documents\ctf_challenge.gif
+2024-12-31 22:46:04,338 - INFO - [session.py:210] - Read 1103 bytes from file
+2024-12-31 22:46:04,342 - INFO - [keys.py:180] - TLS Application Data sent from 10.0.0.1:443 to 192.168.1.1:12345
+2024-12-31 22:46:04,343 - INFO - [session.py:219] - File sent successfully
+2024-12-31 22:46:04,343 - INFO - [session.py:194] - File sent successfully
+2024-12-31 22:46:04,344 - INFO - [main.py:95] - Session completed successfully for 192.168.1.1
+2024-12-31 22:46:04,345 - INFO - [main.py:87] - 
+--- Client Session (no certificate) ---
+2024-12-31 22:46:04,345 - INFO - [cert.py:107] - Loading certificate from: C:\my-CTF\pcap_creator\tls\certificates\certs\ca.crt
+2024-12-31 22:46:04,346 - INFO - [cert.py:108] - File exists: True
+2024-12-31 22:46:04,347 - INFO - [cert.py:109] - File size: 1912 bytes
+2024-12-31 22:46:04,347 - INFO - [cert.py:113] - Read 1912 bytes
+2024-12-31 22:46:04,348 - INFO - [cert.py:117] - First 100 bytes: b'\n-----BEGIN CERTIFICATE-----\nMIIFVjCCAz4CCQDZlfjV/jlm3jANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ\nUjEPMA'
+2024-12-31 22:46:04,348 - INFO - [cert.py:120] - File content as text: 
+-----BEGIN CERTIFICATE-----
+MIIFVjCCAz4CCQDZlfjV/jlm3jANBgkqhkiG9w0BAQ0FADBtMQswCQYDVQQGEwJJ
+UjEPMA0GA1UECAwGVGVocmFuMQ8wDQYDVQQHDAZUZWhyYW4xDTALBgNVBAoMBElS
+R0MxFjAUBgNVBAsMDUN5YmVyc2VjdXJpdHkxFTATB
+2024-12-31 22:46:04,350 - INFO - [cert.py:130] - Successfully loaded as PEM
+2024-12-31 22:46:04,350 - INFO - [cert.py:107] - Loading certificate from: C:\my-CTF\pcap_creator\tls\certificates\certs\server.crt
+2024-12-31 22:46:04,351 - INFO - [cert.py:108] - File exists: True
+2024-12-31 22:46:04,352 - INFO - [cert.py:109] - File size: 1643 bytes
+2024-12-31 22:46:04,353 - INFO - [cert.py:113] - Read 1643 bytes
+2024-12-31 22:46:04,353 - INFO - [cert.py:117] - First 100 bytes: b'-----BEGIN CERTIFICATE-----\nMIIEjzCCAncCFCTAuN/v92YqzLPMORcinlGx86nWMA0GCSqGSIb3DQEBCwUAMG0x\nCzAJBgN'
+2024-12-31 22:46:04,354 - INFO - [cert.py:120] - File content as text: -----BEGIN CERTIFICATE-----
+MIIEjzCCAncCFCTAuN/v92YqzLPMORcinlGx86nWMA0GCSqGSIb3DQEBCwUAMG0x
+CzAJBgNVBAYTAklSMQ8wDQYDVQQIDAZUZWhyYW4xDzANBgNVBAcMBlRlaHJhbjEN
+MAsGA1UECgwESVJHQzEWMBQGA1UECwwNQ3liZXJzZW
+2024-12-31 22:46:04,357 - INFO - [cert.py:130] - Successfully loaded as PEM
+2024-12-31 22:46:04,391 - INFO - [cert.py:213] - Successfully loaded private key from C:\my-CTF\pcap_creator\tls\certificates\certs\server.key
+2024-12-31 22:46:04,392 - INFO - [cert.py:214] - Key type: RSAPrivateKey
+2024-12-31 22:46:04,393 - INFO - [cert.py:215] - Key size: 2048 bits
+2024-12-31 22:46:04,393 - INFO - [cert.py:217] - Public exponent: 65537
+2024-12-31 22:46:04,394 - INFO - [cert.py:246] - Certificate and keys loaded and validated successfully
+2024-12-31 22:46:04,394 - INFO - [verify.py:58] - Public key comparison results:
+2024-12-31 22:46:04,395 - INFO - [verify.py:59] - Certificate modulus (n): 0xdb8d24fa298358ec6a55b74c127eddafe1c5d51db0bdae576735f6d21cbde938dc691a0cacb39c0a97ff3d00f544fe971cd81924a9a4cd0a316ae79d57608f6353826f9e12203f1f41fbcaa0a6d3c4d373d4191da7495b71d2d22a087eae48f216e87d87a3554bb0c63fea8902ca6c16fe7b0646f68cfbdcff200463728f68fefd7e865776b59decc6608448145cef528db2e24f71aa507c08c27220e079d67f3ae0c73fb999d06b5c55672252b75686b3a4aef0513e7899425f8de018a54c680b50331fdf84d68f2f1d38d326558b0086e186067f7bc885ed64f4229ff96890c9977cb34f5ba64f487469ce438abacafc250cc667fd530fe1a940a21265bbef
+2024-12-31 22:46:04,395 - INFO - [verify.py:60] - Loaded key modulus (n): 0xdb8d24fa298358ec6a55b74c127eddafe1c5d51db0bdae576735f6d21cbde938dc691a0cacb39c0a97ff3d00f544fe971cd81924a9a4cd0a316ae79d57608f6353826f9e12203f1f41fbcaa0a6d3c4d373d4191da7495b71d2d22a087eae48f216e87d87a3554bb0c63fea8902ca6c16fe7b0646f68cfbdcff200463728f68fefd7e865776b59decc6608448145cef528db2e24f71aa507c08c27220e079d67f3ae0c73fb999d06b5c55672252b75686b3a4aef0513e7899425f8de018a54c680b50331fdf84d68f2f1d38d326558b0086e186067f7bc885ed64f4229ff96890c9977cb34f5ba64f487469ce438abacafc250cc667fd530fe1a940a21265bbef
+2024-12-31 22:46:04,396 - INFO - [verify.py:61] - Certificate exponent (e): 0x10001
+2024-12-31 22:46:04,396 - INFO - [verify.py:62] - Loaded key exponent (e): 0x10001
+2024-12-31 22:46:04,397 - INFO - [verify.py:136] - Certificate chain verification successful
+2024-12-31 22:46:04,397 - INFO - [verify.py:188] - Server name 'Pasdaran.local' verified successfully.
+2024-12-31 22:46:04,398 - INFO - [chain.py:110] - Certificate chain verification passed
+2024-12-31 22:46:04,398 - INFO - [chain.py:117] - Certificate chain loaded successfully
+2024-12-31 22:46:04,398 - INFO - [chain.py:118] - Server cert subject: <Name(C=IR,ST=Tehran,L=Tehran,O=Pasdaran,OU=Cybersecurity,CN=Pasdaran.local,1.2.840.113549.1.9.1=server-ctf@example.com)>
+2024-12-31 22:46:04,399 - INFO - [chain.py:119] - Server public key modulus (n): 27715789706063429807557606224995599859500290360318746177887351772584930700767922060265236908225326034069499061360415721333197892250480074686217368392578391301159860963548062819987980192117154285346649743193735554410844424979329819561349555165843655319142309437602325619944960532107668642823205088719004451766785584250375602116664746909990082155815187624898337966421103740799583791159146718040738723787975829478664380188405278530204082653290083478390920045586534051947651758952646967903767271859712523843899436041916810100575135597588004406500203895849926956188138294164569460185397378003955721604444173706240738049007
+2024-12-31 22:46:04,400 - INFO - [chain.py:123] - CA cert subject: <Name(C=IR,ST=Tehran,L=Tehran,O=IRGC,OU=Cybersecurity,CN=IRGC Root CA)>
+2024-12-31 22:46:04,400 - INFO - [session.py:120] - Starting TLS session
+2024-12-31 22:46:04,400 - INFO - [client.py:95] - Generated client_random: 6774580c69a94c481ce779da7e8eaa6d890800e16c4c93d1f9ca610eba2b0b8a
+2024-12-31 22:46:04,404 - INFO - [client.py:135] - Client Hello sent from 192.168.1.2
+2024-12-31 22:46:04,410 - INFO - [server.py:93] - Generated server_random: 6774580c63ddb8e3be157bc16ee7aa01724d34706e1f2ea92e30a88ee61ab62a
+2024-12-31 22:46:04,413 - INFO - [client.py:172] - Prepared empty certificate
+2024-12-31 22:46:04,414 - INFO - [client.py:184] - Encrypted pre_master_secret length: 256
+2024-12-31 22:46:04,416 - INFO - [chain.py:185] - Decrypted pre_master_secret: 0303ef378ff09e7ef0e73b62e8d9b8f0b69490e78c19afe5ae53ab3ba614dfd17502fc01bd8bf013582392b17917cd35
+2024-12-31 22:46:04,416 - INFO - [chain.py:195] - Generated master secret: 9ef245c2f5d6b12511a19d8fc813c5292b749c3496b73b9ecd46237654661374661600954ba89d60f6d755175e63def0
+2024-12-31 22:46:04,417 - INFO - [chain.py:196] - Master secret length: 48 bytes
+2024-12-31 22:46:04,418 - INFO - [client.py:345] - Client ChangeCipherSpec and Finished messages sent
+2024-12-31 22:46:04,421 - INFO - [server.py:254] - Pre-master secret validated successfully
+2024-12-31 22:46:04,424 - INFO - [server.py:272] - Generated digital signature: a729cbd7be1a0f3d0985ff2229d6ce58ad7006944c8deca324681b26ce4518be8a390c29f21606925ecad660f61efd74970567b9ec10c1e2044736a4981029d07cfe1d4535ee22cf12390c691f088b3c7255d8ed058b26854c958233bb7b52da9e5c9a78a3232b30184db318041bab3f40a154aa5f06e2ca01dbba4d26091ae85e4518264a7019ad83e8b3f9b1db31e3c5cf17a51ddcce42380c0b3aa24930d3f394dc9e1eb84d048075499c2dbfc36c49e99f4ead88cd3ab7d57f2b2ec1d38405d0ebd4b58f518c62857e5dae2ff1fe5bb856e2c8e905f4633ebb07bdcd6e07d850448b0a814c097cf043b280c75a16c8fb700a25e4053ce01e40995ed4de11
+2024-12-31 22:46:04,425 - INFO - [server.py:309] - Server ChangeCipherSpec and Finished messages sent
+2024-12-31 22:46:04,427 - INFO - [keys.py:200] - SSL keys logged to C:\my-CTF\pcap_creator\tls\logs\ssl_key_log.log
+2024-12-31 22:46:04,427 - INFO - [session.py:104] - TLS Handshake completed successfully
+2024-12-31 22:46:04,428 - INFO - [session.py:149] - Handshake completed: True
+2024-12-31 22:46:04,428 - INFO - [session.py:150] - Use client cert: False
+2024-12-31 22:46:04,428 - INFO - [session.py:151] - File to send: None
+2024-12-31 22:46:04,428 - INFO - [session.py:157] - Using unencrypted exchange
+2024-12-31 22:46:04,429 - INFO - [session.py:257] - Added request packet
+2024-12-31 22:46:04,429 - INFO - [session.py:257] - Added response packet
+2024-12-31 22:46:04,430 - WARNING - [session.py:234] - Using unencrypted communication
+2024-12-31 22:46:04,430 - INFO - [main.py:95] - Session completed successfully for 192.168.1.2
+2024-12-31 22:46:04,430 - INFO - [pcap_writer.py:232] - Packet 13: Valid HTTP message
+2024-12-31 22:46:04,431 - INFO - [pcap_writer.py:232] - Packet 14: Valid HTTP message
+2024-12-31 22:46:04,436 - INFO - [pcap_writer.py:387] - Saved 15 valid packets to C:\my-CTF\pcap_creator\tls\output\capture.pcap
+2024-12-31 22:46:04,437 - INFO - [pcap_writer.py:409] - Verifying 15 packets...
+2024-12-31 22:46:04,438 - INFO - [pcap_writer.py:413] - Packet 1: IP / TCP 192.168.1.1:12345 > 10.0.0.1:https PA / Raw
+2024-12-31 22:46:04,439 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x16, Version: 0x303, Length: 90
+2024-12-31 22:46:04,440 - INFO - [pcap_writer.py:413] - Packet 2: IP / TCP 10.0.0.1:https > 192.168.1.1:12345 PA / Raw
+2024-12-31 22:46:04,441 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x16, Version: 0x303, Length: 2775
+2024-12-31 22:46:04,441 - INFO - [pcap_writer.py:413] - Packet 3: IP / TCP 192.168.1.1:12345 > 10.0.0.1:https PA / Raw
+2024-12-31 22:46:04,442 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x16, Version: 0x303, Length: 1646
+2024-12-31 22:46:04,442 - INFO - [pcap_writer.py:413] - Packet 4: IP / TCP 192.168.1.1:12345 > 10.0.0.1:https PA / Raw
+2024-12-31 22:46:04,443 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x14, Version: 0x303, Length: 17
+2024-12-31 22:46:04,443 - INFO - [pcap_writer.py:413] - Packet 5: IP / TCP 10.0.0.1:https > 192.168.1.1:12345 PA / Raw
+2024-12-31 22:46:04,443 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x14, Version: 0x303, Length: 17
+2024-12-31 22:46:04,444 - INFO - [pcap_writer.py:413] - Packet 6: IP / TCP 192.168.1.1:12345 > 10.0.0.1:https PA / Raw
+2024-12-31 22:46:04,444 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x17, Version: 0x303, Length: 165
+2024-12-31 22:46:04,444 - INFO - [pcap_writer.py:413] - Packet 7: IP / TCP 10.0.0.1:https > 192.168.1.1:12345 PA / Raw
+2024-12-31 22:46:04,445 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x17, Version: 0x303, Length: 133
+2024-12-31 22:46:04,445 - INFO - [pcap_writer.py:413] - Packet 8: IP / TCP 10.0.0.1:https > 192.168.1.1:12345 PA / Raw
+2024-12-31 22:46:04,445 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x17, Version: 0x303, Length: 1157
+2024-12-31 22:46:04,445 - INFO - [pcap_writer.py:413] - Packet 9: IP / TCP 192.168.1.2:12346 > 10.0.0.1:https PA / Raw
+2024-12-31 22:46:04,446 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x16, Version: 0x303, Length: 90
+2024-12-31 22:46:04,446 - INFO - [pcap_writer.py:413] - Packet 10: IP / TCP 10.0.0.1:https > 192.168.1.2:12346 PA / Raw
+2024-12-31 22:46:04,446 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x16, Version: 0x303, Length: 2775
+2024-12-31 22:46:04,447 - INFO - [pcap_writer.py:413] - Packet 11: IP / TCP 192.168.1.2:12346 > 10.0.0.1:https PA / Raw
+2024-12-31 22:46:04,447 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x16, Version: 0x303, Length: 269
+2024-12-31 22:46:04,447 - INFO - [pcap_writer.py:413] - Packet 12: IP / TCP 192.168.1.2:12346 > 10.0.0.1:https PA / Raw
+2024-12-31 22:46:04,448 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x14, Version: 0x303, Length: 17
+2024-12-31 22:46:04,448 - INFO - [pcap_writer.py:413] - Packet 13: IP / TCP 10.0.0.1:https > 192.168.1.2:12346 PA / Raw
+2024-12-31 22:46:04,448 - INFO - [pcap_writer.py:420] - TLS Record: Record Type: 0x14, Version: 0x303, Length: 17
+2024-12-31 22:46:04,449 - INFO - [pcap_writer.py:413] - Packet 14: IP / TCP 192.168.1.2:12346 > 10.0.0.1:http PA / Raw
+2024-12-31 22:46:04,449 - INFO - [pcap_writer.py:420] - TLS Record: HTTP message
+2024-12-31 22:46:04,449 - INFO - [pcap_writer.py:413] - Packet 15: IP / TCP 10.0.0.1:http > 192.168.1.2:12346 PA / Raw
+2024-12-31 22:46:04,450 - INFO - [pcap_writer.py:420] - TLS Record: HTTP message
+2024-12-31 22:46:04,450 - INFO - [pcap_writer.py:427] - Verification complete: 15 valid packets, 15 TLS records
+2024-12-31 22:46:04,450 - INFO - [main.py:106] - Results saved to C:\my-CTF\pcap_creator\tls\output\capture.pcap
+2024-12-31 22:46:04,450 - INFO - [main.py:160] - TLS session simulation completed successfully

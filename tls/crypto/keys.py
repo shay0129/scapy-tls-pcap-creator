@@ -42,24 +42,34 @@ class KeyBlock:
     server_mac_key: bytes
     client_key: bytes
     server_key: bytes
+    client_iv: bytes
+    server_iv: bytes
 
     @classmethod
     def derive(cls, session: SessionState) -> 'KeyBlock':
         """Derive key block from session parameters"""
         try:
-            key_length = 2 * (keys_constants.SHA256_MAC_LENGTH + keys_constants.AES_128_KEY_LENGTH)
+            key_length = 2 * (
+                keys_constants.SHA256_MAC_LENGTH +  # MAC keys
+                keys_constants.AES_128_KEY_LENGTH +  # encryption keys
+                16  # IV length for CBC mode
+            )
+            # Let scapy handle the label and seed combination
             key_block = session.prf.derive_key_block(
                 session.master_secret,
-                session.client_random,
+                # Let scapy handle the randoms separately
                 session.server_random,
+                session.client_random,
                 key_length
             )
 
             return cls(
-                client_mac_key=key_block[0:keys_constants.SHA256_MAC_LENGTH],
-                server_mac_key=key_block[keys_constants.SHA256_MAC_LENGTH:2*keys_constants.SHA256_MAC_LENGTH],
-                client_key=key_block[2*keys_constants.SHA256_MAC_LENGTH:2*keys_constants.SHA256_MAC_LENGTH+keys_constants.AES_128_KEY_LENGTH],
-                server_key=key_block[2*keys_constants.SHA256_MAC_LENGTH+keys_constants.AES_128_KEY_LENGTH:]
+                client_mac_key=key_block[0:32],
+                server_mac_key=key_block[32:64],
+                client_key=key_block[64:80],
+                server_key=key_block[80:96],
+                client_iv=key_block[96:112],
+                server_iv=key_block[112:128]
             )
 
         except Exception as e:
@@ -135,8 +145,7 @@ def encrypt_and_send_application_data(
         verify_key_lengths(key_block)
         key = key_block.client_key if is_client else key_block.server_key
         mac_key = key_block.client_mac_key if is_client else key_block.server_mac_key
-
-        explicit_iv = os.urandom(16)
+        iv = key_block.client_iv if is_client else key_block.server_iv
 
         # Generate sequence number
         seq_num = state.client_seq_num if is_client else state.server_seq_num
@@ -145,15 +154,14 @@ def encrypt_and_send_application_data(
         # Encrypt data
         logging.debug(f"Data type: {type(data)}")
         logging.debug(f"Key type: {type(key)}")
-        logging.debug(f"Explicit IV type: {type(explicit_iv)}")
+        logging.debug(f"IV type: {type(iv)}")
         logging.debug(f"MAC key type: {type(mac_key)}")
         logging.debug(f"Sequence number type: {type(seq_num_bytes)}")
 
-        encrypted_data = encrypt_tls12_record_cbc(data, key, explicit_iv, mac_key, seq_num_bytes)
+        encrypted_data = encrypt_tls12_record_cbc(data, key, iv, mac_key, seq_num_bytes)
 
-
-        # Construct TLS record
-        tls_record = explicit_iv + encrypted_data
+        # Construct TLS record - משתמש ב-iv במקום explicit_iv
+        tls_record = iv + encrypted_data
         tls_data = TLSApplicationData(data=tls_record)
         tls_context.msg = [tls_data]
 
@@ -166,7 +174,6 @@ def encrypt_and_send_application_data(
         # Determine source and destination
         src_ip, dst_ip, sport, dport = get_connection_params(session, is_request)
 
-
         # Send packet
         raw_packet = session.send_tls_packet(src_ip, dst_ip, sport, dport)
 
@@ -176,7 +183,7 @@ def encrypt_and_send_application_data(
     except Exception as e:
         logging.error(f"Error in encrypt_and_send_application_data: {e}")
         raise EncryptionError(f"Failed to encrypt and send data: {e}")
-
+    
 def handle_ssl_key_log(session) -> None:
     """Write SSL/TLS session keys to Wireshark keylog file"""
     try:
@@ -217,3 +224,85 @@ def verify_key_lengths(
             f"got {len(key_block.client_key)}, "
             f"expected {expected_key_length}"
         )
+    
+import logging
+import struct
+from Crypto.Cipher import AES
+from Crypto.Hash import HMAC, SHA256
+from Crypto.Util.Padding import pad, unpad
+
+class TLSRSAEncryptor:
+    def __init__(self, write_key, mac_key, iv):
+        """
+        Constructor for TLS RSA encryptor
+        """
+        if len(write_key) != 16:
+            raise ValueError("Write key must be 16 bytes")
+        if len(mac_key) != 32:
+            raise ValueError("MAC key must be 32 bytes")
+        if len(iv) != 16:
+            raise ValueError("IV must be 16 bytes")
+        
+        self.write_key = write_key
+        self.mac_key = mac_key
+        self.iv = iv
+
+    def encrypt(self, data, seq_num=0):
+        """
+        הצפנת רשומת TLS עם RSA-AES-CBC
+
+        :param data: נתונים להצפנה
+        :param seq_num: מספר רצף (8 בתים)
+        :return: רשומת TLS מוצפנת
+        """
+        try:
+            # Application Data record type
+            record_type = b'\x17'
+            # TLS 1.2 version
+            version = b'\x03\x03'
+            
+            # Calculate MAC
+            seq_bytes = seq_num.to_bytes(8, 'big')
+            mac_input = seq_bytes + record_type + version + \
+                        struct.pack('!H', len(data)) + data
+            mac = HMAC.new(self.mac_key, mac_input, SHA256).digest()
+            
+            # append MAC to data
+            plaintext = data + mac
+            
+            # PKCS7 Padding
+            padded_plaintext = pad(plaintext, AES.block_size)
+            
+            # Encrypt data with AES-CBC
+            cipher = AES.new(self.write_key, AES.MODE_CBC, self.iv)
+            ciphertext = cipher.encrypt(padded_plaintext)
+            
+            # Build TLS record
+            record = record_type + version + \
+                     struct.pack('!H', len(ciphertext)) + ciphertext
+            
+            return record
+
+        except Exception as e:
+            logging.error(f"Encryption error: {e}")
+            raise
+
+
+    def _hmac_compare(self, a, b):
+        """
+        A constant-time comparison function for HMAC digests.
+        """
+        if len(a) != len(b):
+            return False
+        
+        result = 0
+        for x, y in zip(a, b):
+            result |= x ^ y
+        
+        return result == 0
+
+# Define constants for key lengths
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)

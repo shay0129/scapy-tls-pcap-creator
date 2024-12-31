@@ -13,6 +13,7 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 from tls.utils.crypto import decrypt_pre_master_secret
 from tls.utils.cert import load_cert, load_server_cert_keys
 from tls.constants import CERTS_DIR
+from scapy.layers.tls.crypto.prf import PRF
 
 from tls.certificates.verify import (
     verify_server_public_key,
@@ -153,12 +154,15 @@ def setup_certificates(session) -> None:
 
 def generate_master_secret(
         session,
-        encrypted_pre_master_secret: bytes,
+        encrypted_pre_master_secret: bytes, 
         client_random: bytes,
         server_random: bytes
     ) -> bytes:
     """
-    Generate master secret from pre-master secret.
+    Generate master secret from pre-master secret as per RFC 5246 (TLS 1.2).
+    
+    master_secret = PRF(pre_master_secret, "master secret",
+                       ClientHello.random + ServerHello.random)[0..47];
     
     Args:
         session: TLS session instance
@@ -167,7 +171,7 @@ def generate_master_secret(
         server_random: Server random bytes
         
     Returns:
-        bytes: Generated master secret
+        bytes: Generated 48-byte master secret
         
     Raises:
         MasterSecretError: If generation fails
@@ -178,24 +182,28 @@ def generate_master_secret(
             encrypted_pre_master_secret,
             session.server_private_key
         )
+        logging.info(f"Decrypted pre_master_secret: {pre_master_secret.hex()}")
         
-        logging.info(
-            f"Decrypted pre_master_secret: {pre_master_secret.hex()}"
-        )
-        
-        # Compute master secret
+        # Use scapy's PRF to compute master secret
+        # PRF internally uses the correct label "master secret" and handles the seed combination
         master_secret = session.prf.compute_master_secret(
-            pre_master_secret,
+            pre_master_secret, 
             client_random,
             server_random
         )
         
         logging.info(f"Generated master secret: {master_secret.hex()}")
+        logging.info(f"Master secret length: {len(master_secret)} bytes")
+        
+        if len(master_secret) != 48:
+            raise MasterSecretError(f"Invalid master secret length: {len(master_secret)}, expected 48")
+            
         return master_secret
         
     except Exception as e:
         raise MasterSecretError(f"Master secret generation failed: {e}")
-
+    
+    
 def handle_master_secret(session) -> None:
     """
     Handle master secret generation and validation.
