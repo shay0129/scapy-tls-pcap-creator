@@ -78,7 +78,7 @@ class ClientExtensions:
 def create_client_hello(
     session,
     extensions: Optional[ClientExtensions] = None
-) -> TLSClientHello:
+    ) -> TLSClientHello:
     """
     Create Client Hello message.
     
@@ -144,40 +144,34 @@ def send_client_hello(session) -> bytes:
     except Exception as e:
         raise ClientHelloError(f"Failed to send Client Hello: {e}")
 
-def prepare_client_certificate(session) -> TLSCertificate:
+def create_client_certificate_and_key_exchange(
+        session
+        ) -> tuple[TLSCertificate, TLSClientKeyExchange]:
     """
-    Prepare client certificate - empty or with actual certificate.
+    Creates client certificate and key exchange messages for TLS handshake.
     
     Args:
-        session: TLS session instance
+        session: TLS session instance containing configuration and state
         
     Returns:
-        TLSCertificate: Certificate message (empty or with cert)
+        tuple[TLSCertificate, TLSClientKeyExchange]: The prepared messages
+        
+    Raises:
+        KeyExchangeError: If message creation fails
     """
     try:
+        # Prepare client certificate
         if session.use_client_cert:
-            # שליחת תעודת לקוח אמיתית
             client_cert_path = CERTS_DIR / "client.crt"
             cert = load_cert(client_cert_path)
             cert_der = cert.public_bytes(serialization.Encoding.DER)
-            return TLSCertificate(certs=[(len(cert_der), cert_der)])
+            client_certificate = TLSCertificate(certs=[(len(cert_der), cert_der)])
+            logging.info("Prepared client certificate")
         else:
-            # שליחת תעודה ריקה
-            logging.info("Sending empty certificate")
-            return TLSCertificate(certs=[])
-            
-    except Exception as e:
-        raise KeyExchangeError(f"Failed to prepare client certificate: {e}")
+            client_certificate = TLSCertificate(certs=[])
+            logging.info("Prepared empty certificate")
 
-def send_client_key_exchange(session) -> bytes:
-    """Handle client key exchange during TLS handshake."""
-    try:
-        # תמיד שלח תעודה (ריקה או מלאה)
-        client_certificate = prepare_client_certificate(session)
-        session.handshake_messages.append(raw(client_certificate))
-        logging.info("Client certificate prepared")
-
-        # המשך הקוד כרגיל...
+        # Generate and encrypt pre-master secret
         session.pre_master_secret = generate_pre_master_secret()
         session.encrypted_pre_master_secret = encrypt_pre_master_secret(
             session.pre_master_secret,
@@ -186,7 +180,7 @@ def send_client_key_exchange(session) -> bytes:
 
         if not isinstance(session.encrypted_pre_master_secret, bytes):
             session.encrypted_pre_master_secret = bytes(session.encrypted_pre_master_secret)
-
+        
         logging.info(f"Encrypted pre_master_secret length: {len(session.encrypted_pre_master_secret)}")
 
         # Create key exchange message
@@ -195,14 +189,42 @@ def send_client_key_exchange(session) -> bytes:
             exchkeys=length_bytes + session.encrypted_pre_master_secret
         )
 
-        # תמיד שלח קודם את התעודה
+        return client_certificate, client_key_exchange
+
+    except Exception as e:
+        raise KeyExchangeError(f"Failed to create handshake messages: {e}")
+
+def send_client_handshake_messages(session) -> bytes:
+    """
+    Creates and sends client certificate and key exchange messages during TLS handshake.
+    
+    Args:
+        session: TLS session instance
+        
+    Returns:
+        bytes: Raw packet data
+        
+    Raises:
+        KeyExchangeError: If message creation or sending fails
+    """
+    try:
+        # Create messages
+        client_certificate, client_key_exchange = create_client_certificate_and_key_exchange(session)
+
+        # Append messages to handshake history
+        session.handshake_messages.extend([
+            raw(client_certificate),
+            raw(client_key_exchange)
+        ])
+
+        # Send messages
         session.send_to_server(client_certificate)
         session.send_to_server(client_key_exchange)
-        session.handshake_messages.append(raw(client_key_exchange))
 
         # Update TLS context
         session.tls_context.msg = [client_certificate, client_key_exchange]
 
+        # Send TLS packet
         return session.send_tls_packet(
             session.client_ip,
             session.server_ip,
@@ -212,8 +234,8 @@ def send_client_key_exchange(session) -> bytes:
         )
 
     except Exception as e:
-        raise KeyExchangeError(f"Key exchange failed: {e}")
-
+        raise KeyExchangeError(f"Failed to send handshake messages: {e}")
+    
 def send_client_change_cipher_spec(session) -> bytes:
     """
     Send Client ChangeCipherSpec and Finished messages.
@@ -262,3 +284,72 @@ def send_client_change_cipher_spec(session) -> bytes:
         raise ChangeCipherSpecError(
             f"Failed to send ChangeCipherSpec: {e}"
         )
+    
+def create_client_finished(session) -> tuple[TLSFinished, TLSChangeCipherSpec]:
+    """
+    Creates Client Finished and ChangeCipherSpec messages.
+    
+    Args:
+        session: TLS session instance
+        
+    Returns:
+        tuple[TLSFinished, TLSChangeCipherSpec]: The finished and change cipher spec messages
+        
+    Raises:
+        ChangeCipherSpecError: If message creation fails
+    """
+    try:
+        # Compute verify data
+        client_verify_data = session.prf.compute_verify_data(
+            'client',
+            'write',
+            b''.join(session.handshake_messages),
+            session.master_secret
+        )
+
+        # Create messages
+        client_finished = TLSFinished(vdata=client_verify_data)
+        change_cipher_spec = TLSChangeCipherSpec()
+
+        return client_finished, change_cipher_spec
+
+    except Exception as e:
+        raise ChangeCipherSpecError(f"Failed to create finished messages: {e}")
+
+def send_client_change_cipher_spec(session) -> bytes:
+    """
+    Sends Client Finished and ChangeCipherSpec messages.
+    
+    Args:
+        session: TLS session instance
+        
+    Returns:
+        bytes: Raw packet data
+        
+    Raises:
+        ChangeCipherSpecError: If sending messages fails
+    """
+    try:
+        # Create messages
+        client_finished, change_cipher_spec = create_client_finished(session)
+
+        # Send messages
+        session.send_to_server(client_finished)
+        session.send_to_server(change_cipher_spec)
+
+        # Update handshake state
+        session.handshake_messages.append(raw(client_finished))
+        session.handshake_messages.append(raw(change_cipher_spec))
+        session.tls_context.msg = [change_cipher_spec, client_finished]
+
+        logging.info("Client ChangeCipherSpec and Finished messages sent")
+        return session.send_tls_packet(
+            session.client_ip,
+            session.server_ip,
+            session.client_port,
+            session.server_port,
+            is_handshake=True
+        )
+
+    except Exception as e:
+        raise ChangeCipherSpecError(f"Failed to send finished messages: {e}")

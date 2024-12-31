@@ -11,7 +11,7 @@ from pathlib import Path
 
 from tls.handshake.client import (
     send_client_hello,
-    send_client_key_exchange,
+    send_client_handshake_messages,
     send_client_change_cipher_spec
 )
 from tls.handshake.server import (
@@ -93,7 +93,7 @@ class UnifiedTLSSession:
         try:
             send_client_hello(self)
             send_server_hello(self)
-            send_client_key_exchange(self)
+            send_client_handshake_messages(self)
             handle_master_secret(self)
             send_client_change_cipher_spec(self)
             send_server_change_cipher_spec(self)

@@ -152,11 +152,11 @@ def setup_certificates(session) -> None:
         raise ChainSetupError(f"Certificate setup failed: {e}")
 
 def generate_master_secret(
-    session,
-    encrypted_pre_master_secret: bytes,
-    client_random: bytes,
-    server_random: bytes
-) -> bytes:
+        session,
+        encrypted_pre_master_secret: bytes,
+        client_random: bytes,
+        server_random: bytes
+    ) -> bytes:
     """
     Generate master secret from pre-master secret.
     

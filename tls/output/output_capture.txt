@@ -1,0 +1,1882 @@
+Frame 1: 135 bytes on wire (1080 bits), 135 bytes captured (1080 bits)
+    Encapsulation type: Raw IPv4 (129)
+    Arrival Time: Dec 31, 2024 15:16:56.124587000 EET
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1735651016.124587000 seconds
+    [Time delta from previous captured frame: 0.000000000 seconds]
+    [Time delta from previous displayed frame: 0.000000000 seconds]
+    [Time since reference or first frame: 0.000000000 seconds]
+    Frame Number: 1
+    Frame Length: 135 bytes (1080 bits)
+    Capture Length: 135 bytes (1080 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: ip:tcp:tls]
+Internet Protocol Version 4, Src: 192.168.1.1, Dst: 10.0.0.1
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 135
+    Identification: 0x0001 (1)
+    Flags: 0x00
+        0... .... = Reserved bit: Not set
+        .0.. .... = Don't fragment: Not set
+        ..0. .... = More fragments: Not set
+    ...0 0000 0000 0000 = Fragment Offset: 0
+    Time to Live: 64
+    Protocol: TCP (6)
+    Header Checksum: 0xaec6 [validation disabled]
+    [Header checksum status: Unverified]
+    Source Address: 192.168.1.1
+    Destination Address: 10.0.0.1
+Transmission Control Protocol, Src Port: 12345, Dst Port: 443, Seq: 1, Ack: 1, Len: 95
+    Source Port: 12345
+    Destination Port: 443
+    [Stream index: 0]
+    [Conversation completeness: Incomplete (0)]
+    [TCP Segment Len: 95]
+    Sequence Number: 1    (relative sequence number)
+    Sequence Number (raw): 2284320
+    [Next Sequence Number: 96    (relative sequence number)]
+    Acknowledgment Number: 1    (relative ack number)
+    Acknowledgment number (raw): 0
+    0101 .... = Header Length: 20 bytes (5)
+    Flags: 0x018 (PSH, ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 1... = Push: Set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······AP···]
+    Window: 65535
+    [Calculated window size: 65535]
+    [Window size scaling factor: -1 (unknown)]
+    Checksum: 0x767e [unverified]
+    [Checksum Status: Unverified]
+    Urgent Pointer: 0
+    [Timestamps]
+        [Time since first frame in this TCP stream: 0.000000000 seconds]
+        [Time since previous frame in this TCP stream: 0.000000000 seconds]
+    [SEQ/ACK analysis]
+        [Bytes in flight: 95]
+        [Bytes sent since last PSH flag: 95]
+    TCP payload (95 bytes)
+Transport Layer Security
+    TLSv1.2 Record Layer: Handshake Protocol: Client Hello
+        Content Type: Handshake (22)
+        Version: TLS 1.2 (0x0303)
+        Length: 90
+        Handshake Protocol: Client Hello
+            Handshake Type: Client Hello (1)
+            Length: 86
+            Version: TLS 1.2 (0x0303)
+            Random: 6773eec896bd4b0683e2060fefa4a8b93707b7627b0bc2885cd115e82d99c8a9
+                GMT Unix Time: Dec 31, 2024 15:16:56.000000000 EET
+                Random Bytes: 96bd4b0683e2060fefa4a8b93707b7627b0bc2885cd115e82d99c8a9
+            Session ID Length: 0
+            Cipher Suites Length: 2
+            Cipher Suites (1 suite)
+                Cipher Suite: TLS_RSA_WITH_AES_128_CBC_SHA256 (0x003c)
+            Compression Methods Length: 1
+            Compression Methods (1 method)
+                Compression Method: null (0)
+            Extensions Length: 43
+            Extension: server_name (len=19)
+                Type: server_name (0)
+                Length: 19
+                Server Name Indication extension
+                    Server Name list length: 17
+                    Server Name Type: host_name (0)
+                    Server Name length: 14
+                    Server Name: Pasdaran.local
+            Extension: encrypt_then_mac (len=0)
+                Type: encrypt_then_mac (22)
+                Length: 0
+            Extension: supported_groups (len=4)
+                Type: supported_groups (10)
+                Length: 4
+                Supported Groups List Length: 2
+                Supported Groups (1 group)
+                    Supported Group: x25519 (0x001d)
+            Extension: signature_algorithms (len=4)
+                Type: signature_algorithms (13)
+                Length: 4
+                Signature Hash Algorithms Length: 2
+                Signature Hash Algorithms (1 algorithm)
+                    Signature Algorithm: rsa_pkcs1_sha256 (0x0401)
+                        Signature Hash Algorithm Hash: SHA256 (4)
+                        Signature Hash Algorithm Signature: RSA (1)
+            [JA3 Fullstring: 771,60,0-22-10-13,29,]
+            [JA3: f0ba5e09b6a301d75afdd1ad3a711161]
+
+Frame 2: 2820 bytes on wire (22560 bits), 2820 bytes captured (22560 bits)
+    Encapsulation type: Raw IPv4 (129)
+    Arrival Time: Dec 31, 2024 15:16:56.128884000 EET
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1735651016.128884000 seconds
+    [Time delta from previous captured frame: 0.004297000 seconds]
+    [Time delta from previous displayed frame: 0.004297000 seconds]
+    [Time since reference or first frame: 0.004297000 seconds]
+    Frame Number: 2
+    Frame Length: 2820 bytes (22560 bits)
+    Capture Length: 2820 bytes (22560 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame [truncated]: ip:tcp:tls:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x50]
+Internet Protocol Version 4, Src: 10.0.0.1, Dst: 192.168.1.1
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 2820
+    Identification: 0x0001 (1)
+    Flags: 0x00
+        0... .... = Reserved bit: Not set
+        .0.. .... = Don't fragment: Not set
+        ..0. .... = More fragments: Not set
+    ...0 0000 0000 0000 = Fragment Offset: 0
+    Time to Live: 64
+    Protocol: TCP (6)
+    Header Checksum: 0xa449 [validation disabled]
+    [Header checksum status: Unverified]
+    Source Address: 10.0.0.1
+    Destination Address: 192.168.1.1
+Transmission Control Protocol, Src Port: 443, Dst Port: 12345, Seq: 6200099, Ack: 96, Len: 2780
+    Source Port: 443
+    Destination Port: 12345
+    [Stream index: 0]
+    [Conversation completeness: Incomplete (0)]
+    [TCP Segment Len: 2780]
+    Sequence Number: 6200099    (relative sequence number)
+    Sequence Number (raw): 6200098
+    [Next Sequence Number: 6202879    (relative sequence number)]
+    Acknowledgment Number: 96    (relative ack number)
+    Acknowledgment number (raw): 2284415
+    0101 .... = Header Length: 20 bytes (5)
+    Flags: 0x018 (PSH, ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 1... = Push: Set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······AP···]
+    Window: 65535
+    [Calculated window size: 65535]
+    [Window size scaling factor: -1 (unknown)]
+    Checksum: 0x556a [unverified]
+    [Checksum Status: Unverified]
+    Urgent Pointer: 0
+    [Timestamps]
+        [Time since first frame in this TCP stream: 0.004297000 seconds]
+        [Time since previous frame in this TCP stream: 0.004297000 seconds]
+    [SEQ/ACK analysis]
+        [This is an ACK to the segment in frame: 1]
+        [The RTT to ACK the segment was: 0.004297000 seconds]
+        [Bytes in flight: 2780]
+        [Bytes sent since last PSH flag: 2780]
+    TCP payload (2780 bytes)
+Transport Layer Security
+    TLSv1.2 Record Layer: Handshake Protocol: Multiple Handshake Messages
+        Content Type: Handshake (22)
+        Version: TLS 1.2 (0x0303)
+        Length: 2775
+        Handshake Protocol: Server Hello
+            Handshake Type: Server Hello (2)
+            Length: 88
+            Version: TLS 1.2 (0x0303)
+            Random: 6773eec846b0bbfdfe5d92f4535b683f000e04c1f1d945984dacb401d91c5a56
+                GMT Unix Time: Dec 31, 2024 15:16:56.000000000 EET
+                Random Bytes: 46b0bbfdfe5d92f4535b683f000e04c1f1d945984dacb401d91c5a56
+            Session ID Length: 32
+            Session ID: f47df716474b2d67fc99ceb02d074b265f7140ef0339f701f1d69cd9b44190f8
+            Cipher Suite: TLS_RSA_WITH_AES_128_CBC_SHA256 (0x003c)
+            Compression Method: null (0)
+            Extensions Length: 16
+            Extension: signature_algorithms (len=4)
+                Type: signature_algorithms (13)
+                Length: 4
+                Signature Hash Algorithms Length: 2
+                Signature Hash Algorithms (1 algorithm)
+                    Signature Algorithm: rsa_pss_rsae_sha256 (0x0804)
+                        Signature Hash Algorithm Hash: Unknown (8)
+                        Signature Hash Algorithm Signature: SM2 (4)
+            Extension: extended_master_secret (len=0)
+                Type: extended_master_secret (23)
+                Length: 0
+            Extension: encrypt_then_mac (len=0)
+                Type: encrypt_then_mac (22)
+                Length: 0
+            [JA3S Fullstring: 771,60,13-23-22]
+            [JA3S: 57fc825ab4d8de92d53e51d60d2bbcc6]
+        Handshake Protocol: Certificate
+            Handshake Type: Certificate (11)
+            Length: 2550
+            Certificates Length: 2547
+            Certificates (2547 bytes)
+                Certificate Length: 1171
+                Certificate: 3082048f30820277021424c0b8dfeff7662accb3cc3917229e51b1f3a9d6300d06092a86… (pkcs-9-at-emailAddress=server-ctf@example.com,id-at-commonName=Pasdaran.local,id-at-organizationalUnitName=Cybersecurity,id-at-organizationName=Pasda
+                    signedCertificate
+                        serialNumber: 0x24c0b8dfeff7662accb3cc3917229e51b1f3a9d6
+                        signature (sha256WithRSAEncryption)
+                            Algorithm Id: 1.2.840.113549.1.1.11 (sha256WithRSAEncryption)
+                        issuer: rdnSequence (0)
+                            rdnSequence: 6 items (id-at-commonName=IRGC Root CA,id-at-organizationalUnitName=Cybersecurity,id-at-organizationName=IRGC,id-at-localityName=Tehran,id-at-stateOrProvinceName=Tehran,id-at-countryName=IR)
+                                RDNSequence item: 1 item (id-at-countryName=IR)
+                                    RelativeDistinguishedName item (id-at-countryName=IR)
+                                        Id: 2.5.4.6 (id-at-countryName)
+                                        CountryName: IR
+                                RDNSequence item: 1 item (id-at-stateOrProvinceName=Tehran)
+                                    RelativeDistinguishedName item (id-at-stateOrProvinceName=Tehran)
+                                        Id: 2.5.4.8 (id-at-stateOrProvinceName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Tehran
+                                RDNSequence item: 1 item (id-at-localityName=Tehran)
+                                    RelativeDistinguishedName item (id-at-localityName=Tehran)
+                                        Id: 2.5.4.7 (id-at-localityName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Tehran
+                                RDNSequence item: 1 item (id-at-organizationName=IRGC)
+                                    RelativeDistinguishedName item (id-at-organizationName=IRGC)
+                                        Id: 2.5.4.10 (id-at-organizationName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: IRGC
+                                RDNSequence item: 1 item (id-at-organizationalUnitName=Cybersecurity)
+                                    RelativeDistinguishedName item (id-at-organizationalUnitName=Cybersecurity)
+                                        Id: 2.5.4.11 (id-at-organizationalUnitName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Cybersecurity
+                                RDNSequence item: 1 item (id-at-commonName=IRGC Root CA)
+                                    RelativeDistinguishedName item (id-at-commonName=IRGC Root CA)
+                                        Id: 2.5.4.3 (id-at-commonName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: IRGC Root CA
+                        validity
+                            notBefore: utcTime (0)
+                                utcTime: 2024-12-16 20:00:48 (UTC)
+                            notAfter: utcTime (0)
+                                utcTime: 2025-12-16 20:00:48 (UTC)
+                        subject: rdnSequence (0)
+                            rdnSequence: 7 items (pkcs-9-at-emailAddress=server-ctf@example.com,id-at-commonName=Pasdaran.local,id-at-organizationalUnitName=Cybersecurity,id-at-organizationName=Pasdaran,id-at-localityName=Tehran,id-at-stateOrProvinceName=Tehran,id-at
+                                RDNSequence item: 1 item (id-at-countryName=IR)
+                                    RelativeDistinguishedName item (id-at-countryName=IR)
+                                        Id: 2.5.4.6 (id-at-countryName)
+                                        CountryName: IR
+                                RDNSequence item: 1 item (id-at-stateOrProvinceName=Tehran)
+                                    RelativeDistinguishedName item (id-at-stateOrProvinceName=Tehran)
+                                        Id: 2.5.4.8 (id-at-stateOrProvinceName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Tehran
+                                RDNSequence item: 1 item (id-at-localityName=Tehran)
+                                    RelativeDistinguishedName item (id-at-localityName=Tehran)
+                                        Id: 2.5.4.7 (id-at-localityName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Tehran
+                                RDNSequence item: 1 item (id-at-organizationName=Pasdaran)
+                                    RelativeDistinguishedName item (id-at-organizationName=Pasdaran)
+                                        Id: 2.5.4.10 (id-at-organizationName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Pasdaran
+                                RDNSequence item: 1 item (id-at-organizationalUnitName=Cybersecurity)
+                                    RelativeDistinguishedName item (id-at-organizationalUnitName=Cybersecurity)
+                                        Id: 2.5.4.11 (id-at-organizationalUnitName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Cybersecurity
+                                RDNSequence item: 1 item (id-at-commonName=Pasdaran.local)
+                                    RelativeDistinguishedName item (id-at-commonName=Pasdaran.local)
+                                        Id: 2.5.4.3 (id-at-commonName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Pasdaran.local
+                                RDNSequence item: 1 item (pkcs-9-at-emailAddress=server-ctf@example.com)
+                                    RelativeDistinguishedName item (pkcs-9-at-emailAddress=server-ctf@example.com)
+                                        Id: 1.2.840.113549.1.9.1 (pkcs-9-at-emailAddress)
+                                        IA5String: server-ctf@example.com
+                        subjectPublicKeyInfo
+                            algorithm (rsaEncryption)
+                                Algorithm Id: 1.2.840.113549.1.1.1 (rsaEncryption)
+                            subjectPublicKey: 3082010a0282010100db8d24fa298358ec6a55b74c127eddafe1c5d51db0bdae576735f6…
+                                modulus: 0x00db8d24fa298358ec6a55b74c127eddafe1c5d51db0bdae576735f6d21cbde938dc691a…
+                                publicExponent: 65537
+                    algorithmIdentifier (sha256WithRSAEncryption)
+                        Algorithm Id: 1.2.840.113549.1.1.11 (sha256WithRSAEncryption)
+                    Padding: 0
+                    encrypted: 044749eac7dc9129ec30e65a922a251b31c93d38d0324f2f86f3037d6beccb340bd82bb8…
+                Certificate Length: 1370
+                Certificate: 308205563082033e020900d995f8d5fe3966de300d06092a864886f70d01010d0500306d… (id-at-commonName=IRGC Root CA,id-at-organizationalUnitName=Cybersecurity,id-at-organizationName=IRGC,id-at-localityName=Tehran,id-at-stateOrProvinceN
+                    signedCertificate
+                        serialNumber: 0x00d995f8d5fe3966de
+                        signature (sha512WithRSAEncryption)
+                            Algorithm Id: 1.2.840.113549.1.1.13 (sha512WithRSAEncryption)
+                        issuer: rdnSequence (0)
+                            rdnSequence: 6 items (id-at-commonName=IRGC Root CA,id-at-organizationalUnitName=Cybersecurity,id-at-organizationName=IRGC,id-at-localityName=Tehran,id-at-stateOrProvinceName=Tehran,id-at-countryName=IR)
+                                RDNSequence item: 1 item (id-at-countryName=IR)
+                                    RelativeDistinguishedName item (id-at-countryName=IR)
+                                        Id: 2.5.4.6 (id-at-countryName)
+                                        CountryName: IR
+                                RDNSequence item: 1 item (id-at-stateOrProvinceName=Tehran)
+                                    RelativeDistinguishedName item (id-at-stateOrProvinceName=Tehran)
+                                        Id: 2.5.4.8 (id-at-stateOrProvinceName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Tehran
+                                RDNSequence item: 1 item (id-at-localityName=Tehran)
+                                    RelativeDistinguishedName item (id-at-localityName=Tehran)
+                                        Id: 2.5.4.7 (id-at-localityName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Tehran
+                                RDNSequence item: 1 item (id-at-organizationName=IRGC)
+                                    RelativeDistinguishedName item (id-at-organizationName=IRGC)
+                                        Id: 2.5.4.10 (id-at-organizationName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: IRGC
+                                RDNSequence item: 1 item (id-at-organizationalUnitName=Cybersecurity)
+                                    RelativeDistinguishedName item (id-at-organizationalUnitName=Cybersecurity)
+                                        Id: 2.5.4.11 (id-at-organizationalUnitName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Cybersecurity
+                                RDNSequence item: 1 item (id-at-commonName=IRGC Root CA)
+                                    RelativeDistinguishedName item (id-at-commonName=IRGC Root CA)
+                                        Id: 2.5.4.3 (id-at-commonName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: IRGC Root CA
+                        validity
+                            notBefore: utcTime (0)
+                                utcTime: 2024-12-16 14:58:51 (UTC)
+                            notAfter: utcTime (0)
+                                utcTime: 2025-12-16 14:58:51 (UTC)
+                        subject: rdnSequence (0)
+                            rdnSequence: 6 items (id-at-commonName=IRGC Root CA,id-at-organizationalUnitName=Cybersecurity,id-at-organizationName=IRGC,id-at-localityName=Tehran,id-at-stateOrProvinceName=Tehran,id-at-countryName=IR)
+                                RDNSequence item: 1 item (id-at-countryName=IR)
+                                    RelativeDistinguishedName item (id-at-countryName=IR)
+                                        Id: 2.5.4.6 (id-at-countryName)
+                                        CountryName: IR
+                                RDNSequence item: 1 item (id-at-stateOrProvinceName=Tehran)
+                                    RelativeDistinguishedName item (id-at-stateOrProvinceName=Tehran)
+                                        Id: 2.5.4.8 (id-at-stateOrProvinceName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Tehran
+                                RDNSequence item: 1 item (id-at-localityName=Tehran)
+                                    RelativeDistinguishedName item (id-at-localityName=Tehran)
+                                        Id: 2.5.4.7 (id-at-localityName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Tehran
+                                RDNSequence item: 1 item (id-at-organizationName=IRGC)
+                                    RelativeDistinguishedName item (id-at-organizationName=IRGC)
+                                        Id: 2.5.4.10 (id-at-organizationName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: IRGC
+                                RDNSequence item: 1 item (id-at-organizationalUnitName=Cybersecurity)
+                                    RelativeDistinguishedName item (id-at-organizationalUnitName=Cybersecurity)
+                                        Id: 2.5.4.11 (id-at-organizationalUnitName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Cybersecurity
+                                RDNSequence item: 1 item (id-at-commonName=IRGC Root CA)
+                                    RelativeDistinguishedName item (id-at-commonName=IRGC Root CA)
+                                        Id: 2.5.4.3 (id-at-commonName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: IRGC Root CA
+                        subjectPublicKeyInfo
+                            algorithm (rsaEncryption)
+                                Algorithm Id: 1.2.840.113549.1.1.1 (rsaEncryption)
+                            subjectPublicKey: 3082020a0282020100895e482ee3af79518b5fbd34d77c8d4425977daf9f53d9e6263b57…
+                                modulus: 0x00895e482ee3af79518b5fbd34d77c8d4425977daf9f53d9e6263b57e5953d7541435d86…
+                                publicExponent: 65537
+                    algorithmIdentifier (sha512WithRSAEncryption)
+                        Algorithm Id: 1.2.840.113549.1.1.13 (sha512WithRSAEncryption)
+                    Padding: 0
+                    encrypted: 6bd8fed1b356589408a1cceb041bb8a1d4f085566553a8491688d2bda9f58a5d919eef27…
+        Handshake Protocol: Certificate Request
+            Handshake Type: Certificate Request (13)
+            Length: 121
+            Certificate types count: 1
+            Certificate types (1 type)
+                Certificate type: RSA Sign (1)
+            Signature Hash Algorithms Length: 2
+            Signature Hash Algorithms (1 algorithm)
+                Signature Algorithm: rsa_pkcs1_sha256 (0x0401)
+                    Signature Hash Algorithm Hash: SHA256 (4)
+                    Signature Hash Algorithm Signature: RSA (1)
+            Distinguished Names Length: 113
+            Distinguished Names (113 bytes)
+                Distinguished Name Length: 111
+                Distinguished Name: (id-at-commonName=IRGC Root CA,id-at-organizationalUnitName=Cybersecurity,id-at-organizationName=IRGC,id-at-localityName=Tehran,id-at-stateOrProvinceName=Tehran,id-at-countryName=IR)
+                    RDNSequence item: 1 item (id-at-countryName=IR)
+                        RelativeDistinguishedName item (id-at-countryName=IR)
+                            Id: 2.5.4.6 (id-at-countryName)
+                            CountryName: IR
+                    RDNSequence item: 1 item (id-at-stateOrProvinceName=Tehran)
+                        RelativeDistinguishedName item (id-at-stateOrProvinceName=Tehran)
+                            Id: 2.5.4.8 (id-at-stateOrProvinceName)
+                            DirectoryString: uTF8String (4)
+                                uTF8String: Tehran
+                    RDNSequence item: 1 item (id-at-localityName=Tehran)
+                        RelativeDistinguishedName item (id-at-localityName=Tehran)
+                            Id: 2.5.4.7 (id-at-localityName)
+                            DirectoryString: uTF8String (4)
+                                uTF8String: Tehran
+                    RDNSequence item: 1 item (id-at-organizationName=IRGC)
+                        RelativeDistinguishedName item (id-at-organizationName=IRGC)
+                            Id: 2.5.4.10 (id-at-organizationName)
+                            DirectoryString: uTF8String (4)
+                                uTF8String: IRGC
+                    RDNSequence item: 1 item (id-at-organizationalUnitName=Cybersecurity)
+                        RelativeDistinguishedName item (id-at-organizationalUnitName=Cybersecurity)
+                            Id: 2.5.4.11 (id-at-organizationalUnitName)
+                            DirectoryString: uTF8String (4)
+                                uTF8String: Cybersecurity
+                    RDNSequence item: 1 item (id-at-commonName=IRGC Root CA)
+                        RelativeDistinguishedName item (id-at-commonName=IRGC Root CA)
+                            Id: 2.5.4.3 (id-at-commonName)
+                            DirectoryString: uTF8String (4)
+                                uTF8String: IRGC Root CA
+        Handshake Protocol: Server Hello Done
+            Handshake Type: Server Hello Done (14)
+            Length: 0
+
+Frame 3: 1691 bytes on wire (13528 bits), 1691 bytes captured (13528 bits)
+    Encapsulation type: Raw IPv4 (129)
+    Arrival Time: Dec 31, 2024 15:16:56.137304000 EET
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1735651016.137304000 seconds
+    [Time delta from previous captured frame: 0.008420000 seconds]
+    [Time delta from previous displayed frame: 0.008420000 seconds]
+    [Time since reference or first frame: 0.012717000 seconds]
+    Frame Number: 3
+    Frame Length: 1691 bytes (13528 bits)
+    Capture Length: 1691 bytes (13528 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: ip:tcp:tls:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat]
+Internet Protocol Version 4, Src: 192.168.1.1, Dst: 10.0.0.1
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 1691
+    Identification: 0x0001 (1)
+    Flags: 0x00
+        0... .... = Reserved bit: Not set
+        .0.. .... = Don't fragment: Not set
+        ..0. .... = More fragments: Not set
+    ...0 0000 0000 0000 = Fragment Offset: 0
+    Time to Live: 64
+    Protocol: TCP (6)
+    Header Checksum: 0xa8b2 [validation disabled]
+    [Header checksum status: Unverified]
+    Source Address: 192.168.1.1
+    Destination Address: 10.0.0.1
+Transmission Control Protocol, Src Port: 12345, Dst Port: 443, Seq: 96, Ack: 6202879, Len: 1651
+    Source Port: 12345
+    Destination Port: 443
+    [Stream index: 0]
+    [Conversation completeness: Incomplete (8)]
+    [TCP Segment Len: 1651]
+    Sequence Number: 96    (relative sequence number)
+    Sequence Number (raw): 2284415
+    [Next Sequence Number: 1747    (relative sequence number)]
+    Acknowledgment Number: 6202879    (relative ack number)
+    Acknowledgment number (raw): 6202878
+    0101 .... = Header Length: 20 bytes (5)
+    Flags: 0x018 (PSH, ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 1... = Push: Set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······AP···]
+    Window: 65535
+    [Calculated window size: 65535]
+    [Window size scaling factor: -1 (unknown)]
+    Checksum: 0xac51 [unverified]
+    [Checksum Status: Unverified]
+    Urgent Pointer: 0
+    [Timestamps]
+        [Time since first frame in this TCP stream: 0.012717000 seconds]
+        [Time since previous frame in this TCP stream: 0.008420000 seconds]
+    [SEQ/ACK analysis]
+        [This is an ACK to the segment in frame: 2]
+        [The RTT to ACK the segment was: 0.008420000 seconds]
+        [Bytes in flight: 1651]
+        [Bytes sent since last PSH flag: 1651]
+    TCP payload (1651 bytes)
+Transport Layer Security
+    TLSv1.2 Record Layer: Handshake Protocol: Multiple Handshake Messages
+        Content Type: Handshake (22)
+        Version: TLS 1.2 (0x0303)
+        Length: 1646
+        Handshake Protocol: Certificate
+            Handshake Type: Certificate (11)
+            Length: 1380
+            Certificates Length: 1377
+            Certificates (1377 bytes)
+                Certificate Length: 1374
+                Certificate: 3082055a30820342020900cea0c57962c3b94c300d06092a864886f70d01010d0500306d… (id-at-commonName=Pasdaran.local,id-at-organizationalUnitName=Cybersecurity,id-at-organizationName=Sharif,id-at-localityName=Tehran,id-at-stateOrProvi
+                    signedCertificate
+                        serialNumber: 0x00cea0c57962c3b94c
+                        signature (sha512WithRSAEncryption)
+                            Algorithm Id: 1.2.840.113549.1.1.13 (sha512WithRSAEncryption)
+                        issuer: rdnSequence (0)
+                            rdnSequence: 6 items (id-at-commonName=IRGC Root CA,id-at-organizationalUnitName=Cybersecurity,id-at-organizationName=IRGC,id-at-localityName=Tehran,id-at-stateOrProvinceName=Tehran,id-at-countryName=IR)
+                                RDNSequence item: 1 item (id-at-countryName=IR)
+                                    RelativeDistinguishedName item (id-at-countryName=IR)
+                                        Id: 2.5.4.6 (id-at-countryName)
+                                        CountryName: IR
+                                RDNSequence item: 1 item (id-at-stateOrProvinceName=Tehran)
+                                    RelativeDistinguishedName item (id-at-stateOrProvinceName=Tehran)
+                                        Id: 2.5.4.8 (id-at-stateOrProvinceName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Tehran
+                                RDNSequence item: 1 item (id-at-localityName=Tehran)
+                                    RelativeDistinguishedName item (id-at-localityName=Tehran)
+                                        Id: 2.5.4.7 (id-at-localityName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Tehran
+                                RDNSequence item: 1 item (id-at-organizationName=IRGC)
+                                    RelativeDistinguishedName item (id-at-organizationName=IRGC)
+                                        Id: 2.5.4.10 (id-at-organizationName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: IRGC
+                                RDNSequence item: 1 item (id-at-organizationalUnitName=Cybersecurity)
+                                    RelativeDistinguishedName item (id-at-organizationalUnitName=Cybersecurity)
+                                        Id: 2.5.4.11 (id-at-organizationalUnitName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Cybersecurity
+                                RDNSequence item: 1 item (id-at-commonName=IRGC Root CA)
+                                    RelativeDistinguishedName item (id-at-commonName=IRGC Root CA)
+                                        Id: 2.5.4.3 (id-at-commonName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: IRGC Root CA
+                        validity
+                            notBefore: utcTime (0)
+                                utcTime: 2024-12-16 15:45:39 (UTC)
+                            notAfter: utcTime (0)
+                                utcTime: 2025-12-16 15:45:39 (UTC)
+                        subject: rdnSequence (0)
+                            rdnSequence: 6 items (id-at-commonName=Pasdaran.local,id-at-organizationalUnitName=Cybersecurity,id-at-organizationName=Sharif,id-at-localityName=Tehran,id-at-stateOrProvinceName=Tehran,id-at-countryName=IR)
+                                RDNSequence item: 1 item (id-at-countryName=IR)
+                                    RelativeDistinguishedName item (id-at-countryName=IR)
+                                        Id: 2.5.4.6 (id-at-countryName)
+                                        CountryName: IR
+                                RDNSequence item: 1 item (id-at-stateOrProvinceName=Tehran)
+                                    RelativeDistinguishedName item (id-at-stateOrProvinceName=Tehran)
+                                        Id: 2.5.4.8 (id-at-stateOrProvinceName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Tehran
+                                RDNSequence item: 1 item (id-at-localityName=Tehran)
+                                    RelativeDistinguishedName item (id-at-localityName=Tehran)
+                                        Id: 2.5.4.7 (id-at-localityName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Tehran
+                                RDNSequence item: 1 item (id-at-organizationName=Sharif)
+                                    RelativeDistinguishedName item (id-at-organizationName=Sharif)
+                                        Id: 2.5.4.10 (id-at-organizationName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Sharif
+                                RDNSequence item: 1 item (id-at-organizationalUnitName=Cybersecurity)
+                                    RelativeDistinguishedName item (id-at-organizationalUnitName=Cybersecurity)
+                                        Id: 2.5.4.11 (id-at-organizationalUnitName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Cybersecurity
+                                RDNSequence item: 1 item (id-at-commonName=Pasdaran.local)
+                                    RelativeDistinguishedName item (id-at-commonName=Pasdaran.local)
+                                        Id: 2.5.4.3 (id-at-commonName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Pasdaran.local
+                        subjectPublicKeyInfo
+                            algorithm (rsaEncryption)
+                                Algorithm Id: 1.2.840.113549.1.1.1 (rsaEncryption)
+                            subjectPublicKey: 3082020a0282020100f2bc794f09d8b196023d36530f2852f8ee2f9559605a9100c9fca0…
+                                modulus: 0x00f2bc794f09d8b196023d36530f2852f8ee2f9559605a9100c9fca0a397f667efe53415…
+                                publicExponent: 65537
+                    algorithmIdentifier (sha512WithRSAEncryption)
+                        Algorithm Id: 1.2.840.113549.1.1.13 (sha512WithRSAEncryption)
+                    Padding: 0
+                    encrypted: 876d913d6a78f0f6deadb5345ed1b9b3cb368e05240f99eb0ec1bb336e187538ecea7422…
+        Handshake Protocol: Client Key Exchange
+            Handshake Type: Client Key Exchange (16)
+            Length: 258
+            RSA Encrypted PreMaster Secret
+                Encrypted PreMaster length: 256
+                Encrypted PreMaster: 85bc1ca322f1cc0dd3a68c517aacec8f4ffa6dd17358a151c59caad1b2eaf1e157ec27c9…
+
+Frame 4: 62 bytes on wire (496 bits), 62 bytes captured (496 bits)
+    Encapsulation type: Raw IPv4 (129)
+    Arrival Time: Dec 31, 2024 15:16:56.141772000 EET
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1735651016.141772000 seconds
+    [Time delta from previous captured frame: 0.004468000 seconds]
+    [Time delta from previous displayed frame: 0.004468000 seconds]
+    [Time since reference or first frame: 0.017185000 seconds]
+    Frame Number: 4
+    Frame Length: 62 bytes (496 bits)
+    Capture Length: 62 bytes (496 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: ip:tcp:tls]
+Internet Protocol Version 4, Src: 192.168.1.1, Dst: 10.0.0.1
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 62
+    Identification: 0x0001 (1)
+    Flags: 0x00
+        0... .... = Reserved bit: Not set
+        .0.. .... = Don't fragment: Not set
+        ..0. .... = More fragments: Not set
+    ...0 0000 0000 0000 = Fragment Offset: 0
+    Time to Live: 64
+    Protocol: TCP (6)
+    Header Checksum: 0xaf0f [validation disabled]
+    [Header checksum status: Unverified]
+    Source Address: 192.168.1.1
+    Destination Address: 10.0.0.1
+Transmission Control Protocol, Src Port: 12345, Dst Port: 443, Seq: 1747, Ack: 6202879, Len: 22
+    Source Port: 12345
+    Destination Port: 443
+    [Stream index: 0]
+    [Conversation completeness: Incomplete (8)]
+    [TCP Segment Len: 22]
+    Sequence Number: 1747    (relative sequence number)
+    Sequence Number (raw): 2286066
+    [Next Sequence Number: 1769    (relative sequence number)]
+    Acknowledgment Number: 6202879    (relative ack number)
+    Acknowledgment number (raw): 6202878
+    0101 .... = Header Length: 20 bytes (5)
+    Flags: 0x018 (PSH, ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 1... = Push: Set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······AP···]
+    Window: 65535
+    [Calculated window size: 65535]
+    [Window size scaling factor: -1 (unknown)]
+    Checksum: 0xcb42 [unverified]
+    [Checksum Status: Unverified]
+    Urgent Pointer: 0
+    [Timestamps]
+        [Time since first frame in this TCP stream: 0.017185000 seconds]
+        [Time since previous frame in this TCP stream: 0.004468000 seconds]
+    [SEQ/ACK analysis]
+        [Bytes in flight: 1673]
+        [Bytes sent since last PSH flag: 22]
+    TCP payload (22 bytes)
+Transport Layer Security
+    TLSv1.2 Record Layer: Change Cipher Spec Protocol: Change Cipher Spec
+        Content Type: Change Cipher Spec (20)
+        Version: TLS 1.2 (0x0303)
+        Length: 17
+        Change Cipher Spec Message
+
+Frame 5: 62 bytes on wire (496 bits), 62 bytes captured (496 bits)
+    Encapsulation type: Raw IPv4 (129)
+    Arrival Time: Dec 31, 2024 15:16:56.146177000 EET
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1735651016.146177000 seconds
+    [Time delta from previous captured frame: 0.004405000 seconds]
+    [Time delta from previous displayed frame: 0.004405000 seconds]
+    [Time since reference or first frame: 0.021590000 seconds]
+    Frame Number: 5
+    Frame Length: 62 bytes (496 bits)
+    Capture Length: 62 bytes (496 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: ip:tcp:tls]
+Internet Protocol Version 4, Src: 10.0.0.1, Dst: 192.168.1.1
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 62
+    Identification: 0x0001 (1)
+    Flags: 0x00
+        0... .... = Reserved bit: Not set
+        .0.. .... = Don't fragment: Not set
+        ..0. .... = More fragments: Not set
+    ...0 0000 0000 0000 = Fragment Offset: 0
+    Time to Live: 64
+    Protocol: TCP (6)
+    Header Checksum: 0xaf0f [validation disabled]
+    [Header checksum status: Unverified]
+    Source Address: 10.0.0.1
+    Destination Address: 192.168.1.1
+Transmission Control Protocol, Src Port: 443, Dst Port: 12345, Seq: 6202879, Ack: 1769, Len: 22
+    Source Port: 443
+    Destination Port: 12345
+    [Stream index: 0]
+    [Conversation completeness: Incomplete (8)]
+    [TCP Segment Len: 22]
+    Sequence Number: 6202879    (relative sequence number)
+    Sequence Number (raw): 6202878
+    [Next Sequence Number: 6202901    (relative sequence number)]
+    Acknowledgment Number: 1769    (relative ack number)
+    Acknowledgment number (raw): 2286088
+    0101 .... = Header Length: 20 bytes (5)
+    Flags: 0x018 (PSH, ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 1... = Push: Set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······AP···]
+    Window: 65535
+    [Calculated window size: 65535]
+    [Window size scaling factor: -1 (unknown)]
+    Checksum: 0x6c09 [unverified]
+    [Checksum Status: Unverified]
+    Urgent Pointer: 0
+    [Timestamps]
+        [Time since first frame in this TCP stream: 0.021590000 seconds]
+        [Time since previous frame in this TCP stream: 0.004405000 seconds]
+    [SEQ/ACK analysis]
+        [This is an ACK to the segment in frame: 4]
+        [The RTT to ACK the segment was: 0.004405000 seconds]
+        [Bytes in flight: 22]
+        [Bytes sent since last PSH flag: 22]
+    TCP payload (22 bytes)
+Transport Layer Security
+    TLSv1.2 Record Layer: Change Cipher Spec Protocol: Change Cipher Spec
+        Content Type: Change Cipher Spec (20)
+        Version: TLS 1.2 (0x0303)
+        Length: 17
+        Change Cipher Spec Message
+
+Frame 6: 210 bytes on wire (1680 bits), 210 bytes captured (1680 bits)
+    Encapsulation type: Raw IPv4 (129)
+    Arrival Time: Dec 31, 2024 15:16:56.150535000 EET
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1735651016.150535000 seconds
+    [Time delta from previous captured frame: 0.004358000 seconds]
+    [Time delta from previous displayed frame: 0.004358000 seconds]
+    [Time since reference or first frame: 0.025948000 seconds]
+    Frame Number: 6
+    Frame Length: 210 bytes (1680 bits)
+    Capture Length: 210 bytes (1680 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: ip:tcp:tls]
+Internet Protocol Version 4, Src: 192.168.1.1, Dst: 10.0.0.1
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 210
+    Identification: 0x0001 (1)
+    Flags: 0x00
+        0... .... = Reserved bit: Not set
+        .0.. .... = Don't fragment: Not set
+        ..0. .... = More fragments: Not set
+    ...0 0000 0000 0000 = Fragment Offset: 0
+    Time to Live: 64
+    Protocol: TCP (6)
+    Header Checksum: 0xae7b [validation disabled]
+    [Header checksum status: Unverified]
+    Source Address: 192.168.1.1
+    Destination Address: 10.0.0.1
+Transmission Control Protocol, Src Port: 12345, Dst Port: 443, Seq: 1769, Ack: 6202901, Len: 170
+    Source Port: 12345
+    Destination Port: 443
+    [Stream index: 0]
+    [Conversation completeness: Incomplete (8)]
+    [TCP Segment Len: 170]
+    Sequence Number: 1769    (relative sequence number)
+    Sequence Number (raw): 2286088
+    [Next Sequence Number: 1939    (relative sequence number)]
+    Acknowledgment Number: 6202901    (relative ack number)
+    Acknowledgment number (raw): 6202900
+    0101 .... = Header Length: 20 bytes (5)
+    Flags: 0x018 (PSH, ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 1... = Push: Set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······AP···]
+    Window: 65535
+    [Calculated window size: 65535]
+    [Window size scaling factor: -1 (unknown)]
+    Checksum: 0x2c4f [unverified]
+    [Checksum Status: Unverified]
+    Urgent Pointer: 0
+    [Timestamps]
+        [Time since first frame in this TCP stream: 0.025948000 seconds]
+        [Time since previous frame in this TCP stream: 0.004358000 seconds]
+    [SEQ/ACK analysis]
+        [This is an ACK to the segment in frame: 5]
+        [The RTT to ACK the segment was: 0.004358000 seconds]
+        [Bytes in flight: 170]
+        [Bytes sent since last PSH flag: 170]
+    TCP payload (170 bytes)
+Transport Layer Security
+    TLSv1.2 Record Layer: Application Data Protocol: http-over-tls
+        Content Type: Application Data (23)
+        Version: TLS 1.2 (0x0303)
+        Length: 165
+        Encrypted Application Data: 58e4fe82bfa17ea3806fd9fd9a2c9bf21703030090be307e136b8e9cf7149f8e370fa6a0…
+        [Application Data Protocol: http-over-tls]
+
+Frame 7: 178 bytes on wire (1424 bits), 178 bytes captured (1424 bits)
+    Encapsulation type: Raw IPv4 (129)
+    Arrival Time: Dec 31, 2024 15:16:56.151955000 EET
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1735651016.151955000 seconds
+    [Time delta from previous captured frame: 0.001420000 seconds]
+    [Time delta from previous displayed frame: 0.001420000 seconds]
+    [Time since reference or first frame: 0.027368000 seconds]
+    Frame Number: 7
+    Frame Length: 178 bytes (1424 bits)
+    Capture Length: 178 bytes (1424 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: ip:tcp:tls]
+Internet Protocol Version 4, Src: 10.0.0.1, Dst: 192.168.1.1
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 178
+    Identification: 0x0001 (1)
+    Flags: 0x00
+        0... .... = Reserved bit: Not set
+        .0.. .... = Don't fragment: Not set
+        ..0. .... = More fragments: Not set
+    ...0 0000 0000 0000 = Fragment Offset: 0
+    Time to Live: 64
+    Protocol: TCP (6)
+    Header Checksum: 0xae9b [validation disabled]
+    [Header checksum status: Unverified]
+    Source Address: 10.0.0.1
+    Destination Address: 192.168.1.1
+Transmission Control Protocol, Src Port: 443, Dst Port: 12345, Seq: 6202901, Ack: 1939, Len: 138
+    Source Port: 443
+    Destination Port: 12345
+    [Stream index: 0]
+    [Conversation completeness: Incomplete (8)]
+    [TCP Segment Len: 138]
+    Sequence Number: 6202901    (relative sequence number)
+    Sequence Number (raw): 6202900
+    [Next Sequence Number: 6203039    (relative sequence number)]
+    Acknowledgment Number: 1939    (relative ack number)
+    Acknowledgment number (raw): 2286258
+    0101 .... = Header Length: 20 bytes (5)
+    Flags: 0x018 (PSH, ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 1... = Push: Set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······AP···]
+    Window: 65535
+    [Calculated window size: 65535]
+    [Window size scaling factor: -1 (unknown)]
+    Checksum: 0x4dee [unverified]
+    [Checksum Status: Unverified]
+    Urgent Pointer: 0
+    [Timestamps]
+        [Time since first frame in this TCP stream: 0.027368000 seconds]
+        [Time since previous frame in this TCP stream: 0.001420000 seconds]
+    [SEQ/ACK analysis]
+        [This is an ACK to the segment in frame: 6]
+        [The RTT to ACK the segment was: 0.001420000 seconds]
+        [Bytes in flight: 138]
+        [Bytes sent since last PSH flag: 138]
+    TCP payload (138 bytes)
+Transport Layer Security
+    TLSv1.2 Record Layer: Application Data Protocol: http-over-tls
+        Content Type: Application Data (23)
+        Version: TLS 1.2 (0x0303)
+        Length: 133
+        Encrypted Application Data: 4f6da2aa59e16b22d588b2f6f8cfcfb117030300709dee7b5c4eb316b6e144fe67a960d7…
+        [Application Data Protocol: http-over-tls]
+
+Frame 8: 1202 bytes on wire (9616 bits), 1202 bytes captured (9616 bits)
+    Encapsulation type: Raw IPv4 (129)
+    Arrival Time: Dec 31, 2024 15:16:56.154619000 EET
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1735651016.154619000 seconds
+    [Time delta from previous captured frame: 0.002664000 seconds]
+    [Time delta from previous displayed frame: 0.002664000 seconds]
+    [Time since reference or first frame: 0.030032000 seconds]
+    Frame Number: 8
+    Frame Length: 1202 bytes (9616 bits)
+    Capture Length: 1202 bytes (9616 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: ip:tcp:tls]
+Internet Protocol Version 4, Src: 10.0.0.1, Dst: 192.168.1.1
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 1202
+    Identification: 0x0001 (1)
+    Flags: 0x00
+        0... .... = Reserved bit: Not set
+        .0.. .... = Don't fragment: Not set
+        ..0. .... = More fragments: Not set
+    ...0 0000 0000 0000 = Fragment Offset: 0
+    Time to Live: 64
+    Protocol: TCP (6)
+    Header Checksum: 0xaa9b [validation disabled]
+    [Header checksum status: Unverified]
+    Source Address: 10.0.0.1
+    Destination Address: 192.168.1.1
+Transmission Control Protocol, Src Port: 443, Dst Port: 12345, Seq: 6203039, Ack: 1939, Len: 1162
+    Source Port: 443
+    Destination Port: 12345
+    [Stream index: 0]
+    [Conversation completeness: Incomplete (8)]
+    [TCP Segment Len: 1162]
+    Sequence Number: 6203039    (relative sequence number)
+    Sequence Number (raw): 6203038
+    [Next Sequence Number: 6204201    (relative sequence number)]
+    Acknowledgment Number: 1939    (relative ack number)
+    Acknowledgment number (raw): 2286258
+    0101 .... = Header Length: 20 bytes (5)
+    Flags: 0x018 (PSH, ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 1... = Push: Set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······AP···]
+    Window: 65535
+    [Calculated window size: 65535]
+    [Window size scaling factor: -1 (unknown)]
+    Checksum: 0x5b57 [unverified]
+    [Checksum Status: Unverified]
+    Urgent Pointer: 0
+    [Timestamps]
+        [Time since first frame in this TCP stream: 0.030032000 seconds]
+        [Time since previous frame in this TCP stream: 0.002664000 seconds]
+    [SEQ/ACK analysis]
+        [Bytes in flight: 1300]
+        [Bytes sent since last PSH flag: 1162]
+    TCP payload (1162 bytes)
+Transport Layer Security
+    TLSv1.2 Record Layer: Application Data Protocol: http-over-tls
+        Content Type: Application Data (23)
+        Version: TLS 1.2 (0x0303)
+        Length: 1157
+        Encrypted Application Data: 9063c2c93ac0b75172f913f4369daec81703030470095e6ab662d4aa2156fc27ebb3a9c5…
+        [Application Data Protocol: http-over-tls]
+
+Frame 9: 135 bytes on wire (1080 bits), 135 bytes captured (1080 bits)
+    Encapsulation type: Raw IPv4 (129)
+    Arrival Time: Dec 31, 2024 15:16:56.208129000 EET
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1735651016.208129000 seconds
+    [Time delta from previous captured frame: 0.053510000 seconds]
+    [Time delta from previous displayed frame: 0.053510000 seconds]
+    [Time since reference or first frame: 0.083542000 seconds]
+    Frame Number: 9
+    Frame Length: 135 bytes (1080 bits)
+    Capture Length: 135 bytes (1080 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: ip:tcp:tls]
+Internet Protocol Version 4, Src: 192.168.1.2, Dst: 10.0.0.1
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 135
+    Identification: 0x0001 (1)
+    Flags: 0x00
+        0... .... = Reserved bit: Not set
+        .0.. .... = Don't fragment: Not set
+        ..0. .... = More fragments: Not set
+    ...0 0000 0000 0000 = Fragment Offset: 0
+    Time to Live: 64
+    Protocol: TCP (6)
+    Header Checksum: 0xaec5 [validation disabled]
+    [Header checksum status: Unverified]
+    Source Address: 192.168.1.2
+    Destination Address: 10.0.0.1
+Transmission Control Protocol, Src Port: 12346, Dst Port: 443, Seq: 1, Ack: 1, Len: 95
+    Source Port: 12346
+    Destination Port: 443
+    [Stream index: 1]
+    [Conversation completeness: Incomplete (0)]
+    [TCP Segment Len: 95]
+    Sequence Number: 1    (relative sequence number)
+    Sequence Number (raw): 6601690
+    [Next Sequence Number: 96    (relative sequence number)]
+    Acknowledgment Number: 1    (relative ack number)
+    Acknowledgment number (raw): 0
+    0101 .... = Header Length: 20 bytes (5)
+    Flags: 0x018 (PSH, ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 1... = Push: Set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······AP···]
+    Window: 65535
+    [Calculated window size: 65535]
+    [Window size scaling factor: -1 (unknown)]
+    Checksum: 0x7b0e [unverified]
+    [Checksum Status: Unverified]
+    Urgent Pointer: 0
+    [Timestamps]
+        [Time since first frame in this TCP stream: 0.000000000 seconds]
+        [Time since previous frame in this TCP stream: 0.000000000 seconds]
+    [SEQ/ACK analysis]
+        [Bytes in flight: 95]
+        [Bytes sent since last PSH flag: 95]
+    TCP payload (95 bytes)
+Transport Layer Security
+    TLSv1.2 Record Layer: Handshake Protocol: Client Hello
+        Content Type: Handshake (22)
+        Version: TLS 1.2 (0x0303)
+        Length: 90
+        Handshake Protocol: Client Hello
+            Handshake Type: Client Hello (1)
+            Length: 86
+            Version: TLS 1.2 (0x0303)
+            Random: 6773eec8fb93e54a915b7168a8b123d971098f903c8c600c91b8268fbf9a45e6
+                GMT Unix Time: Dec 31, 2024 15:16:56.000000000 EET
+                Random Bytes: fb93e54a915b7168a8b123d971098f903c8c600c91b8268fbf9a45e6
+            Session ID Length: 0
+            Cipher Suites Length: 2
+            Cipher Suites (1 suite)
+                Cipher Suite: TLS_RSA_WITH_AES_128_CBC_SHA256 (0x003c)
+            Compression Methods Length: 1
+            Compression Methods (1 method)
+                Compression Method: null (0)
+            Extensions Length: 43
+            Extension: server_name (len=19)
+                Type: server_name (0)
+                Length: 19
+                Server Name Indication extension
+                    Server Name list length: 17
+                    Server Name Type: host_name (0)
+                    Server Name length: 14
+                    Server Name: Pasdaran.local
+            Extension: encrypt_then_mac (len=0)
+                Type: encrypt_then_mac (22)
+                Length: 0
+            Extension: supported_groups (len=4)
+                Type: supported_groups (10)
+                Length: 4
+                Supported Groups List Length: 2
+                Supported Groups (1 group)
+                    Supported Group: x25519 (0x001d)
+            Extension: signature_algorithms (len=4)
+                Type: signature_algorithms (13)
+                Length: 4
+                Signature Hash Algorithms Length: 2
+                Signature Hash Algorithms (1 algorithm)
+                    Signature Algorithm: rsa_pkcs1_sha256 (0x0401)
+                        Signature Hash Algorithm Hash: SHA256 (4)
+                        Signature Hash Algorithm Signature: RSA (1)
+            [JA3 Fullstring: 771,60,0-22-10-13,29,]
+            [JA3: f0ba5e09b6a301d75afdd1ad3a711161]
+
+Frame 10: 2820 bytes on wire (22560 bits), 2820 bytes captured (22560 bits)
+    Encapsulation type: Raw IPv4 (129)
+    Arrival Time: Dec 31, 2024 15:16:56.213151000 EET
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1735651016.213151000 seconds
+    [Time delta from previous captured frame: 0.005022000 seconds]
+    [Time delta from previous displayed frame: 0.005022000 seconds]
+    [Time since reference or first frame: 0.088564000 seconds]
+    Frame Number: 10
+    Frame Length: 2820 bytes (22560 bits)
+    Capture Length: 2820 bytes (22560 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame [truncated]: ip:tcp:tls:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x509sat:x50]
+Internet Protocol Version 4, Src: 10.0.0.1, Dst: 192.168.1.2
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 2820
+    Identification: 0x0001 (1)
+    Flags: 0x00
+        0... .... = Reserved bit: Not set
+        .0.. .... = Don't fragment: Not set
+        ..0. .... = More fragments: Not set
+    ...0 0000 0000 0000 = Fragment Offset: 0
+    Time to Live: 64
+    Protocol: TCP (6)
+    Header Checksum: 0xa448 [validation disabled]
+    [Header checksum status: Unverified]
+    Source Address: 10.0.0.1
+    Destination Address: 192.168.1.2
+Transmission Control Protocol, Src Port: 443, Dst Port: 12346, Seq: 6325227, Ack: 96, Len: 2780
+    Source Port: 443
+    Destination Port: 12346
+    [Stream index: 1]
+    [Conversation completeness: Incomplete (0)]
+    [TCP Segment Len: 2780]
+    Sequence Number: 6325227    (relative sequence number)
+    Sequence Number (raw): 6325226
+    [Next Sequence Number: 6328007    (relative sequence number)]
+    Acknowledgment Number: 96    (relative ack number)
+    Acknowledgment number (raw): 6601785
+    0101 .... = Header Length: 20 bytes (5)
+    Flags: 0x018 (PSH, ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 1... = Push: Set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······AP···]
+    Window: 65535
+    [Calculated window size: 65535]
+    [Window size scaling factor: -1 (unknown)]
+    Checksum: 0x18f7 [unverified]
+    [Checksum Status: Unverified]
+    Urgent Pointer: 0
+    [Timestamps]
+        [Time since first frame in this TCP stream: 0.005022000 seconds]
+        [Time since previous frame in this TCP stream: 0.005022000 seconds]
+    [SEQ/ACK analysis]
+        [This is an ACK to the segment in frame: 9]
+        [The RTT to ACK the segment was: 0.005022000 seconds]
+        [Bytes in flight: 2780]
+        [Bytes sent since last PSH flag: 2780]
+    TCP payload (2780 bytes)
+Transport Layer Security
+    TLSv1.2 Record Layer: Handshake Protocol: Multiple Handshake Messages
+        Content Type: Handshake (22)
+        Version: TLS 1.2 (0x0303)
+        Length: 2775
+        Handshake Protocol: Server Hello
+            Handshake Type: Server Hello (2)
+            Length: 88
+            Version: TLS 1.2 (0x0303)
+            Random: 6773eec85bdf2fef9e77133aa9889f5b12273d0c4a274f1a5da30e438dd96f31
+                GMT Unix Time: Dec 31, 2024 15:16:56.000000000 EET
+                Random Bytes: 5bdf2fef9e77133aa9889f5b12273d0c4a274f1a5da30e438dd96f31
+            Session ID Length: 32
+            Session ID: d01e095a4266ec71fb86c7c5dc8114f554dadab26b2667e4a80a495aafc75701
+            Cipher Suite: TLS_RSA_WITH_AES_128_CBC_SHA256 (0x003c)
+            Compression Method: null (0)
+            Extensions Length: 16
+            Extension: signature_algorithms (len=4)
+                Type: signature_algorithms (13)
+                Length: 4
+                Signature Hash Algorithms Length: 2
+                Signature Hash Algorithms (1 algorithm)
+                    Signature Algorithm: rsa_pss_rsae_sha256 (0x0804)
+                        Signature Hash Algorithm Hash: Unknown (8)
+                        Signature Hash Algorithm Signature: SM2 (4)
+            Extension: extended_master_secret (len=0)
+                Type: extended_master_secret (23)
+                Length: 0
+            Extension: encrypt_then_mac (len=0)
+                Type: encrypt_then_mac (22)
+                Length: 0
+            [JA3S Fullstring: 771,60,13-23-22]
+            [JA3S: 57fc825ab4d8de92d53e51d60d2bbcc6]
+        Handshake Protocol: Certificate
+            Handshake Type: Certificate (11)
+            Length: 2550
+            Certificates Length: 2547
+            Certificates (2547 bytes)
+                Certificate Length: 1171
+                Certificate: 3082048f30820277021424c0b8dfeff7662accb3cc3917229e51b1f3a9d6300d06092a86… (pkcs-9-at-emailAddress=server-ctf@example.com,id-at-commonName=Pasdaran.local,id-at-organizationalUnitName=Cybersecurity,id-at-organizationName=Pasda
+                    signedCertificate
+                        serialNumber: 0x24c0b8dfeff7662accb3cc3917229e51b1f3a9d6
+                        signature (sha256WithRSAEncryption)
+                            Algorithm Id: 1.2.840.113549.1.1.11 (sha256WithRSAEncryption)
+                        issuer: rdnSequence (0)
+                            rdnSequence: 6 items (id-at-commonName=IRGC Root CA,id-at-organizationalUnitName=Cybersecurity,id-at-organizationName=IRGC,id-at-localityName=Tehran,id-at-stateOrProvinceName=Tehran,id-at-countryName=IR)
+                                RDNSequence item: 1 item (id-at-countryName=IR)
+                                    RelativeDistinguishedName item (id-at-countryName=IR)
+                                        Id: 2.5.4.6 (id-at-countryName)
+                                        CountryName: IR
+                                RDNSequence item: 1 item (id-at-stateOrProvinceName=Tehran)
+                                    RelativeDistinguishedName item (id-at-stateOrProvinceName=Tehran)
+                                        Id: 2.5.4.8 (id-at-stateOrProvinceName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Tehran
+                                RDNSequence item: 1 item (id-at-localityName=Tehran)
+                                    RelativeDistinguishedName item (id-at-localityName=Tehran)
+                                        Id: 2.5.4.7 (id-at-localityName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Tehran
+                                RDNSequence item: 1 item (id-at-organizationName=IRGC)
+                                    RelativeDistinguishedName item (id-at-organizationName=IRGC)
+                                        Id: 2.5.4.10 (id-at-organizationName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: IRGC
+                                RDNSequence item: 1 item (id-at-organizationalUnitName=Cybersecurity)
+                                    RelativeDistinguishedName item (id-at-organizationalUnitName=Cybersecurity)
+                                        Id: 2.5.4.11 (id-at-organizationalUnitName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Cybersecurity
+                                RDNSequence item: 1 item (id-at-commonName=IRGC Root CA)
+                                    RelativeDistinguishedName item (id-at-commonName=IRGC Root CA)
+                                        Id: 2.5.4.3 (id-at-commonName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: IRGC Root CA
+                        validity
+                            notBefore: utcTime (0)
+                                utcTime: 2024-12-16 20:00:48 (UTC)
+                            notAfter: utcTime (0)
+                                utcTime: 2025-12-16 20:00:48 (UTC)
+                        subject: rdnSequence (0)
+                            rdnSequence: 7 items (pkcs-9-at-emailAddress=server-ctf@example.com,id-at-commonName=Pasdaran.local,id-at-organizationalUnitName=Cybersecurity,id-at-organizationName=Pasdaran,id-at-localityName=Tehran,id-at-stateOrProvinceName=Tehran,id-at
+                                RDNSequence item: 1 item (id-at-countryName=IR)
+                                    RelativeDistinguishedName item (id-at-countryName=IR)
+                                        Id: 2.5.4.6 (id-at-countryName)
+                                        CountryName: IR
+                                RDNSequence item: 1 item (id-at-stateOrProvinceName=Tehran)
+                                    RelativeDistinguishedName item (id-at-stateOrProvinceName=Tehran)
+                                        Id: 2.5.4.8 (id-at-stateOrProvinceName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Tehran
+                                RDNSequence item: 1 item (id-at-localityName=Tehran)
+                                    RelativeDistinguishedName item (id-at-localityName=Tehran)
+                                        Id: 2.5.4.7 (id-at-localityName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Tehran
+                                RDNSequence item: 1 item (id-at-organizationName=Pasdaran)
+                                    RelativeDistinguishedName item (id-at-organizationName=Pasdaran)
+                                        Id: 2.5.4.10 (id-at-organizationName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Pasdaran
+                                RDNSequence item: 1 item (id-at-organizationalUnitName=Cybersecurity)
+                                    RelativeDistinguishedName item (id-at-organizationalUnitName=Cybersecurity)
+                                        Id: 2.5.4.11 (id-at-organizationalUnitName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Cybersecurity
+                                RDNSequence item: 1 item (id-at-commonName=Pasdaran.local)
+                                    RelativeDistinguishedName item (id-at-commonName=Pasdaran.local)
+                                        Id: 2.5.4.3 (id-at-commonName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Pasdaran.local
+                                RDNSequence item: 1 item (pkcs-9-at-emailAddress=server-ctf@example.com)
+                                    RelativeDistinguishedName item (pkcs-9-at-emailAddress=server-ctf@example.com)
+                                        Id: 1.2.840.113549.1.9.1 (pkcs-9-at-emailAddress)
+                                        IA5String: server-ctf@example.com
+                        subjectPublicKeyInfo
+                            algorithm (rsaEncryption)
+                                Algorithm Id: 1.2.840.113549.1.1.1 (rsaEncryption)
+                            subjectPublicKey: 3082010a0282010100db8d24fa298358ec6a55b74c127eddafe1c5d51db0bdae576735f6…
+                                modulus: 0x00db8d24fa298358ec6a55b74c127eddafe1c5d51db0bdae576735f6d21cbde938dc691a…
+                                publicExponent: 65537
+                    algorithmIdentifier (sha256WithRSAEncryption)
+                        Algorithm Id: 1.2.840.113549.1.1.11 (sha256WithRSAEncryption)
+                    Padding: 0
+                    encrypted: 044749eac7dc9129ec30e65a922a251b31c93d38d0324f2f86f3037d6beccb340bd82bb8…
+                Certificate Length: 1370
+                Certificate: 308205563082033e020900d995f8d5fe3966de300d06092a864886f70d01010d0500306d… (id-at-commonName=IRGC Root CA,id-at-organizationalUnitName=Cybersecurity,id-at-organizationName=IRGC,id-at-localityName=Tehran,id-at-stateOrProvinceN
+                    signedCertificate
+                        serialNumber: 0x00d995f8d5fe3966de
+                        signature (sha512WithRSAEncryption)
+                            Algorithm Id: 1.2.840.113549.1.1.13 (sha512WithRSAEncryption)
+                        issuer: rdnSequence (0)
+                            rdnSequence: 6 items (id-at-commonName=IRGC Root CA,id-at-organizationalUnitName=Cybersecurity,id-at-organizationName=IRGC,id-at-localityName=Tehran,id-at-stateOrProvinceName=Tehran,id-at-countryName=IR)
+                                RDNSequence item: 1 item (id-at-countryName=IR)
+                                    RelativeDistinguishedName item (id-at-countryName=IR)
+                                        Id: 2.5.4.6 (id-at-countryName)
+                                        CountryName: IR
+                                RDNSequence item: 1 item (id-at-stateOrProvinceName=Tehran)
+                                    RelativeDistinguishedName item (id-at-stateOrProvinceName=Tehran)
+                                        Id: 2.5.4.8 (id-at-stateOrProvinceName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Tehran
+                                RDNSequence item: 1 item (id-at-localityName=Tehran)
+                                    RelativeDistinguishedName item (id-at-localityName=Tehran)
+                                        Id: 2.5.4.7 (id-at-localityName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Tehran
+                                RDNSequence item: 1 item (id-at-organizationName=IRGC)
+                                    RelativeDistinguishedName item (id-at-organizationName=IRGC)
+                                        Id: 2.5.4.10 (id-at-organizationName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: IRGC
+                                RDNSequence item: 1 item (id-at-organizationalUnitName=Cybersecurity)
+                                    RelativeDistinguishedName item (id-at-organizationalUnitName=Cybersecurity)
+                                        Id: 2.5.4.11 (id-at-organizationalUnitName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Cybersecurity
+                                RDNSequence item: 1 item (id-at-commonName=IRGC Root CA)
+                                    RelativeDistinguishedName item (id-at-commonName=IRGC Root CA)
+                                        Id: 2.5.4.3 (id-at-commonName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: IRGC Root CA
+                        validity
+                            notBefore: utcTime (0)
+                                utcTime: 2024-12-16 14:58:51 (UTC)
+                            notAfter: utcTime (0)
+                                utcTime: 2025-12-16 14:58:51 (UTC)
+                        subject: rdnSequence (0)
+                            rdnSequence: 6 items (id-at-commonName=IRGC Root CA,id-at-organizationalUnitName=Cybersecurity,id-at-organizationName=IRGC,id-at-localityName=Tehran,id-at-stateOrProvinceName=Tehran,id-at-countryName=IR)
+                                RDNSequence item: 1 item (id-at-countryName=IR)
+                                    RelativeDistinguishedName item (id-at-countryName=IR)
+                                        Id: 2.5.4.6 (id-at-countryName)
+                                        CountryName: IR
+                                RDNSequence item: 1 item (id-at-stateOrProvinceName=Tehran)
+                                    RelativeDistinguishedName item (id-at-stateOrProvinceName=Tehran)
+                                        Id: 2.5.4.8 (id-at-stateOrProvinceName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Tehran
+                                RDNSequence item: 1 item (id-at-localityName=Tehran)
+                                    RelativeDistinguishedName item (id-at-localityName=Tehran)
+                                        Id: 2.5.4.7 (id-at-localityName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Tehran
+                                RDNSequence item: 1 item (id-at-organizationName=IRGC)
+                                    RelativeDistinguishedName item (id-at-organizationName=IRGC)
+                                        Id: 2.5.4.10 (id-at-organizationName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: IRGC
+                                RDNSequence item: 1 item (id-at-organizationalUnitName=Cybersecurity)
+                                    RelativeDistinguishedName item (id-at-organizationalUnitName=Cybersecurity)
+                                        Id: 2.5.4.11 (id-at-organizationalUnitName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: Cybersecurity
+                                RDNSequence item: 1 item (id-at-commonName=IRGC Root CA)
+                                    RelativeDistinguishedName item (id-at-commonName=IRGC Root CA)
+                                        Id: 2.5.4.3 (id-at-commonName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: IRGC Root CA
+                        subjectPublicKeyInfo
+                            algorithm (rsaEncryption)
+                                Algorithm Id: 1.2.840.113549.1.1.1 (rsaEncryption)
+                            subjectPublicKey: 3082020a0282020100895e482ee3af79518b5fbd34d77c8d4425977daf9f53d9e6263b57…
+                                modulus: 0x00895e482ee3af79518b5fbd34d77c8d4425977daf9f53d9e6263b57e5953d7541435d86…
+                                publicExponent: 65537
+                    algorithmIdentifier (sha512WithRSAEncryption)
+                        Algorithm Id: 1.2.840.113549.1.1.13 (sha512WithRSAEncryption)
+                    Padding: 0
+                    encrypted: 6bd8fed1b356589408a1cceb041bb8a1d4f085566553a8491688d2bda9f58a5d919eef27…
+        Handshake Protocol: Certificate Request
+            Handshake Type: Certificate Request (13)
+            Length: 121
+            Certificate types count: 1
+            Certificate types (1 type)
+                Certificate type: RSA Sign (1)
+            Signature Hash Algorithms Length: 2
+            Signature Hash Algorithms (1 algorithm)
+                Signature Algorithm: rsa_pkcs1_sha256 (0x0401)
+                    Signature Hash Algorithm Hash: SHA256 (4)
+                    Signature Hash Algorithm Signature: RSA (1)
+            Distinguished Names Length: 113
+            Distinguished Names (113 bytes)
+                Distinguished Name Length: 111
+                Distinguished Name: (id-at-commonName=IRGC Root CA,id-at-organizationalUnitName=Cybersecurity,id-at-organizationName=IRGC,id-at-localityName=Tehran,id-at-stateOrProvinceName=Tehran,id-at-countryName=IR)
+                    RDNSequence item: 1 item (id-at-countryName=IR)
+                        RelativeDistinguishedName item (id-at-countryName=IR)
+                            Id: 2.5.4.6 (id-at-countryName)
+                            CountryName: IR
+                    RDNSequence item: 1 item (id-at-stateOrProvinceName=Tehran)
+                        RelativeDistinguishedName item (id-at-stateOrProvinceName=Tehran)
+                            Id: 2.5.4.8 (id-at-stateOrProvinceName)
+                            DirectoryString: uTF8String (4)
+                                uTF8String: Tehran
+                    RDNSequence item: 1 item (id-at-localityName=Tehran)
+                        RelativeDistinguishedName item (id-at-localityName=Tehran)
+                            Id: 2.5.4.7 (id-at-localityName)
+                            DirectoryString: uTF8String (4)
+                                uTF8String: Tehran
+                    RDNSequence item: 1 item (id-at-organizationName=IRGC)
+                        RelativeDistinguishedName item (id-at-organizationName=IRGC)
+                            Id: 2.5.4.10 (id-at-organizationName)
+                            DirectoryString: uTF8String (4)
+                                uTF8String: IRGC
+                    RDNSequence item: 1 item (id-at-organizationalUnitName=Cybersecurity)
+                        RelativeDistinguishedName item (id-at-organizationalUnitName=Cybersecurity)
+                            Id: 2.5.4.11 (id-at-organizationalUnitName)
+                            DirectoryString: uTF8String (4)
+                                uTF8String: Cybersecurity
+                    RDNSequence item: 1 item (id-at-commonName=IRGC Root CA)
+                        RelativeDistinguishedName item (id-at-commonName=IRGC Root CA)
+                            Id: 2.5.4.3 (id-at-commonName)
+                            DirectoryString: uTF8String (4)
+                                uTF8String: IRGC Root CA
+        Handshake Protocol: Server Hello Done
+            Handshake Type: Server Hello Done (14)
+            Length: 0
+
+Frame 11: 314 bytes on wire (2512 bits), 314 bytes captured (2512 bits)
+    Encapsulation type: Raw IPv4 (129)
+    Arrival Time: Dec 31, 2024 15:16:56.215102000 EET
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1735651016.215102000 seconds
+    [Time delta from previous captured frame: 0.001951000 seconds]
+    [Time delta from previous displayed frame: 0.001951000 seconds]
+    [Time since reference or first frame: 0.090515000 seconds]
+    Frame Number: 11
+    Frame Length: 314 bytes (2512 bits)
+    Capture Length: 314 bytes (2512 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: ip:tcp:tls]
+Internet Protocol Version 4, Src: 192.168.1.2, Dst: 10.0.0.1
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 314
+    Identification: 0x0001 (1)
+    Flags: 0x00
+        0... .... = Reserved bit: Not set
+        .0.. .... = Don't fragment: Not set
+        ..0. .... = More fragments: Not set
+    ...0 0000 0000 0000 = Fragment Offset: 0
+    Time to Live: 64
+    Protocol: TCP (6)
+    Header Checksum: 0xae12 [validation disabled]
+    [Header checksum status: Unverified]
+    Source Address: 192.168.1.2
+    Destination Address: 10.0.0.1
+Transmission Control Protocol, Src Port: 12346, Dst Port: 443, Seq: 96, Ack: 6328007, Len: 274
+    Source Port: 12346
+    Destination Port: 443
+    [Stream index: 1]
+    [Conversation completeness: Incomplete (8)]
+    [TCP Segment Len: 274]
+    Sequence Number: 96    (relative sequence number)
+    Sequence Number (raw): 6601785
+    [Next Sequence Number: 370    (relative sequence number)]
+    Acknowledgment Number: 6328007    (relative ack number)
+    Acknowledgment number (raw): 6328006
+    0101 .... = Header Length: 20 bytes (5)
+    Flags: 0x018 (PSH, ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 1... = Push: Set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······AP···]
+    Window: 65535
+    [Calculated window size: 65535]
+    [Window size scaling factor: -1 (unknown)]
+    Checksum: 0xb2d5 [unverified]
+    [Checksum Status: Unverified]
+    Urgent Pointer: 0
+    [Timestamps]
+        [Time since first frame in this TCP stream: 0.006973000 seconds]
+        [Time since previous frame in this TCP stream: 0.001951000 seconds]
+    [SEQ/ACK analysis]
+        [This is an ACK to the segment in frame: 10]
+        [The RTT to ACK the segment was: 0.001951000 seconds]
+        [Bytes in flight: 274]
+        [Bytes sent since last PSH flag: 274]
+    TCP payload (274 bytes)
+Transport Layer Security
+    TLSv1.2 Record Layer: Handshake Protocol: Multiple Handshake Messages
+        Content Type: Handshake (22)
+        Version: TLS 1.2 (0x0303)
+        Length: 269
+        Handshake Protocol: Certificate
+            Handshake Type: Certificate (11)
+            Length: 3
+            Certificates Length: 0
+        Handshake Protocol: Client Key Exchange
+            Handshake Type: Client Key Exchange (16)
+            Length: 258
+            RSA Encrypted PreMaster Secret
+                Encrypted PreMaster length: 256
+                Encrypted PreMaster: 17ce82af75213c30887c0913664261993ea15e05242c314406943caa7c44ffe3ead5a730…
+
+Frame 12: 62 bytes on wire (496 bits), 62 bytes captured (496 bits)
+    Encapsulation type: Raw IPv4 (129)
+    Arrival Time: Dec 31, 2024 15:16:56.218340000 EET
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1735651016.218340000 seconds
+    [Time delta from previous captured frame: 0.003238000 seconds]
+    [Time delta from previous displayed frame: 0.003238000 seconds]
+    [Time since reference or first frame: 0.093753000 seconds]
+    Frame Number: 12
+    Frame Length: 62 bytes (496 bits)
+    Capture Length: 62 bytes (496 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: ip:tcp:tls]
+Internet Protocol Version 4, Src: 192.168.1.2, Dst: 10.0.0.1
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 62
+    Identification: 0x0001 (1)
+    Flags: 0x00
+        0... .... = Reserved bit: Not set
+        .0.. .... = Don't fragment: Not set
+        ..0. .... = More fragments: Not set
+    ...0 0000 0000 0000 = Fragment Offset: 0
+    Time to Live: 64
+    Protocol: TCP (6)
+    Header Checksum: 0xaf0e [validation disabled]
+    [Header checksum status: Unverified]
+    Source Address: 192.168.1.2
+    Destination Address: 10.0.0.1
+Transmission Control Protocol, Src Port: 12346, Dst Port: 443, Seq: 370, Ack: 6328007, Len: 22
+    Source Port: 12346
+    Destination Port: 443
+    [Stream index: 1]
+    [Conversation completeness: Incomplete (8)]
+    [TCP Segment Len: 22]
+    Sequence Number: 370    (relative sequence number)
+    Sequence Number (raw): 6602059
+    [Next Sequence Number: 392    (relative sequence number)]
+    Acknowledgment Number: 6328007    (relative ack number)
+    Acknowledgment number (raw): 6328006
+    0101 .... = Header Length: 20 bytes (5)
+    Flags: 0x018 (PSH, ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 1... = Push: Set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······AP···]
+    Window: 65535
+    [Calculated window size: 65535]
+    [Window size scaling factor: -1 (unknown)]
+    Checksum: 0xf555 [unverified]
+    [Checksum Status: Unverified]
+    Urgent Pointer: 0
+    [Timestamps]
+        [Time since first frame in this TCP stream: 0.010211000 seconds]
+        [Time since previous frame in this TCP stream: 0.003238000 seconds]
+    [SEQ/ACK analysis]
+        [Bytes in flight: 296]
+        [Bytes sent since last PSH flag: 22]
+    TCP payload (22 bytes)
+Transport Layer Security
+    TLSv1.2 Record Layer: Change Cipher Spec Protocol: Change Cipher Spec
+        Content Type: Change Cipher Spec (20)
+        Version: TLS 1.2 (0x0303)
+        Length: 17
+        Change Cipher Spec Message
+
+Frame 13: 62 bytes on wire (496 bits), 62 bytes captured (496 bits)
+    Encapsulation type: Raw IPv4 (129)
+    Arrival Time: Dec 31, 2024 15:16:56.223801000 EET
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1735651016.223801000 seconds
+    [Time delta from previous captured frame: 0.005461000 seconds]
+    [Time delta from previous displayed frame: 0.005461000 seconds]
+    [Time since reference or first frame: 0.099214000 seconds]
+    Frame Number: 13
+    Frame Length: 62 bytes (496 bits)
+    Capture Length: 62 bytes (496 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: ip:tcp:tls]
+Internet Protocol Version 4, Src: 10.0.0.1, Dst: 192.168.1.2
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 62
+    Identification: 0x0001 (1)
+    Flags: 0x00
+        0... .... = Reserved bit: Not set
+        .0.. .... = Don't fragment: Not set
+        ..0. .... = More fragments: Not set
+    ...0 0000 0000 0000 = Fragment Offset: 0
+    Time to Live: 64
+    Protocol: TCP (6)
+    Header Checksum: 0xaf0e [validation disabled]
+    [Header checksum status: Unverified]
+    Source Address: 10.0.0.1
+    Destination Address: 192.168.1.2
+Transmission Control Protocol, Src Port: 443, Dst Port: 12346, Seq: 6328007, Ack: 392, Len: 22
+    Source Port: 443
+    Destination Port: 12346
+    [Stream index: 1]
+    [Conversation completeness: Incomplete (8)]
+    [TCP Segment Len: 22]
+    Sequence Number: 6328007    (relative sequence number)
+    Sequence Number (raw): 6328006
+    [Next Sequence Number: 6328029    (relative sequence number)]
+    Acknowledgment Number: 392    (relative ack number)
+    Acknowledgment number (raw): 6602081
+    0101 .... = Header Length: 20 bytes (5)
+    Flags: 0x018 (PSH, ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 1... = Push: Set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······AP···]
+    Window: 65535
+    [Calculated window size: 65535]
+    [Window size scaling factor: -1 (unknown)]
+    Checksum: 0xd225 [unverified]
+    [Checksum Status: Unverified]
+    Urgent Pointer: 0
+    [Timestamps]
+        [Time since first frame in this TCP stream: 0.015672000 seconds]
+        [Time since previous frame in this TCP stream: 0.005461000 seconds]
+    [SEQ/ACK analysis]
+        [This is an ACK to the segment in frame: 12]
+        [The RTT to ACK the segment was: 0.005461000 seconds]
+        [Bytes in flight: 22]
+        [Bytes sent since last PSH flag: 22]
+    TCP payload (22 bytes)
+Transport Layer Security
+    TLSv1.2 Record Layer: Change Cipher Spec Protocol: Change Cipher Spec
+        Content Type: Change Cipher Spec (20)
+        Version: TLS 1.2 (0x0303)
+        Length: 17
+        Change Cipher Spec Message
+
+Frame 14: 136 bytes on wire (1088 bits), 136 bytes captured (1088 bits)
+    Encapsulation type: Raw IPv4 (129)
+    Arrival Time: Dec 31, 2024 15:16:56.227813000 EET
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1735651016.227813000 seconds
+    [Time delta from previous captured frame: 0.004012000 seconds]
+    [Time delta from previous displayed frame: 0.004012000 seconds]
+    [Time since reference or first frame: 0.103226000 seconds]
+    Frame Number: 14
+    Frame Length: 136 bytes (1088 bits)
+    Capture Length: 136 bytes (1088 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: ip:tcp:http]
+Internet Protocol Version 4, Src: 192.168.1.2, Dst: 10.0.0.1
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 136
+    Identification: 0x0001 (1)
+    Flags: 0x00
+        0... .... = Reserved bit: Not set
+        .0.. .... = Don't fragment: Not set
+        ..0. .... = More fragments: Not set
+    ...0 0000 0000 0000 = Fragment Offset: 0
+    Time to Live: 64
+    Protocol: TCP (6)
+    Header Checksum: 0xaec4 [validation disabled]
+    [Header checksum status: Unverified]
+    Source Address: 192.168.1.2
+    Destination Address: 10.0.0.1
+Transmission Control Protocol, Src Port: 12346, Dst Port: 80, Seq: 1, Ack: 1, Len: 96
+    Source Port: 12346
+    Destination Port: 80
+    [Stream index: 2]
+    [Conversation completeness: Incomplete (0)]
+    [TCP Segment Len: 96]
+    Sequence Number: 1    (relative sequence number)
+    Sequence Number (raw): 3059715
+    [Next Sequence Number: 97    (relative sequence number)]
+    Acknowledgment Number: 1    (relative ack number)
+    Acknowledgment number (raw): 0
+    0101 .... = Header Length: 20 bytes (5)
+    Flags: 0x018 (PSH, ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 1... = Push: Set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······AP···]
+    Window: 8192
+    [Calculated window size: 8192]
+    [Window size scaling factor: -1 (unknown)]
+    Checksum: 0xe698 [unverified]
+    [Checksum Status: Unverified]
+    Urgent Pointer: 0
+    [Timestamps]
+        [Time since first frame in this TCP stream: 0.000000000 seconds]
+        [Time since previous frame in this TCP stream: 0.000000000 seconds]
+    [SEQ/ACK analysis]
+        [Bytes in flight: 96]
+        [Bytes sent since last PSH flag: 96]
+    TCP payload (96 bytes)
+Hypertext Transfer Protocol
+    GET /resource HTTP/1.1\r\n
+        [Expert Info (Chat/Sequence): GET /resource HTTP/1.1\r\n]
+            [GET /resource HTTP/1.1\r\n]
+            [Severity level: Chat]
+            [Group: Sequence]
+        Request Method: GET
+        Request URI: /resource
+        Request Version: HTTP/1.1
+    Host: server.local\r\n
+    User-Agent: Custom-Client/1.0\r\n
+    Connection: close\r\n
+    \r\n
+    [Full request URI: http://server.local/resource]
+    [HTTP request 1/1]
+
+Frame 15: 125 bytes on wire (1000 bits), 125 bytes captured (1000 bits)
+    Encapsulation type: Raw IPv4 (129)
+    Arrival Time: Dec 31, 2024 15:16:56.228614000 EET
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1735651016.228614000 seconds
+    [Time delta from previous captured frame: 0.000801000 seconds]
+    [Time delta from previous displayed frame: 0.000801000 seconds]
+    [Time since reference or first frame: 0.104027000 seconds]
+    Frame Number: 15
+    Frame Length: 125 bytes (1000 bits)
+    Capture Length: 125 bytes (1000 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: ip:tcp:http:data-text-lines]
+Internet Protocol Version 4, Src: 10.0.0.1, Dst: 192.168.1.2
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 125
+    Identification: 0x0001 (1)
+    Flags: 0x00
+        0... .... = Reserved bit: Not set
+        .0.. .... = Don't fragment: Not set
+        ..0. .... = More fragments: Not set
+    ...0 0000 0000 0000 = Fragment Offset: 0
+    Time to Live: 64
+    Protocol: TCP (6)
+    Header Checksum: 0xaecf [validation disabled]
+    [Header checksum status: Unverified]
+    Source Address: 10.0.0.1
+    Destination Address: 192.168.1.2
+Transmission Control Protocol, Src Port: 80, Dst Port: 12346, Seq: 7230567, Ack: 97, Len: 85
+    Source Port: 80
+    Destination Port: 12346
+    [Stream index: 2]
+    [Conversation completeness: Incomplete (0)]
+    [TCP Segment Len: 85]
+    Sequence Number: 7230567    (relative sequence number)
+    Sequence Number (raw): 7230566
+    [Next Sequence Number: 7230652    (relative sequence number)]
+    Acknowledgment Number: 97    (relative ack number)
+    Acknowledgment number (raw): 3059811
+    0101 .... = Header Length: 20 bytes (5)
+    Flags: 0x018 (PSH, ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 1... = Push: Set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······AP···]
+    Window: 8192
+    [Calculated window size: 8192]
+    [Window size scaling factor: -1 (unknown)]
+    Checksum: 0x3896 [unverified]
+    [Checksum Status: Unverified]
+    Urgent Pointer: 0
+    [Timestamps]
+        [Time since first frame in this TCP stream: 0.000801000 seconds]
+        [Time since previous frame in this TCP stream: 0.000801000 seconds]
+    [SEQ/ACK analysis]
+        [This is an ACK to the segment in frame: 14]
+        [The RTT to ACK the segment was: 0.000801000 seconds]
+        [Bytes in flight: 85]
+        [Bytes sent since last PSH flag: 85]
+    TCP payload (85 bytes)
+Hypertext Transfer Protocol
+    HTTP/1.1 400 Bad Request\r\n
+        [Expert Info (Chat/Sequence): HTTP/1.1 400 Bad Request\r\n]
+            [HTTP/1.1 400 Bad Request\r\n]
+            [Severity level: Chat]
+            [Group: Sequence]
+        Response Version: HTTP/1.1
+        Status Code: 400
+        [Status Code Description: Bad Request]
+        Response Phrase: Bad Request
+    Content-Type: text/plain\r\n
+    Content-Length: 11\r\n
+        [Content length: 11]
+    \r\n
+    [HTTP response 1/1]
+    [Time since request: 0.000801000 seconds]
+    [Request in frame: 14]
+    [Request URI: http://server.local/resource]
+    File Data: 11 bytes
+Line-based text data: text/plain (1 lines)
+    Bad Request
+

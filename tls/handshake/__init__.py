@@ -5,7 +5,7 @@ Provides client and server handshake functionality.
 
 from .client import (
     send_client_hello,
-    send_client_key_exchange,
+    send_client_handshake_messages,
     send_client_change_cipher_spec,
     ClientHelloError,
     KeyExchangeError,
@@ -19,7 +19,7 @@ from .server import (
 
 __all__ = [
     'send_client_hello',
-    'send_client_key_exchange', 
+    'send_client_handshake_messages', 
     'send_client_change_cipher_spec',
     'send_server_hello',
     'send_server_change_cipher_spec',

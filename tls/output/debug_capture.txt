@@ -1,0 +1,348 @@
+Wireshark SSL debug log 
+
+GnuTLS version:    3.7.3
+Libgcrypt version: 1.9.4
+
+
+dissect_ssl enter frame #1 (first time)
+packet_from_server: is from server - FALSE
+  conversation = 0x7f6ba41883b0, ssl_session = 0x7f6ba4188b40
+  record: offset = 0, reported_length_remaining = 95
+dissect_ssl3_record: content_type 22 Handshake
+decrypt_ssl3_record: app_data len 90, ssl state 0x00
+packet_from_server: is from server - FALSE
+decrypt_ssl3_record: using client decoder
+decrypt_ssl3_record: no decoder available
+dissect_ssl3_handshake iteration 1 type 1 offset 5 length 86 bytes
+Calculating hash with offset 5 90
+ssl_dissect_hnd_hello_common found CLIENT RANDOM -> state 0x01
+
+dissect_ssl enter frame #2 (first time)
+packet_from_server: is from server - TRUE
+  conversation = 0x7f6ba41883b0, ssl_session = 0x7f6ba4188b40
+  record: offset = 0, reported_length_remaining = 2780
+ssl_try_set_version found version 0x0303 -> state 0x11
+dissect_ssl3_record: content_type 22 Handshake
+decrypt_ssl3_record: app_data len 2775, ssl state 0x11
+packet_from_server: is from server - TRUE
+decrypt_ssl3_record: using server decoder
+decrypt_ssl3_record: no decoder available
+dissect_ssl3_handshake iteration 1 type 2 offset 5 length 88 bytes
+ssl_try_set_version found version 0x0303 -> state 0x11
+Calculating hash with offset 5 92
+ssl_dissect_hnd_hello_common found SERVER RANDOM -> state 0x13
+ssl_set_cipher found CIPHER 0x003C TLS_RSA_WITH_AES_128_CBC_SHA256 -> state 0x17
+ssl_dissect_hnd_extension enabling Encrypt-then-MAC
+trying to use TLS keylog in ssl_key_log.log
+  checking keylog line: CLIENT_RANDOM 6773eec8fb93e54a915b7168a8b123d971098f903c8c600c91b8268fbf9a45e6 f502434868003c0fb43ac3bd81806b26a110ad96cde35626abce2289d4dc7f29dac8275eeb8a55614f81d77047e27c5e
+    matched client_random
+tls13_load_secret TLS version 0x303 is not 1.3
+tls13_load_secret TLS version 0x303 is not 1.3
+dissect_ssl3_handshake iteration 0 type 11 offset 97 length 2550 bytes
+Calculating hash with offset 97 2554
+Certificate.KeyID[20]:
+| b0 07 91 a7 6b 7b ac 47 c8 a1 eb 83 79 9e a9 c0 |....k{.G....y...|
+| df e6 6e 9b                                     |..n.            |
+dissect_ssl3_handshake iteration 0 type 13 offset 2651 length 121 bytes
+Calculating hash with offset 2651 125
+dissect_ssl3_handshake iteration 0 type 14 offset 2776 length 0 bytes
+Calculating hash with offset 2776 4
+
+dissect_ssl enter frame #3 (first time)
+packet_from_server: is from server - FALSE
+  conversation = 0x7f6ba41883b0, ssl_session = 0x7f6ba4188b40
+  record: offset = 0, reported_length_remaining = 1651
+dissect_ssl3_record: content_type 22 Handshake
+decrypt_ssl3_record: app_data len 1646, ssl state 0x917
+packet_from_server: is from server - FALSE
+decrypt_ssl3_record: using client decoder
+decrypt_ssl3_record: no decoder available
+dissect_ssl3_handshake iteration 1 type 11 offset 5 length 1380 bytes
+Calculating hash with offset 5 1384
+dissect_ssl3_handshake iteration 0 type 16 offset 1389 length 258 bytes
+Calculating hash with offset 1389 262
+trying to use TLS keylog in ssl_key_log.log
+ssl_generate_pre_master_secret: found SSL_HND_CLIENT_KEY_EXCHG, state 917
+ssl_restore_master_key can't find pre-master secret by Unencrypted pre-master secret
+pre master encrypted[256]:
+| 85 bc 1c a3 22 f1 cc 0d d3 a6 8c 51 7a ac ec 8f |...."......Qz...|
+| 4f fa 6d d1 73 58 a1 51 c5 9c aa d1 b2 ea f1 e1 |O.m.sX.Q........|
+| 57 ec 27 c9 d6 c4 7b 00 ad 3c cb 05 fa 9d 5f aa |W.'...{..<...._.|
+| 4c 0c 8a 41 14 dc aa 6d 38 c9 9f 55 56 06 82 6b |L..A...m8..UV..k|
+| 0e 1d fd b5 a5 c5 b0 81 10 8f e3 57 1c d5 ed b8 |...........W....|
+| fa 3d 93 21 0f ee f8 8c a1 07 f3 b2 93 4a 02 ab |.=.!.........J..|
+| 85 d3 14 72 36 07 da 94 8e 98 89 a8 ba 95 9d 83 |...r6...........|
+| ca 16 19 1f e1 74 35 b8 75 bf 9c 6c 37 db f4 51 |.....t5.u..l7..Q|
+| 42 f0 d0 35 b2 2b 56 fe 2e 37 d5 15 45 ad e5 fe |B..5.+V..7..E...|
+| 3d 7c f2 53 f8 1f b4 e2 04 5d 4d 3d 9e 3b 9b 49 |=|.S.....]M=.;.I|
+| 6c b1 20 58 3b 0a c1 19 e7 bc 01 aa f2 ee fd 14 |l. X;...........|
+| 31 39 fa 26 41 f2 63 ac 18 cb e1 65 2c 4b 47 b3 |19.&A.c....e,KG.|
+| 7b 30 f5 8b 66 89 fb d9 7e a5 14 fd 0a b7 56 d3 |{0..f...~.....V.|
+| 9f 13 ec 2b 1c 82 5c 2c cc 34 22 2e a5 9d e4 7d |...+..\,.4"....}|
+| 20 50 03 7b fb 02 cf 1b de 8b fb b7 d9 7b 26 3c | P.{.........{&<|
+| 1c bd 06 42 fe 28 9d 53 28 96 a9 c9 ac 00 ca b9 |...B.(.S(.......|
+ssl_decrypt_pre_master_secret: RSA_private_decrypt
+ssl_decrypt_pre_master_secret: decryption failed: -49 (No certificate was found.)
+ssl_generate_pre_master_secret: can't decrypt pre-master secret
+ssl_restore_master_key can't find pre-master secret by Encrypted pre-master secret
+dissect_ssl3_handshake can't generate pre master secret
+
+dissect_ssl enter frame #4 (first time)
+packet_from_server: is from server - FALSE
+  conversation = 0x7f6ba41883b0, ssl_session = 0x7f6ba4188b40
+  record: offset = 0, reported_length_remaining = 22
+dissect_ssl3_record: content_type 20 Change Cipher Spec
+decrypt_ssl3_record: app_data len 17, ssl state 0x917
+packet_from_server: is from server - FALSE
+decrypt_ssl3_record: using client decoder
+decrypt_ssl3_record: no decoder available
+trying to use TLS keylog in ssl_key_log.log
+ssl_finalize_decryption state = 0x917
+ssl_restore_master_key can't find master secret by Session ID
+ssl_restore_master_key can't find master secret by Client Random
+  Cannot find master secret
+packet_from_server: is from server - FALSE
+ssl_change_cipher CLIENT (No decoder found - retransmission?)
+
+dissect_ssl enter frame #5 (first time)
+packet_from_server: is from server - TRUE
+  conversation = 0x7f6ba41883b0, ssl_session = 0x7f6ba4188b40
+  record: offset = 0, reported_length_remaining = 22
+dissect_ssl3_record: content_type 20 Change Cipher Spec
+decrypt_ssl3_record: app_data len 17, ssl state 0x917
+packet_from_server: is from server - TRUE
+decrypt_ssl3_record: using server decoder
+decrypt_ssl3_record: no decoder available
+ssl_dissect_change_cipher_spec Not using Session resumption
+trying to use TLS keylog in ssl_key_log.log
+ssl_finalize_decryption state = 0x917
+ssl_restore_master_key can't find master secret by Session ID
+ssl_restore_master_key can't find master secret by Client Random
+  Cannot find master secret
+packet_from_server: is from server - TRUE
+ssl_change_cipher SERVER (No decoder found - retransmission?)
+
+dissect_ssl enter frame #6 (first time)
+packet_from_server: is from server - FALSE
+  conversation = 0x7f6ba41883b0, ssl_session = 0x7f6ba4188b40
+  record: offset = 0, reported_length_remaining = 170
+dissect_ssl3_record: content_type 23 Application Data
+decrypt_ssl3_record: app_data len 165, ssl state 0x917
+packet_from_server: is from server - FALSE
+decrypt_ssl3_record: using client decoder
+decrypt_ssl3_record: no decoder available
+
+dissect_ssl enter frame #7 (first time)
+packet_from_server: is from server - TRUE
+  conversation = 0x7f6ba41883b0, ssl_session = 0x7f6ba4188b40
+  record: offset = 0, reported_length_remaining = 138
+dissect_ssl3_record: content_type 23 Application Data
+decrypt_ssl3_record: app_data len 133, ssl state 0x917
+packet_from_server: is from server - TRUE
+decrypt_ssl3_record: using server decoder
+decrypt_ssl3_record: no decoder available
+
+dissect_ssl enter frame #8 (first time)
+packet_from_server: is from server - TRUE
+  conversation = 0x7f6ba41883b0, ssl_session = 0x7f6ba4188b40
+  record: offset = 0, reported_length_remaining = 1162
+dissect_ssl3_record: content_type 23 Application Data
+decrypt_ssl3_record: app_data len 1157, ssl state 0x917
+packet_from_server: is from server - TRUE
+decrypt_ssl3_record: using server decoder
+decrypt_ssl3_record: no decoder available
+
+dissect_ssl enter frame #9 (first time)
+packet_from_server: is from server - FALSE
+  conversation = 0x7f6ba418b0b0, ssl_session = 0x7f6ba418b770
+  record: offset = 0, reported_length_remaining = 95
+dissect_ssl3_record: content_type 22 Handshake
+decrypt_ssl3_record: app_data len 90, ssl state 0x00
+packet_from_server: is from server - FALSE
+decrypt_ssl3_record: using client decoder
+decrypt_ssl3_record: no decoder available
+dissect_ssl3_handshake iteration 1 type 1 offset 5 length 86 bytes
+Calculating hash with offset 5 90
+ssl_dissect_hnd_hello_common found CLIENT RANDOM -> state 0x01
+
+dissect_ssl enter frame #10 (first time)
+packet_from_server: is from server - TRUE
+  conversation = 0x7f6ba418b0b0, ssl_session = 0x7f6ba418b770
+  record: offset = 0, reported_length_remaining = 2780
+ssl_try_set_version found version 0x0303 -> state 0x11
+dissect_ssl3_record: content_type 22 Handshake
+decrypt_ssl3_record: app_data len 2775, ssl state 0x11
+packet_from_server: is from server - TRUE
+decrypt_ssl3_record: using server decoder
+decrypt_ssl3_record: no decoder available
+dissect_ssl3_handshake iteration 1 type 2 offset 5 length 88 bytes
+ssl_try_set_version found version 0x0303 -> state 0x11
+Calculating hash with offset 5 92
+ssl_dissect_hnd_hello_common found SERVER RANDOM -> state 0x13
+ssl_set_cipher found CIPHER 0x003C TLS_RSA_WITH_AES_128_CBC_SHA256 -> state 0x17
+ssl_dissect_hnd_extension enabling Encrypt-then-MAC
+trying to use TLS keylog in ssl_key_log.log
+tls13_load_secret TLS version 0x303 is not 1.3
+tls13_load_secret TLS version 0x303 is not 1.3
+dissect_ssl3_handshake iteration 0 type 11 offset 97 length 2550 bytes
+Calculating hash with offset 97 2554
+Certificate.KeyID[20]:
+| b0 07 91 a7 6b 7b ac 47 c8 a1 eb 83 79 9e a9 c0 |....k{.G....y...|
+| df e6 6e 9b                                     |..n.            |
+dissect_ssl3_handshake iteration 0 type 13 offset 2651 length 121 bytes
+Calculating hash with offset 2651 125
+dissect_ssl3_handshake iteration 0 type 14 offset 2776 length 0 bytes
+Calculating hash with offset 2776 4
+
+dissect_ssl enter frame #11 (first time)
+packet_from_server: is from server - FALSE
+  conversation = 0x7f6ba418b0b0, ssl_session = 0x7f6ba418b770
+  record: offset = 0, reported_length_remaining = 274
+dissect_ssl3_record: content_type 22 Handshake
+decrypt_ssl3_record: app_data len 269, ssl state 0x917
+packet_from_server: is from server - FALSE
+decrypt_ssl3_record: using client decoder
+decrypt_ssl3_record: no decoder available
+dissect_ssl3_handshake iteration 1 type 11 offset 5 length 3 bytes
+Calculating hash with offset 5 7
+dissect_ssl3_handshake iteration 0 type 16 offset 12 length 258 bytes
+Calculating hash with offset 12 262
+trying to use TLS keylog in ssl_key_log.log
+ssl_generate_pre_master_secret: found SSL_HND_CLIENT_KEY_EXCHG, state 917
+ssl_restore_master_key can't find pre-master secret by Unencrypted pre-master secret
+pre master encrypted[256]:
+| 17 ce 82 af 75 21 3c 30 88 7c 09 13 66 42 61 99 |....u!<0.|..fBa.|
+| 3e a1 5e 05 24 2c 31 44 06 94 3c aa 7c 44 ff e3 |>.^.$,1D..<.|D..|
+| ea d5 a7 30 7c e5 b0 f4 01 a5 8f 1f a4 44 9a 55 |...0|........D.U|
+| b2 56 05 55 46 f8 2d 24 40 74 bc 63 6b 5d 35 b0 |.V.UF.-$@t.ck]5.|
+| 83 ae b7 07 91 96 e1 12 2c 36 3e 2d 93 96 6e 44 |........,6>-..nD|
+| 81 51 53 55 30 9b af 34 0d 02 69 96 4e fe 9e f2 |.QSU0..4..i.N...|
+| 60 2f 4e 2f fa 67 b1 4c cd b4 31 c6 35 54 ec c0 |`/N/.g.L..1.5T..|
+| 4c c9 3f 3c 98 c0 f2 a2 82 1c 63 06 56 db 4e ff |L.?<......c.V.N.|
+| 3d d2 7a d6 12 ab f8 5d 7b 26 a7 28 20 59 4d 2e |=.z....]{&.( YM.|
+| cc 19 1e 6a d7 6a f9 b6 c3 d5 d4 d1 d9 1c 69 3e |...j.j........i>|
+| 92 29 5a 83 ab d4 82 6e 67 ab ef 4c dc 08 a8 6a |.)Z....ng..L...j|
+| e9 6f d2 84 d6 b7 e8 40 6d 69 e8 05 32 e6 f0 22 |.o.....@mi..2.."|
+| 3d 53 5d c2 35 0a e8 21 9b 46 75 1f 2c 67 9b bf |=S].5..!.Fu.,g..|
+| 6a 7d 8d 8e 17 44 dc e2 68 99 51 11 ff 5b a4 a9 |j}...D..h.Q..[..|
+| 9f a0 ef 6d 39 5e 66 8a 34 59 6c b8 5e 76 51 f3 |...m9^f.4Yl.^vQ.|
+| 3b c4 72 2f 5a cf 46 9c 64 c1 29 01 0f 13 5b d5 |;.r/Z.F.d.)...[.|
+ssl_decrypt_pre_master_secret: RSA_private_decrypt
+ssl_decrypt_pre_master_secret: decryption failed: -49 (No certificate was found.)
+ssl_generate_pre_master_secret: can't decrypt pre-master secret
+ssl_restore_master_key can't find pre-master secret by Encrypted pre-master secret
+dissect_ssl3_handshake can't generate pre master secret
+
+dissect_ssl enter frame #12 (first time)
+packet_from_server: is from server - FALSE
+  conversation = 0x7f6ba418b0b0, ssl_session = 0x7f6ba418b770
+  record: offset = 0, reported_length_remaining = 22
+dissect_ssl3_record: content_type 20 Change Cipher Spec
+decrypt_ssl3_record: app_data len 17, ssl state 0x917
+packet_from_server: is from server - FALSE
+decrypt_ssl3_record: using client decoder
+decrypt_ssl3_record: no decoder available
+trying to use TLS keylog in ssl_key_log.log
+ssl_finalize_decryption state = 0x917
+ssl_restore_master_key can't find master secret by Session ID
+ssl_restore_master_key master secret retrieved using Client Random
+Client Random[32]:
+| 67 73 ee c8 fb 93 e5 4a 91 5b 71 68 a8 b1 23 d9 |gs.....J.[qh..#.|
+| 71 09 8f 90 3c 8c 60 0c 91 b8 26 8f bf 9a 45 e6 |q...<.`...&...E.|
+(pre-)master secret[48]:
+| f5 02 43 48 68 00 3c 0f b4 3a c3 bd 81 80 6b 26 |..CHh.<..:....k&|
+| a1 10 ad 96 cd e3 56 26 ab ce 22 89 d4 dc 7f 29 |......V&.."....)|
+| da c8 27 5e eb 8a 55 61 4f 81 d7 70 47 e2 7c 5e |..'^..UaO..pG.|^|
+ssl_generate_keyring_material CIPHER: AES
+ssl_generate_keyring_material sess key generation
+tls12_prf: tls_hash(hash_alg SHA256 secret_len 48 seed_len 77 )
+tls_hash: hash secret[48]:
+| f5 02 43 48 68 00 3c 0f b4 3a c3 bd 81 80 6b 26 |..CHh.<..:....k&|
+| a1 10 ad 96 cd e3 56 26 ab ce 22 89 d4 dc 7f 29 |......V&.."....)|
+| da c8 27 5e eb 8a 55 61 4f 81 d7 70 47 e2 7c 5e |..'^..UaO..pG.|^|
+tls_hash: hash seed[77]:
+| 6b 65 79 20 65 78 70 61 6e 73 69 6f 6e 67 73 ee |key expansiongs.|
+| c8 5b df 2f ef 9e 77 13 3a a9 88 9f 5b 12 27 3d |.[./..w.:...[.'=|
+| 0c 4a 27 4f 1a 5d a3 0e 43 8d d9 6f 31 67 73 ee |.J'O.]..C..o1gs.|
+| c8 fb 93 e5 4a 91 5b 71 68 a8 b1 23 d9 71 09 8f |....J.[qh..#.q..|
+| 90 3c 8c 60 0c 91 b8 26 8f bf 9a 45 e6          |.<.`...&...E.   |
+hash out[128]:
+| 94 a3 ab 05 e6 d8 50 4d 5c 58 13 d8 7b 8b 5f a9 |......PM\X..{._.|
+| da 89 fb bb 2d 16 cc 41 bb d9 9f 09 ef 52 f7 33 |....-..A.....R.3|
+| 6c 80 ba 39 ed fa 24 a5 81 58 a7 a7 b4 cd 82 73 |l..9..$..X.....s|
+| 7b 6f 48 34 b4 d5 ca d7 ea 5f c8 38 17 72 8b f2 |{oH4....._.8.r..|
+| 9c 5b 3c 89 71 ef 19 b6 b1 fe 1d c9 2e a4 ae d3 |.[<.q...........|
+| be 04 95 35 ce 25 16 27 40 54 e4 07 bd fb 50 4e |...5.%.'@T....PN|
+| 17 ec 5f 56 85 dd 3f d9 0f 2c 3f 05 9f 5c bd ae |.._V..?..,?..\..|
+| 29 57 72 ec 85 c6 6f a7 f0 5a 5c a8 51 2e c5 dc |)Wr...o..Z\.Q...|
+PRF out[128]:
+| 94 a3 ab 05 e6 d8 50 4d 5c 58 13 d8 7b 8b 5f a9 |......PM\X..{._.|
+| da 89 fb bb 2d 16 cc 41 bb d9 9f 09 ef 52 f7 33 |....-..A.....R.3|
+| 6c 80 ba 39 ed fa 24 a5 81 58 a7 a7 b4 cd 82 73 |l..9..$..X.....s|
+| 7b 6f 48 34 b4 d5 ca d7 ea 5f c8 38 17 72 8b f2 |{oH4....._.8.r..|
+| 9c 5b 3c 89 71 ef 19 b6 b1 fe 1d c9 2e a4 ae d3 |.[<.q...........|
+| be 04 95 35 ce 25 16 27 40 54 e4 07 bd fb 50 4e |...5.%.'@T....PN|
+| 17 ec 5f 56 85 dd 3f d9 0f 2c 3f 05 9f 5c bd ae |.._V..?..,?..\..|
+| 29 57 72 ec 85 c6 6f a7 f0 5a 5c a8 51 2e c5 dc |)Wr...o..Z\.Q...|
+key expansion[128]:
+| 94 a3 ab 05 e6 d8 50 4d 5c 58 13 d8 7b 8b 5f a9 |......PM\X..{._.|
+| da 89 fb bb 2d 16 cc 41 bb d9 9f 09 ef 52 f7 33 |....-..A.....R.3|
+| 6c 80 ba 39 ed fa 24 a5 81 58 a7 a7 b4 cd 82 73 |l..9..$..X.....s|
+| 7b 6f 48 34 b4 d5 ca d7 ea 5f c8 38 17 72 8b f2 |{oH4....._.8.r..|
+| 9c 5b 3c 89 71 ef 19 b6 b1 fe 1d c9 2e a4 ae d3 |.[<.q...........|
+| be 04 95 35 ce 25 16 27 40 54 e4 07 bd fb 50 4e |...5.%.'@T....PN|
+| 17 ec 5f 56 85 dd 3f d9 0f 2c 3f 05 9f 5c bd ae |.._V..?..,?..\..|
+| 29 57 72 ec 85 c6 6f a7 f0 5a 5c a8 51 2e c5 dc |)Wr...o..Z\.Q...|
+Client MAC key[32]:
+| 94 a3 ab 05 e6 d8 50 4d 5c 58 13 d8 7b 8b 5f a9 |......PM\X..{._.|
+| da 89 fb bb 2d 16 cc 41 bb d9 9f 09 ef 52 f7 33 |....-..A.....R.3|
+Server MAC key[32]:
+| 6c 80 ba 39 ed fa 24 a5 81 58 a7 a7 b4 cd 82 73 |l..9..$..X.....s|
+| 7b 6f 48 34 b4 d5 ca d7 ea 5f c8 38 17 72 8b f2 |{oH4....._.8.r..|
+Client Write key[16]:
+| 9c 5b 3c 89 71 ef 19 b6 b1 fe 1d c9 2e a4 ae d3 |.[<.q...........|
+Server Write key[16]:
+| be 04 95 35 ce 25 16 27 40 54 e4 07 bd fb 50 4e |...5.%.'@T....PN|
+Client Write IV[16]:
+| 17 ec 5f 56 85 dd 3f d9 0f 2c 3f 05 9f 5c bd ae |.._V..?..,?..\..|
+Server Write IV[16]:
+| 29 57 72 ec 85 c6 6f a7 f0 5a 5c a8 51 2e c5 dc |)Wr...o..Z\.Q...|
+ssl_generate_keyring_material ssl_create_decoder(client)
+decoder initialized (digest len 32)
+ssl_generate_keyring_material ssl_create_decoder(server)
+decoder initialized (digest len 32)
+ssl_generate_keyring_material: client seq 0, server seq 0
+ssl_save_master_key inserted (pre-)master secret for Client Random
+stored key[32]:
+| 67 73 ee c8 fb 93 e5 4a 91 5b 71 68 a8 b1 23 d9 |gs.....J.[qh..#.|
+| 71 09 8f 90 3c 8c 60 0c 91 b8 26 8f bf 9a 45 e6 |q...<.`...&...E.|
+stored (pre-)master secret[48]:
+| f5 02 43 48 68 00 3c 0f b4 3a c3 bd 81 80 6b 26 |..CHh.<..:....k&|
+| a1 10 ad 96 cd e3 56 26 ab ce 22 89 d4 dc 7f 29 |......V&.."....)|
+| da c8 27 5e eb 8a 55 61 4f 81 d7 70 47 e2 7c 5e |..'^..UaO..pG.|^|
+ssl_save_master_key inserted (pre-)master secret for Session ID
+stored key[32]:
+| d0 1e 09 5a 42 66 ec 71 fb 86 c7 c5 dc 81 14 f5 |...ZBf.q........|
+| 54 da da b2 6b 26 67 e4 a8 0a 49 5a af c7 57 01 |T...k&g...IZ..W.|
+stored (pre-)master secret[48]:
+| f5 02 43 48 68 00 3c 0f b4 3a c3 bd 81 80 6b 26 |..CHh.<..:....k&|
+| a1 10 ad 96 cd e3 56 26 ab ce 22 89 d4 dc 7f 29 |......V&.."....)|
+| da c8 27 5e eb 8a 55 61 4f 81 d7 70 47 e2 7c 5e |..'^..UaO..pG.|^|
+packet_from_server: is from server - FALSE
+ssl_change_cipher CLIENT
+
+dissect_ssl enter frame #13 (first time)
+packet_from_server: is from server - TRUE
+  conversation = 0x7f6ba418b0b0, ssl_session = 0x7f6ba418b770
+  record: offset = 0, reported_length_remaining = 22
+dissect_ssl3_record: content_type 20 Change Cipher Spec
+decrypt_ssl3_record: app_data len 17, ssl state 0x93F
+packet_from_server: is from server - TRUE
+decrypt_ssl3_record: using server decoder
+decrypt_ssl3_record: no decoder available
+ssl_dissect_change_cipher_spec Not using Session resumption
+trying to use TLS keylog in ssl_key_log.log
+ssl_finalize_decryption state = 0x93F
+  session key already available, nothing to do.
+packet_from_server: is from server - TRUE
+ssl_change_cipher SERVER

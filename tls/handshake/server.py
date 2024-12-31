@@ -56,7 +56,8 @@ class ServerExtensions:
     def get_extension_list(self) -> List:
         """Generate list of TLS extensions"""
         extensions = []
-        
+        #TLS_Ext_ServerName(servernames=[ServerName(servername="Pasdaran.local")]), # need fix this extantion
+        #TLS_Ext_SupportedGroups(groups=['secp256r1', 'x25519']), # relevant for ECDHE key exchange
         if self.signature_algorithms:
             extensions.append(
                 TLS_Ext_SignatureAlgorithms(
@@ -69,10 +70,13 @@ class ServerExtensions:
             
         if self.encrypt_then_mac:
             extensions.append(TLS_Ext_EncryptThenMAC())
-            
+        
         return extensions
 
-def create_server_hello(session, extensions: Optional[ServerExtensions] = None) -> TLSServerHello:
+def create_server_hello(
+        session,
+        extensions: Optional[ServerExtensions] = None
+        ) -> TLSServerHello:
     """
     Create Server Hello message.
     
@@ -93,6 +97,17 @@ def create_server_hello(session, extensions: Optional[ServerExtensions] = None) 
         extensions = ServerExtensions(
             signature_algorithms=['sha256+rsaepss']
         )
+
+    # ECDH key exchange
+    """ Used public server key, for play with it ECDH key exchange
+    
+    server_key_exchange = TLSServerKeyExchange(
+        params=ServerDHParams(
+            dh_p=self.server_public_key.public_numbers().n.to_bytes((self.server_public_key.public_numbers().n.bit_length() + 7) // 8, byteorder='big'),
+            dh_g=self.server_public_key.public_numbers().e.to_bytes((self.server_public_key.public_numbers().e.bit_length() + 7) // 8, byteorder='big'),
+            dh_Ys=self.server_public_key.public_bytes(serialization.Encoding.DER, serialization.PublicFormat.SubjectPublicKeyInfo),
+        ),
+    )""" 
 
     return TLSServerHello(
         version=TLSVersion.TLS_1_2,
@@ -209,19 +224,19 @@ def send_server_hello(session) -> bytes:
 
     except Exception as e:
         raise ServerHelloError(f"Server Hello sequence failed: {e}")
-
-def send_server_change_cipher_spec(session) -> bytes:
+    
+def create_server_finished(session) -> tuple[TLSFinished, TLSChangeCipherSpec]:
     """
-    Send Server ChangeCipherSpec and Finished messages.
+    Creates Server Finished and ChangeCipherSpec messages.
     
     Args:
         session: TLS session instance
         
     Returns:
-        bytes: Raw packet data
+        tuple[TLSFinished, TLSChangeCipherSpec]: The finished and change cipher spec messages
         
     Raises:
-        ChangeCipherSpecError: If sending messages fails
+        ChangeCipherSpecError: If message creation fails
     """
     try:
         # Verify pre-master secret
@@ -256,10 +271,33 @@ def send_server_change_cipher_spec(session) -> bytes:
         )
         logging.info(f"Generated digital signature: {signature.hex()}")
 
-        # Create and send messages
+        # Create messages
         server_finished = TLSFinished(vdata=server_verify_data)
         change_cipher_spec = TLSChangeCipherSpec()
 
+        return server_finished, change_cipher_spec
+
+    except Exception as e:
+        raise ChangeCipherSpecError(f"Failed to create finished messages: {e}")
+
+def send_server_change_cipher_spec(session) -> bytes:
+    """
+    Sends Server Finished and ChangeCipherSpec messages.
+    
+    Args:
+        session: TLS session instance
+        
+    Returns:
+        bytes: Raw packet data
+        
+    Raises:
+        ChangeCipherSpecError: If sending messages fails
+    """
+    try:
+        # Create messages
+        server_finished, change_cipher_spec = create_server_finished(session)
+
+        # Send messages
         session.send_to_client(server_finished)
         session.send_to_client(change_cipher_spec)
 
@@ -278,4 +316,4 @@ def send_server_change_cipher_spec(session) -> bytes:
         )
 
     except Exception as e:
-        raise ChangeCipherSpecError(f"ChangeCipherSpec sequence failed: {e}")
+        raise ChangeCipherSpecError(f"Failed to send finished messages: {e}")
