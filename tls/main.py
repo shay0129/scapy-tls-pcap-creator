@@ -6,13 +6,12 @@ Captures traffic to PCAP file.
 import logging
 import sys
 from pathlib import Path
-from typing import Final, NoReturn, Generator, Any
+from typing import NoReturn, Generator
 from contextlib import contextmanager
-import os
-from tls.session import UnifiedTLSSession
 from tls.pcap_writer import CustomPcapWriter
 from tls.config import NetworkConfig
 from tls.exceptions import TLSSessionError, ConfigurationError
+from tls.session import UnifiedTLSSession
 from tls.constants import (
     NetworkPorts,
     NetworkAddresses,

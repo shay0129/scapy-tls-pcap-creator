@@ -2,7 +2,6 @@
 TLS Session module.
 Handles unified TLS session management for both client and server sides.
 """
-from dataclasses import dataclass, field
 from scapy.layers.tls.record import TLS
 from scapy.layers.tls.crypto.prf import PRF
 from scapy.all import raw
@@ -37,8 +36,6 @@ from tls.constants import (
     GeneralConfig,
     NetworkPorts
 )
-from dataclasses import dataclass, field
-from typing import Optional
 from tls.session_state import SessionState  # Import from the new module
 
 class UnifiedTLSSession:
@@ -147,7 +144,7 @@ class UnifiedTLSSession:
         file_to_send: Optional[str]
     ) -> None:
         """Handle data exchange based on session type"""
-        # נוסיף לוגים לבדיקת המצב
+        
         logging.info(f"Handshake completed: {self.state.handshake_completed}")
         logging.info(f"Use client cert: {self.use_client_cert}")
         logging.info(f"File to send: {file_to_send}")

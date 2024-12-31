@@ -3,21 +3,18 @@ Cryptographic utilities module.
 Provides encryption, MAC generation and other cryptographic functions for TLS 1.2.
 """
 
-from cryptography.hazmat.primitives import constant_time, hashes, padding
-from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+from cryptography.hazmat.primitives import constant_time, hashes
 from cryptography.hazmat.primitives.asymmetric import padding as asymmetric_padding
 from cryptography.hazmat.primitives.asymmetric import rsa
-from cryptography.exceptions import InvalidKey
 from Crypto.Cipher import AES
 from Crypto.Hash import HMAC, SHA256
 from Crypto.Util.Padding import pad
 import struct
 import logging
-from typing import Final, Tuple, Optional
+from typing import Tuple, Optional
 import logging
 import struct
 import hmac
-import os
 import time
 import secrets
 import hashlib
@@ -114,6 +111,9 @@ def encrypt_tls12_record_cbc(data: bytes, key: bytes, iv: bytes, mac_key: bytes,
     Encrypt TLS 1.2 record using AES-128-CBC and HMAC-SHA256 for integrity.
     """
     try:
+        logging.debug(f"Input lengths: data={len(data)}, key={len(key)}, iv={len(iv)}, mac_key={len(mac_key)}, seq_num={len(seq_num)}")
+        logging.debug(f"First 16 bytes of key: {key[:16].hex()}")
+        logging.debug(f"IV: {iv.hex()}")
         # Validate input lengths
         assert len(key) == 16, "Key must be 16 bytes for AES-128"
         assert len(iv) == 16, "IV must be 16 bytes"

@@ -52,7 +52,7 @@ class NetworkConfig:
     @classmethod
     def load(cls) -> 'NetworkConfig':
         """Load default network configuration"""
-        base_dir = Path(__file__).parent.parent
+        base_dir = Path(__file__).parent
         return cls(
             output_pcap=base_dir / "output" / "capture.pcap",
             ssl_keylog_file=LoggingPaths.SSL_KEYLOG,
