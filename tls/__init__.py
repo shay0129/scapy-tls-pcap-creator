@@ -28,7 +28,7 @@ from .exceptions import (
 )
 from .pcap_writer import CustomPcapWriter, PcapWriterConfig
 from .config import NetworkConfig
-
+from .cipher_suite import CipherSuite
 # SessionState dataclass
 @dataclass
 class SessionState:

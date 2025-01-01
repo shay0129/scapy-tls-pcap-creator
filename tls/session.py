@@ -26,6 +26,7 @@ from tls.crypto import (
     encrypt_and_send_application_data,
     handle_ssl_key_log
 )
+from tls.crypto.keys import verify_key_pair
 from tls.exceptions import (
     TLSSessionError,
     HandshakeError,
@@ -92,22 +93,58 @@ class UnifiedTLSSession:
     def perform_handshake(self) -> bool:
         """Perform TLS handshake sequence."""
         try:
-            send_client_hello(self)
-            send_server_hello(self)
-            send_client_handshake_messages(self)
-            handle_master_secret(self)
-            send_client_change_cipher_spec(self)
-            send_server_change_cipher_spec(self)
-            handle_ssl_key_log(self)
-            
+            logging.info("Starting TLS Handshake...")
+
+            # Step 1: Send Client Hello
+            if not send_client_hello(self):
+                raise HandshakeError("Failed to send Client Hello")
+            logging.info("Client Hello sent successfully")
+
+            # Step 2: Receive Server Hello
+            if not send_server_hello(self):
+                raise HandshakeError("Failed to receive Server Hello")
+            logging.info("Server Hello received successfully")
+
+            # Step 3: Send Client Handshake Messages
+            if not send_client_handshake_messages(self):
+                raise HandshakeError("Failed to send Client Handshake Messages")
+            logging.info("Client handshake messages sent successfully")
+
+            # Step 4: Handle Master Secret
+            if not verify_key_pair(self.server_public_key, self.server_private_key):
+                raise HandshakeError("Server key pair verification failed")
+            logging.info("Server key pair verified successfully")
+
+            if not handle_master_secret(self):
+                raise HandshakeError("Failed to handle Master Secret")
+            logging.info("Master Secret handled successfully")
+
+            # Step 5: Send Client Change Cipher Spec
+            if not send_client_change_cipher_spec(self):
+                raise HandshakeError("Failed to send Client Change Cipher Spec")
+            logging.info("Client Change Cipher Spec sent successfully")
+
+            # Step 6: Receive Server Change Cipher Spec
+            if not send_server_change_cipher_spec(self):
+                raise HandshakeError("Failed to receive Server Change Cipher Spec")
+            logging.info("Server Change Cipher Spec received successfully")
+
+            # Step 7: Handle SSL Key Log (Optional for Debugging)
+            if not handle_ssl_key_log(self):
+                raise HandshakeError("Failed to handle SSL Key Log")
+            logging.info("SSL Key Log handled successfully")
+
+            # Finalize handshake
             self.state.handshake_completed = True
             logging.info("TLS Handshake completed successfully")
             return True
-            
+
         except HandshakeError as e:
             logging.error(f"TLS Handshake failed: {e}")
             self.state.handshake_completed = False
             return False
+
+
 
     def run_session(
         self,

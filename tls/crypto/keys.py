@@ -8,7 +8,7 @@ from typing import Tuple
 from pathlib import Path
 import logging
 import os
-
+from cryptography.hazmat.primitives.asymmetric import padding
 from scapy.layers.tls.record import TLSApplicationData
 from scapy.all import raw
 
@@ -57,7 +57,7 @@ class KeyBlock:
             # Let scapy handle the label and seed combination
             key_block = session.prf.derive_key_block(
                 session.master_secret,
-                # Let scapy handle the randoms separately
+                # Let scapy handle the label and seed combination
                 session.server_random,
                 session.client_random,
                 key_length
@@ -145,23 +145,28 @@ def encrypt_and_send_application_data(
         verify_key_lengths(key_block)
         key = key_block.client_key if is_client else key_block.server_key
         mac_key = key_block.client_mac_key if is_client else key_block.server_mac_key
-        iv = key_block.client_iv if is_client else key_block.server_iv
 
         # Generate sequence number
         seq_num = state.client_seq_num if is_client else state.server_seq_num
         seq_num_bytes = seq_num.to_bytes(8, byteorder='big')
 
-        # Encrypt data
+        # יצירת IV רנדומלי חדש לכל רשומה
+        explicit_iv = os.urandom(16)  # תמיד IV חדש!
+
+        # Debug logging
         logging.debug(f"Data type: {type(data)}")
         logging.debug(f"Key type: {type(key)}")
-        logging.debug(f"IV type: {type(iv)}")
+        logging.debug(f"IV type: {type(explicit_iv)}")
         logging.debug(f"MAC key type: {type(mac_key)}")
         logging.debug(f"Sequence number type: {type(seq_num_bytes)}")
 
-        encrypted_data = encrypt_tls12_record_cbc(data, key, iv, mac_key, seq_num_bytes)
+        # Encrypt data with the random IV
+        encrypted_data = encrypt_tls12_record_cbc(
+            data, key, explicit_iv, mac_key, seq_num_bytes
+        )
 
-        # Construct TLS record - משתמש ב-iv במקום explicit_iv
-        tls_record = iv + encrypted_data
+        # Create TLS record with IV
+        tls_record = explicit_iv + encrypted_data
         tls_data = TLSApplicationData(data=tls_record)
         tls_context.msg = [tls_data]
 
@@ -184,33 +189,56 @@ def encrypt_and_send_application_data(
         logging.error(f"Error in encrypt_and_send_application_data: {e}")
         raise EncryptionError(f"Failed to encrypt and send data: {e}")
     
-def handle_ssl_key_log(session) -> None:
+def handle_ssl_key_log(session) -> bool:
     """Write SSL/TLS session keys to Wireshark keylog file"""
     try:
-        # Make sure directory exists
+        # Validate parameters
+        if not hasattr(session, 'client_random') or not hasattr(session, 'master_secret'):
+            logging.warning("Missing required session parameters for key logging")
+            return True
+            
         LoggingPaths.SSL_KEYLOG.parent.mkdir(parents=True, exist_ok=True)
         
-        # Open in write mode to clear previous content
+        # Convert bytes to hex strings without '0x' prefix
+        client_random_hex = session.client_random.hex()
+        # Ensure master secret is in correct hex format
+        master_secret_hex = session.master_secret.hex() if isinstance(session.master_secret, bytes) else session.master_secret
+        
+        # Write in NSS key log format
         with open(LoggingPaths.SSL_KEYLOG, "w") as f:
-            client_random_hex = session.client_random.hex()
-            master_secret_hex = session.master_secret.hex()
-            # Format: CLIENT_RANDOM <client_random_hex> <master_secret_hex>
-            f.write(f"CLIENT_RANDOM {client_random_hex} {master_secret_hex}\n")
+            key_line = f"CLIENT_RANDOM {client_random_hex} {master_secret_hex}\n"
+            f.write(key_line)
             
         logging.info(f"SSL keys logged to {LoggingPaths.SSL_KEYLOG}")
-        logging.debug(f"Client random: {client_random_hex}")
-        logging.debug(f"Master secret: {master_secret_hex}")
+        logging.debug(f"Key log line: {key_line.strip()}")
+        
+        return True
         
     except Exception as e:
         logging.error(f"Failed to write SSL keylog: {e}")
-        raise KeyLoggingError(f"Failed to write to keylog file: {e}")
+        return True  # Non-critical failure
 
 def verify_key_lengths(
     key_block: KeyBlock,
     expected_mac_length: int = keys_constants.SHA256_MAC_LENGTH,
     expected_key_length: int = keys_constants.AES_128_KEY_LENGTH
-) -> None:
+    ) -> None:
     """Verify key lengths match expectations"""
+    
+    if len(key_block.server_key) != expected_key_length:
+        raise KeyDerivationError(
+            f"Invalid server key length: "
+            f"got {len(key_block.server_key)}, "
+            f"expected {expected_key_length}"
+        )
+
+    if len(key_block.server_mac_key) != expected_mac_length:
+        raise KeyDerivationError(
+            f"Invalid server MAC key length: "
+            f"got {len(key_block.server_mac_key)}, "
+            f"expected {expected_mac_length}"
+        )
+    
     if len(key_block.client_mac_key) != expected_mac_length:
         raise KeyDerivationError(
             f"Invalid client MAC key length: "
@@ -225,84 +253,11 @@ def verify_key_lengths(
             f"expected {expected_key_length}"
         )
     
-import logging
-import struct
-from Crypto.Cipher import AES
-from Crypto.Hash import HMAC, SHA256
-from Crypto.Util.Padding import pad, unpad
-
-class TLSRSAEncryptor:
-    def __init__(self, write_key, mac_key, iv):
-        """
-        Constructor for TLS RSA encryptor
-        """
-        if len(write_key) != 16:
-            raise ValueError("Write key must be 16 bytes")
-        if len(mac_key) != 32:
-            raise ValueError("MAC key must be 32 bytes")
-        if len(iv) != 16:
-            raise ValueError("IV must be 16 bytes")
-        
-        self.write_key = write_key
-        self.mac_key = mac_key
-        self.iv = iv
-
-    def encrypt(self, data, seq_num=0):
-        """
-        הצפנת רשומת TLS עם RSA-AES-CBC
-
-        :param data: נתונים להצפנה
-        :param seq_num: מספר רצף (8 בתים)
-        :return: רשומת TLS מוצפנת
-        """
-        try:
-            # Application Data record type
-            record_type = b'\x17'
-            # TLS 1.2 version
-            version = b'\x03\x03'
-            
-            # Calculate MAC
-            seq_bytes = seq_num.to_bytes(8, 'big')
-            mac_input = seq_bytes + record_type + version + \
-                        struct.pack('!H', len(data)) + data
-            mac = HMAC.new(self.mac_key, mac_input, SHA256).digest()
-            
-            # append MAC to data
-            plaintext = data + mac
-            
-            # PKCS7 Padding
-            padded_plaintext = pad(plaintext, AES.block_size)
-            
-            # Encrypt data with AES-CBC
-            cipher = AES.new(self.write_key, AES.MODE_CBC, self.iv)
-            ciphertext = cipher.encrypt(padded_plaintext)
-            
-            # Build TLS record
-            record = record_type + version + \
-                     struct.pack('!H', len(ciphertext)) + ciphertext
-            
-            return record
-
-        except Exception as e:
-            logging.error(f"Encryption error: {e}")
-            raise
-
-
-    def _hmac_compare(self, a, b):
-        """
-        A constant-time comparison function for HMAC digests.
-        """
-        if len(a) != len(b):
-            return False
-        
-        result = 0
-        for x, y in zip(a, b):
-            result |= x ^ y
-        
-        return result == 0
-
-# Define constants for key lengths
-logging.basicConfig(
-    level=logging.DEBUG,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
+def verify_key_pair(public_key, private_key):
+    # Create test message
+    test_data = os.urandom(32)
+    # Encrypt with public key
+    encrypted = public_key.encrypt(test_data, padding.PKCS1v15())
+    # Decrypt with private key
+    decrypted = private_key.decrypt(encrypted, padding.PKCS1v15())
+    return test_data == decrypted

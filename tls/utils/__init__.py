@@ -7,7 +7,8 @@ from .crypto import (
     generate_session_id,
     compare_to_original,
     compute_mac,
-    encrypt_tls12_record_cbc
+    encrypt_tls12_record_cbc,
+    encrypt_finished_message
 )
 
 from .logging import (
@@ -42,6 +43,7 @@ __all__ = [
     'compare_to_original',
     'compute_mac',
     'encrypt_tls12_record_cbc',
+    'encrypt_finished_message'
     
     # Logging utils
     'setup_logging',

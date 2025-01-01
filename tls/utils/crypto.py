@@ -3,27 +3,31 @@ Cryptographic utilities module.
 Provides encryption, MAC generation and other cryptographic functions for TLS 1.2.
 """
 
-from cryptography.hazmat.primitives import constant_time, hashes
+from cryptography.hazmat.primitives import constant_time, hashes, padding
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.primitives.asymmetric import padding as asymmetric_padding
 from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography.exceptions import InvalidKey
 from Crypto.Cipher import AES
 from Crypto.Hash import HMAC, SHA256
 from Crypto.Util.Padding import pad
 import struct
 import logging
-from typing import Tuple, Optional
+from typing import Final, Tuple, Optional
 import logging
 import struct
 import hmac
+import os
 import time
 import secrets
 import hashlib
+
+from scapy.layers.tls.handshake import TLSFinished
 
 from tls.constants import (
     TLSRecord, CryptoConstants,
     GeneralConfig, TLSVersion
 )
-
 
 class CryptoError(Exception):
     """Base exception for cryptographic operations"""
@@ -105,203 +109,41 @@ def compute_mac(key: bytes, message: bytes, algorithm: Optional[hashes.HashAlgor
         raise CryptoError(f"MAC computation failed: {e}")
 
 
-
-import logging
-import struct
-from Crypto.Cipher import AES
-from Crypto.Hash import HMAC, SHA256
-from Crypto.Util.Padding import pad, unpad
-
-def encrypt_tls12_record_cbc(
-    data: bytes, 
-    key: bytes, 
-    iv: bytes, 
-    mac_key: bytes, 
-    seq_num: bytes = None
-) -> bytes:
-    """
-    Encrypt TLS 1.2 record using AES-128-CBC and HMAC-SHA256 for integrity.
-    
-    Args:
-        data (bytes): Plaintext data to encrypt
-        key (bytes): 16-byte encryption key
-        iv (bytes): 16-byte initialization vector
-        mac_key (bytes): MAC key (at least 32 bytes)
-        seq_num (bytes, optional): 8-byte sequence number. Defaults to b'\x00' * 8.
-    
-    Returns:
-        bytes: Fully formatted TLS record
-    
-    Raises:
-        ValueError: If input validation fails
-    """
-    # Use explicit sequence number or default to zeros
-    if seq_num is None:
-        seq_num = b'\x00' * 8
-    
+def encrypt_tls12_record_cbc(data: bytes, key: bytes, iv: bytes, mac_key: bytes, seq_num: bytes = b'\x00' * 8) -> bytes:
+    """Encrypt TLS 1.2 record using AES-128-CBC with HMAC-SHA256."""
     try:
-        # Extensive input validation
-        if not isinstance(data, bytes):
-            raise ValueError("Data must be bytes")
-        
-        if len(key) != 16:
-            raise ValueError(f"Key must be 16 bytes, got {len(key)}")
-        
-        if len(iv) != 16:
-            raise ValueError(f"IV must be 16 bytes, got {len(iv)}")
-        
-        if len(mac_key) < 32:
-            raise ValueError(f"MAC key must be at least 32 bytes, got {len(mac_key)}")
-        
-        if len(seq_num) != 8:
-            raise ValueError(f"Sequence number must be 8 bytes, got {len(seq_num)}")
-        
-        # Logging for debugging
-        logging.debug(f"Encrypting record:")
-        logging.debug(f"Data length: {len(data)} bytes")
-        logging.debug(f"Key: {key.hex()}")
-        logging.debug(f"IV: {iv.hex()}")
-        logging.debug(f"Seq Num: {seq_num.hex()}")
-        
-        # Record Header Components
+        # Validate inputs
+        validate_key_size(key, 16, "AES-128 key")
+        validate_key_size(iv, 16, "IV")
+        validate_key_size(mac_key, 32, "MAC key")
+        validate_key_size(seq_num, 8, "Sequence number")
+
+        # Construct authenticated data
         record_type = b'\x17'  # Application Data
         version = b'\x03\x03'  # TLS 1.2
-        
-        # Prepare MAC input
         length = struct.pack('!H', len(data))
+        
+        # Calculate MAC
         mac_input = seq_num + record_type + version + length + data
-        
-        # Create MAC
         mac = HMAC.new(mac_key, mac_input, SHA256).digest()
-        
-        # Combine plaintext and MAC
-        plaintext = data + mac
-        
-        # Maximum TLS record size (16 KB)
-        max_tls_record_size = 2**14
-        if len(plaintext) > max_tls_record_size:
-            raise ValueError(f"Record size {len(plaintext)} exceeds max {max_tls_record_size}")
-        
-        # Pad plaintext
-        padded_plaintext = pad(plaintext, AES.block_size)
-        
+
+        # Add MAC and pad
+        to_encrypt = data + mac
+        padder = padding.PKCS7(128).padder()
+        padded_data = padder.update(to_encrypt) + padder.finalize()
+
         # Encrypt
-        cipher = AES.new(key, AES.MODE_CBC, iv)
-        ciphertext = cipher.encrypt(padded_plaintext)
+        cipher = Cipher(
+            algorithms.AES(key),
+            modes.CBC(iv)
+        ).encryptor()
         
-        # Construct full record
-        record = record_type + version + struct.pack('!H', len(ciphertext)) + ciphertext
+        ciphertext = cipher.update(padded_data) + cipher.finalize()
         
-        logging.debug(f"Encrypted record length: {len(record)} bytes")
-        logging.debug(f"Ciphertext length: {len(ciphertext)} bytes")
-        
-        return record
-    
+        return ciphertext
+
     except Exception as e:
-        logging.error(f"Encryption error: {str(e)}")
-        raise
-
-def decrypt_tls12_record_cbc(
-    record: bytes, 
-    key: bytes, 
-    iv: bytes, 
-    mac_key: bytes, 
-    seq_num: bytes = None
-) -> bytes:
-    """
-    Decrypt TLS 1.2 record using AES-128-CBC and HMAC-SHA256 for integrity.
-    
-    Args:
-        record (bytes): Full TLS record to decrypt
-        key (bytes): 16-byte decryption key
-        iv (bytes): 16-byte initialization vector
-        mac_key (bytes): MAC key (at least 32 bytes)
-        seq_num (bytes, optional): 8-byte sequence number. Defaults to b'\x00' * 8.
-    
-    Returns:
-        bytes: Decrypted and verified plaintext
-    
-    Raises:
-        ValueError: If decryption or MAC verification fails
-    """
-    # Use explicit sequence number or default to zeros
-    if seq_num is None:
-        seq_num = b'\x00' * 8
-    
-    try:
-        # Validate record structure
-        if len(record) < 5:
-            raise ValueError("Record too short")
-        
-        # Extract record components
-        record_type = record[0:1]
-        version = record[1:3]
-        length = struct.unpack('!H', record[3:5])[0]
-        ciphertext = record[5:]
-        
-        # Input validations
-        if len(key) != 16:
-            raise ValueError(f"Key must be 16 bytes, got {len(key)}")
-        
-        if len(iv) != 16:
-            raise ValueError(f"IV must be 16 bytes, got {len(iv)}")
-        
-        if len(mac_key) < 32:
-            raise ValueError(f"MAC key must be at least 32 bytes, got {len(mac_key)}")
-        
-        if len(seq_num) != 8:
-            raise ValueError(f"Sequence number must be 8 bytes, got {len(seq_num)}")
-        
-        # Decrypt
-        cipher = AES.new(key, AES.MODE_CBC, iv)
-        padded_plaintext = cipher.decrypt(ciphertext)
-        
-        # Unpad
-        plaintext = unpad(padded_plaintext, AES.block_size)
-        
-        # Split plaintext and MAC
-        mac_size = 32  # SHA256 MAC size
-        data = plaintext[:-mac_size]
-        received_mac = plaintext[-mac_size:]
-        
-        # Verify MAC
-        mac_input = seq_num + record_type + version + struct.pack('!H', len(data)) + data
-        expected_mac = HMAC.new(mac_key, mac_input, SHA256).digest()
-        
-        if not hmac_compare(received_mac, expected_mac):
-            raise ValueError("MAC verification failed")
-        
-        return data
-    
-    except Exception as e:
-        logging.error(f"Decryption error: {str(e)}")
-        raise
-
-def hmac_compare(a: bytes, b: bytes) -> bool:
-    """
-    Constant-time comparison of MACs to prevent timing attacks.
-    
-    Args:
-        a (bytes): First MAC
-        b (bytes): Second MAC
-    
-    Returns:
-        bool: True if MACs are equal, False otherwise
-    """
-    if len(a) != len(b):
-        return False
-    
-    result = 0
-    for x, y in zip(a, b):
-        result |= x ^ y
-    
-    return result == 0
-
-# Configure logging
-logging.basicConfig(
-    level=logging.DEBUG,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
+        raise EncryptionError(f"Encryption failed: {e}")
 
 def generate_random() -> Tuple[int, bytes]:
     """
@@ -405,11 +247,14 @@ def decrypt_pre_master_secret(
         bytes: Decrypted pre-master secret
     """
     try:
+        logging.debug(f"Encrypted length: {len(encrypted_pre_master_secret)}")
         # Decrypt using server's private key
         decrypted = server_private_key.decrypt(
             encrypted_pre_master_secret,
             asymmetric_padding.PKCS1v15()
         )
+        logging.debug(f"Decrypted length: {len(decrypted)}")
+        logging.debug(f"TLS version in pre-master: {hex(int.from_bytes(decrypted[:2], 'big'))}")
         
         if len(decrypted) != 48:
             raise ValidationError("Decrypted pre-master secret has invalid length")
@@ -428,3 +273,33 @@ def decrypt_pre_master_secret(
         
     except Exception as e:
         raise CryptoError(f"Failed to decrypt pre-master secret: {e}")
+    
+
+def encrypt_finished_message(finished_message: TLSFinished, key: bytes, iv: bytes) -> TLSFinished:
+    """
+    Encrypts a TLSFinished message using AES-CBC.
+
+    Args:
+        finished_message: The TLSFinished message to encrypt.
+        key: The encryption key.
+        iv: The initialization vector (IV).
+    
+    Returns:
+        TLSFinished: The encrypted finished message.
+    """
+    try:
+        cipher = Cipher(algorithms.AES(key), modes.CBC(iv))
+        encryptor = cipher.encryptor()
+
+        # Pad the message if necessary
+        padder = padding.PKCS7(128).padder()
+        padded_data = padder.update(finished_message.vdata) + padder.finalize()
+
+        # Encrypt the padded data
+        encrypted_data = encryptor.update(padded_data) + encryptor.finalize()
+
+        # Return the encrypted finished message
+        return TLSFinished(vdata=encrypted_data)
+
+    except Exception as e:
+        raise EncryptionError(f"Failed to encrypt finished message: {e}")

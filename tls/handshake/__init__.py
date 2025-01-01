@@ -18,11 +18,16 @@ from .server import (
 )
 
 __all__ = [
+    # Client handshake
     'send_client_hello',
     'send_client_handshake_messages', 
     'send_client_change_cipher_spec',
+
+    # Server handshake
     'send_server_hello',
     'send_server_change_cipher_spec',
+
+    # Errors
     'ClientHelloError',
     'KeyExchangeError',
     'ChangeCipherSpecError'

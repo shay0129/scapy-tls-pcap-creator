@@ -19,14 +19,18 @@ from scapy.layers.tls.extensions import (
 from scapy.layers.tls.crypto.suites import TLS_RSA_WITH_AES_128_CBC_SHA256
 from scapy.layers.tls.record import TLSChangeCipherSpec
 from scapy.all import raw
-from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives import serialization, hashes
+from cryptography.hazmat.primitives.asymmetric import padding as asymmetric_padding
 
 from tls.utils.crypto import (
     generate_random, generate_pre_master_secret,
-    encrypt_pre_master_secret
+    encrypt_pre_master_secret,decrypt_pre_master_secret,
+    compare_to_original, encrypt_finished_message
+    
 )
 from tls.utils.cert import load_cert
 from tls.constants import TLSVersion, CERTS_DIR
+from tls.crypto.keys import KeyBlock
 
 class HandshakeError(Exception):
     """Base exception for handshake operations"""
@@ -235,7 +239,69 @@ def send_client_handshake_messages(session) -> bytes:
 
     except Exception as e:
         raise KeyExchangeError(f"Failed to send handshake messages: {e}")
+
+def create_client_finished(session) -> tuple[TLSFinished, TLSChangeCipherSpec]:
+    """
+    Creates Server Finished and ChangeCipherSpec messages.
     
+    Args:
+        session: TLS session instance
+        
+    Returns:
+        tuple[TLSFinished, TLSChangeCipherSpec]: The finished and change cipher spec messages
+        
+    Raises:
+        ChangeCipherSpecError: If message creation fails
+    """
+    try:
+        # Verify pre-master secret
+        decrypted_pre_master_secret = decrypt_pre_master_secret(
+            session.encrypted_pre_master_secret,
+            session.server_private_key
+        )
+        
+        if not compare_to_original(
+            decrypted_pre_master_secret,
+            session.pre_master_secret
+        ):
+            raise ChangeCipherSpecError("Pre-master secret validation failed")
+            
+        logging.info("Pre-master secret validated successfully")
+        logging.debug(f"Decrypted pre-master secret: {decrypted_pre_master_secret.hex()}")
+
+        # Compute verify data
+        client_verify_data = session.prf.compute_verify_data(
+            'client',
+            'write',
+            b''.join(session.handshake_messages),
+            session.master_secret
+        )
+
+        # Generate signature
+        signature_data = client_verify_data + b''.join(session.handshake_messages)
+        signature = session.server_private_key.sign(
+            signature_data,
+            asymmetric_padding.PKCS1v15(),
+            hashes.SHA256()
+        )
+        logging.info(f"Generated digital signature: {signature.hex()}")
+
+        # Create messages
+        change_cipher_spec = TLSChangeCipherSpec()
+        client_finished = TLSFinished(vdata=client_verify_data)
+
+        # Encrypt finished message using client key
+        key_block = KeyBlock.derive(session)
+        client_finished_encrypted = encrypt_finished_message(
+            client_finished,
+            key_block.client_key,
+            key_block.client_iv
+        )
+        return change_cipher_spec, client_finished_encrypted
+
+    except Exception as e:
+        raise ChangeCipherSpecError(f"Failed to create finished messages: {e}")
+
 def send_client_change_cipher_spec(session) -> bytes:
     """
     Send Client ChangeCipherSpec and Finished messages.
@@ -250,25 +316,18 @@ def send_client_change_cipher_spec(session) -> bytes:
         ChangeCipherSpecError: If sending messages fails
     """
     try:
-        # Compute verify data
-        client_verify_data = session.prf.compute_verify_data(
-            'client',
-            'write',
-            b''.join(session.handshake_messages),
-            session.master_secret
-        )
+         # Create messages
+        change_cipher_spec, client_finished = create_client_finished(session)
 
-        # Create messages
-        client_finished = TLSFinished(vdata=client_verify_data)
-        change_cipher_spec = TLSChangeCipherSpec()
-
-        # Send messages
-        session.send_to_server(client_finished)
+         # Send messages
         session.send_to_server(change_cipher_spec)
+        session.send_to_server(client_finished)
 
         # Update handshake state
-        session.handshake_messages.append(raw(client_finished))
         session.handshake_messages.append(raw(change_cipher_spec))
+        session.handshake_messages.append(raw(client_finished))
+
+        # Update TLS context
         session.tls_context.msg = [change_cipher_spec, client_finished]
 
         logging.info("Client ChangeCipherSpec and Finished messages sent")
@@ -281,75 +340,5 @@ def send_client_change_cipher_spec(session) -> bytes:
         )
 
     except Exception as e:
-        raise ChangeCipherSpecError(
-            f"Failed to send ChangeCipherSpec: {e}"
-        )
+        raise ChangeCipherSpecError(f"Failed to send ChangeCipherSpec: {e}")
     
-def create_client_finished(session) -> tuple[TLSFinished, TLSChangeCipherSpec]:
-    """
-    Creates Client Finished and ChangeCipherSpec messages.
-    
-    Args:
-        session: TLS session instance
-        
-    Returns:
-        tuple[TLSFinished, TLSChangeCipherSpec]: The finished and change cipher spec messages
-        
-    Raises:
-        ChangeCipherSpecError: If message creation fails
-    """
-    try:
-        # Compute verify data
-        client_verify_data = session.prf.compute_verify_data(
-            'client',
-            'write',
-            b''.join(session.handshake_messages),
-            session.master_secret
-        )
-
-        # Create messages
-        client_finished = TLSFinished(vdata=client_verify_data)
-        change_cipher_spec = TLSChangeCipherSpec()
-
-        return client_finished, change_cipher_spec
-
-    except Exception as e:
-        raise ChangeCipherSpecError(f"Failed to create finished messages: {e}")
-
-def send_client_change_cipher_spec(session) -> bytes:
-    """
-    Sends Client Finished and ChangeCipherSpec messages.
-    
-    Args:
-        session: TLS session instance
-        
-    Returns:
-        bytes: Raw packet data
-        
-    Raises:
-        ChangeCipherSpecError: If sending messages fails
-    """
-    try:
-        # Create messages
-        client_finished, change_cipher_spec = create_client_finished(session)
-
-        # Send messages
-        session.send_to_server(client_finished)
-        session.send_to_server(change_cipher_spec)
-
-        # Update handshake state
-        session.handshake_messages.append(raw(client_finished))
-        session.handshake_messages.append(raw(change_cipher_spec))
-        session.tls_context.msg = [change_cipher_spec, client_finished]
-
-        logging.info("Client ChangeCipherSpec and Finished messages sent")
-        return session.send_tls_packet(
-            session.client_ip,
-            session.server_ip,
-            session.client_port,
-            session.server_port,
-            is_handshake=True
-        )
-
-    except Exception as e:
-        raise ChangeCipherSpecError(f"Failed to send finished messages: {e}")

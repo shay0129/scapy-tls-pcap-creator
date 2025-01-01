@@ -26,9 +26,11 @@ from cryptography import x509
 
 from tls.utils.crypto import (
     compare_to_original, generate_random,
-    decrypt_pre_master_secret
+    decrypt_pre_master_secret,
+    encrypt_finished_message
 )
 from tls.constants import TLSVersion
+from tls.crypto.keys import KeyBlock
 
 class HandshakeError(Exception):
     """Base exception for handshake operations"""
@@ -224,7 +226,8 @@ def send_server_hello(session) -> bytes:
 
     except Exception as e:
         raise ServerHelloError(f"Server Hello sequence failed: {e}")
-    
+
+
 def create_server_finished(session) -> tuple[TLSFinished, TLSChangeCipherSpec]:
     """
     Creates Server Finished and ChangeCipherSpec messages.
@@ -272,10 +275,17 @@ def create_server_finished(session) -> tuple[TLSFinished, TLSChangeCipherSpec]:
         logging.info(f"Generated digital signature: {signature.hex()}")
 
         # Create messages
-        server_finished = TLSFinished(vdata=server_verify_data)
         change_cipher_spec = TLSChangeCipherSpec()
+        server_finished = TLSFinished(vdata=server_verify_data)
 
-        return server_finished, change_cipher_spec
+        # Encrypt server finished message using server key
+        key_block = KeyBlock.derive(session)
+        server_finished_encrypted = encrypt_finished_message(
+            server_finished, 
+            key_block.server_key, 
+            key_block.server_iv
+        )
+        return change_cipher_spec, server_finished_encrypted
 
     except Exception as e:
         raise ChangeCipherSpecError(f"Failed to create finished messages: {e}")
@@ -295,15 +305,17 @@ def send_server_change_cipher_spec(session) -> bytes:
     """
     try:
         # Create messages
-        server_finished, change_cipher_spec = create_server_finished(session)
+        change_cipher_spec, server_finished = create_server_finished(session)
 
         # Send messages
-        session.send_to_client(server_finished)
         session.send_to_client(change_cipher_spec)
-
+        session.send_to_client(server_finished)
+        
         # Update handshake state
         session.handshake_messages.append(raw(server_finished))
         session.handshake_messages.append(raw(change_cipher_spec))
+        
+        # Update TLS context
         session.tls_context.msg = [change_cipher_spec, server_finished]
 
         logging.info("Server ChangeCipherSpec and Finished messages sent")

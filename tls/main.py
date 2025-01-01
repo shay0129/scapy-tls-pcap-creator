@@ -8,6 +8,13 @@ import sys
 from pathlib import Path
 from typing import NoReturn, Generator
 from contextlib import contextmanager
+from tls import (
+    CustomPcapWriter,
+    NetworkConfig,
+    TLSSessionError,
+    ConfigurationError,
+    UnifiedTLSSession
+)
 from tls.pcap_writer import CustomPcapWriter
 from tls.config import NetworkConfig
 from tls.exceptions import TLSSessionError, ConfigurationError
