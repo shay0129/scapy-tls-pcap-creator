@@ -6,6 +6,7 @@ Provides TLS session handling, protocol simulation, and packet capture capabilit
 from dataclasses import dataclass, field
 from typing import Optional
 from pathlib import Path
+from tls.cipher_suite import CipherSuite, CipherMode, CipherType
 
 from .session import UnifiedTLSSession
 from .constants import (
@@ -28,7 +29,6 @@ from .exceptions import (
 )
 from .pcap_writer import CustomPcapWriter, PcapWriterConfig
 from .config import NetworkConfig
-from .cipher_suite import CipherSuite
 # SessionState dataclass
 @dataclass
 class SessionState:
@@ -54,8 +54,11 @@ __all__ = [
     'CustomPcapWriter',
     'NetworkConfig',
     'PcapWriterConfig',
-    'SessionState',  # Add SessionState to __all__
-
+    'SessionState',
+    'CipherSuite',
+    'CipherMode',
+    'CipherType',
+    
     # Constants Classes
     'TLSVersion',
     'TLSRecord',

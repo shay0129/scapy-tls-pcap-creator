@@ -199,19 +199,14 @@ def handle_ssl_key_log(session) -> bool:
             
         LoggingPaths.SSL_KEYLOG.parent.mkdir(parents=True, exist_ok=True)
         
-        # Convert bytes to hex strings without '0x' prefix
         client_random_hex = session.client_random.hex()
-        # Ensure master secret is in correct hex format
         master_secret_hex = session.master_secret.hex() if isinstance(session.master_secret, bytes) else session.master_secret
         
-        # Write in NSS key log format
         with open(LoggingPaths.SSL_KEYLOG, "w") as f:
-            key_line = f"CLIENT_RANDOM {client_random_hex} {master_secret_hex}\n"
+            key_line = f"{'client_random'.upper()} {client_random_hex} {master_secret_hex}\n"
             f.write(key_line)
             
         logging.info(f"SSL keys logged to {LoggingPaths.SSL_KEYLOG}")
-        logging.debug(f"Key log line: {key_line.strip()}")
-        
         return True
         
     except Exception as e:

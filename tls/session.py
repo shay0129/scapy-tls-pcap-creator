@@ -8,6 +8,7 @@ from scapy.all import raw
 from typing import Optional
 import logging
 from pathlib import Path
+from tls.cipher_suite import CipherSuite, CipherMode, CipherType
 
 from tls.handshake.client import (
     send_client_hello,
@@ -74,14 +75,25 @@ class UnifiedTLSSession:
         self.client_port = client_port
         self.server_port = server_port
 
+
     def _initialize_tls(self, use_tls: bool, use_client_cert: bool) -> None:
         """Initialize TLS parameters"""
         self.use_tls = use_tls
         self.use_client_cert = use_client_cert
         self.tls_context = TLS(version=TLSVersion.TLS_1_2)
         self.SNI = GeneralConfig.DEFAULT_SNI
+        
+        # Initialize cipher suite
+        self.cipher_suite = CipherSuite(
+            cipher_type=CipherType.AES_128,
+            cipher_mode=CipherMode.CBC,
+            hash_algo="SHA256"
+        )
+        logging.info(f"Initialized cipher suite: {self.cipher_suite.name}")
+        
         # Initialize PRF for TLS 1.2
-        self.prf = PRF(hash_name='SHA256', tls_version=TLSVersion.TLS_1_2)
+        self.prf = PRF(hash_name=self.cipher_suite.hash_algo, 
+                    tls_version=TLSVersion.TLS_1_2)
 
     def _setup_certificates(self) -> None:
         """Setup certificate chain"""
