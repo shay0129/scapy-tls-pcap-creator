@@ -17,5 +17,5 @@ __all__ = [
     'verify_server_public_key',
     'verify_server_name',
     'verify_certificate_chain',
-    'get_certificate_names'
+    'get_certificate_names',
 ]

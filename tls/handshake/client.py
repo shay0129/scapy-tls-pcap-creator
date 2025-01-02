@@ -23,7 +23,7 @@ from cryptography.hazmat.primitives import serialization, hashes
 from cryptography.hazmat.primitives.asymmetric import padding as asymmetric_padding
 
 from tls.utils.crypto import (
-    generate_random, generate_pre_master_secret,
+    generate_pre_master_secret,
     encrypt_pre_master_secret,decrypt_pre_master_secret,
     compare_to_original, encrypt_finished_message
     
@@ -31,7 +31,7 @@ from tls.utils.crypto import (
 from tls.utils.cert import load_cert
 from tls.constants import TLSVersion, CERTS_DIR
 from tls.crypto.keys import KeyBlock
-
+import os
 class HandshakeError(Exception):
     """Base exception for handshake operations"""
     pass
@@ -93,12 +93,16 @@ def create_client_hello(
     Returns:
         TLSClientHello: Configured hello message
     """
-    # Generate client random
-    session.client_GMT_unix_time, session.client_random_bytes = generate_random()
-    session.client_random = session.client_GMT_unix_time.to_bytes(4, 'big') + session.client_random_bytes
+    #cipher_suites = [session.cipher_suite.id]
+    
+    # Generate client random as one piece
+    session.client_random = os.urandom(32)  # Generate all 32 bytes at once
     logging.info(f"Generated client_random: {session.client_random.hex()}")
 
-    # Use default extensions if none provided
+    # Extract GMT time and random bytes for TLSClientHello
+    gmt_time = int.from_bytes(session.client_random[:4], 'big')
+    random_bytes = session.client_random[4:]
+
     if not extensions:
         extensions = ClientExtensions(
             server_name=session.SNI,
@@ -110,8 +114,8 @@ def create_client_hello(
         version=TLSVersion.TLS_1_2,
         ciphers=[TLS_RSA_WITH_AES_128_CBC_SHA256],
         ext=extensions.get_extension_list(),
-        gmt_unix_time=session.client_GMT_unix_time,
-        random_bytes=session.client_random_bytes
+        gmt_unix_time=gmt_time,
+        random_bytes=random_bytes
     )
 
 def send_client_hello(session) -> bytes:

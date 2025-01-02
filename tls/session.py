@@ -4,12 +4,15 @@ Handles unified TLS session management for both client and server sides.
 """
 from scapy.layers.tls.record import TLS
 from scapy.layers.tls.crypto.prf import PRF
-from scapy.all import raw
+from scapy.compat import raw
+from scapy.packet import Raw
+# import ip
+from scapy.layers.inet import IP
 from typing import Optional
 import logging
 from pathlib import Path
-from tls.cipher_suite import CipherSuite, CipherMode, CipherType
-
+from tls.cipher_suite import CipherSuite, CipherMode
+from tls.session_state import SessionState
 from tls.handshake.client import (
     send_client_hello,
     send_client_handshake_messages,
@@ -27,6 +30,7 @@ from tls.crypto import (
     encrypt_and_send_application_data,
     handle_ssl_key_log
 )
+from tls.cipher_suite import KeyExchange, SignatureAlgorithm, EncryptionMethod, DigestAlgorithm
 from tls.crypto.keys import verify_key_pair
 from tls.exceptions import (
     TLSSessionError,
@@ -38,7 +42,6 @@ from tls.constants import (
     GeneralConfig,
     NetworkPorts
 )
-from tls.session_state import SessionState  # Import from the new module
 
 class UnifiedTLSSession:
     """Unified TLS session handler for client and server sides."""
@@ -76,6 +79,7 @@ class UnifiedTLSSession:
         self.server_port = server_port
 
 
+
     def _initialize_tls(self, use_tls: bool, use_client_cert: bool) -> None:
         """Initialize TLS parameters"""
         self.use_tls = use_tls
@@ -83,17 +87,21 @@ class UnifiedTLSSession:
         self.tls_context = TLS(version=TLSVersion.TLS_1_2)
         self.SNI = GeneralConfig.DEFAULT_SNI
         
-        # Initialize cipher suite
+        # הוספת הגדרת ה-cipher suite
         self.cipher_suite = CipherSuite(
-            cipher_type=CipherType.AES_128,
-            cipher_mode=CipherMode.CBC,
-            hash_algo="SHA256"
+            id=60,  # TLS_RSA_WITH_AES_128_CBC_SHA256
+            key_exchange=KeyExchange.RSA,
+            signature=SignatureAlgorithm.RSA,
+            encryption=EncryptionMethod.AES,
+            block_size=16,
+            key_size=128,
+            export_key_size=128,
+            digest=DigestAlgorithm.SHA256,
+            mode=CipherMode.CBC
         )
-        logging.info(f"Initialized cipher suite: {self.cipher_suite.name}")
         
         # Initialize PRF for TLS 1.2
-        self.prf = PRF(hash_name=self.cipher_suite.hash_algo, 
-                    tls_version=TLSVersion.TLS_1_2)
+        self.prf = PRF(hash_name='SHA256', tls_version=TLSVersion.TLS_1_2)
 
     def _setup_certificates(self) -> None:
         """Setup certificate chain"""
@@ -155,8 +163,38 @@ class UnifiedTLSSession:
             logging.error(f"TLS Handshake failed: {e}")
             self.state.handshake_completed = False
             return False
+    def handle_network_packet(self, packet):
+        """Handle incoming network packet and process TLS data if applicable"""
+        # Check if it's a TLS packet
+        if Raw in packet and self.state.handshake_completed:
+            try:
+                # Determine if it's client or server packet based on your network logic
+                is_client = self.determine_packet_direction(packet)
+                
+                # Process the TLS packet
+                decrypted_data = self.state.process_received_tls_packet(
+                    packet, 
+                    key_block=self.state.key_block  # Assuming you have this attribute
+                )
+                
+                # Handle the decrypted data
+                self.process_decrypted_payload(decrypted_data)
+            
+            except ValueError as e:
+                logging.error(f"TLS packet processing failed: {e}")
+        else:
+            # Handle non-TLS packets
+            pass
 
-
+    def determine_packet_direction(self, packet):
+        """Determine if the packet is from client or server"""
+        src_ip = packet[IP].src
+        return src_ip == self.client_ip
+    
+    def process_decrypted_payload(self, decrypted_data):
+        """Process the decrypted payload"""
+        # Implement your logic to handle the decrypted data
+        logging.info(f"Decrypted data: {decrypted_data}")
 
     def run_session(
         self,
@@ -293,7 +331,7 @@ class UnifiedTLSSession:
             sport = self.client_port if is_request else NetworkPorts.HTTP
             dport = NetworkPorts.HTTP if is_request else self.client_port
             
-            packet = self.pcap_writer.create_tcp_packet(
+            packet = self.state.create_tcp_packet(
                 src_ip=src_ip,
                 dst_ip=dst_ip,
                 sport=sport,
@@ -346,22 +384,22 @@ class UnifiedTLSSession:
             tls_data = raw(self.tls_context)
             is_client = (src_ip == self.client_ip)
             
-            if is_client:
-                seq_num = self.state.client_seq_num
-                self.state.client_seq_num += len(tls_data)
-            else:
-                seq_num = self.state.server_seq_num
-                self.state.server_seq_num += len(tls_data)
-            
-            packet = self.pcap_writer.create_tls_packet(
+            # יצירת הפאקט עם ה-TLS sequence number
+            packet, tls_seq = self.state.create_tls_packet(
                 src_ip=src_ip,
                 dst_ip=dst_ip,
                 sport=sport,
                 dport=dport,
                 tls_data=tls_data,
-                #seq_num=seq_num,
+                client_ip=self.client_ip,
                 is_handshake=is_handshake
             )
+            
+            # העברת ה-sequence number להצפנה
+            if is_client:
+                self.tls_context.seq_num = tls_seq.to_bytes(8, 'big')  # המרה ל-8 בתים
+            else:
+                self.tls_context.seq_num = tls_seq.to_bytes(8, 'big')
             
             self.pcap_writer.packets.append(packet)
             return packet

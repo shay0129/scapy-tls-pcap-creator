@@ -2,14 +2,15 @@
 Certificate verification module.
 Handles verification of server certificates, public keys, and server names.
 """
-
-from dataclasses import dataclass
-from typing import List, Set
 from cryptography.hazmat.primitives.asymmetric import padding as asymmetric_padding
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.x509.oid import NameOID, ExtensionOID
 from cryptography import x509
 import logging
+from hmac import HMAC
+import hashlib
+from dataclasses import dataclass
+from typing import List, Set
 
 class VerificationError(Exception):
     """Base exception for verification failures"""
@@ -194,4 +195,3 @@ def verify_server_name(
 
     except Exception as e:
         raise ServerNameError(f"Server name verification failed: {e}")
-

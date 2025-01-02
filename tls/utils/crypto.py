@@ -108,7 +108,6 @@ def compute_mac(key: bytes, message: bytes, algorithm: Optional[hashes.HashAlgor
     except Exception as e:
         raise CryptoError(f"MAC computation failed: {e}")
 
-
 def encrypt_tls12_record_cbc(data: bytes, key: bytes, iv: bytes, mac_key: bytes, seq_num: bytes = b'\x00' * 8) -> bytes:
     """Encrypt TLS 1.2 record using AES-128-CBC with HMAC-SHA256."""
     try:
@@ -118,46 +117,51 @@ def encrypt_tls12_record_cbc(data: bytes, key: bytes, iv: bytes, mac_key: bytes,
         validate_key_size(mac_key, 32, "MAC key")
         validate_key_size(seq_num, 8, "Sequence number")
 
-        # Construct authenticated data
+        # 1. Calculate MAC
         record_type = b'\x17'  # Application Data
         version = b'\x03\x03'  # TLS 1.2
         length = struct.pack('!H', len(data))
         
-        # Calculate MAC
-        mac_input = seq_num + record_type + version + length + data
-        mac = HMAC.new(mac_key, mac_input, SHA256).digest()
+        mac = HMAC.new(mac_key, digestmod=SHA256)
+        mac.update(seq_num)
+        mac.update(record_type)
+        mac.update(version)
+        mac.update(length)
+        mac.update(data)
+        mac_value = mac.digest()
 
-        # Add MAC and pad
-        to_encrypt = data + mac
-        padder = padding.PKCS7(128).padder()
-        padded_data = padder.update(to_encrypt) + padder.finalize()
+        # 2. Combine plaintext and MAC
+        plaintext_with_mac = data + mac_value
 
-        # Encrypt
+        # 3. Calculate and add padding
+        block_size = 16
+        padding_needed = (block_size - len(plaintext_with_mac) % block_size)
+        if padding_needed == 0:
+            padding_needed = block_size
+
+        # בTLS, כל בתי הpadding צריכים להיות שווים לאורך הpadding פחות 1
+        padding = bytes([padding_needed - 1] * padding_needed)
+        
+        # 4. יצירת הבלוק הסופי
+        final_block = plaintext_with_mac + padding
+
+        logging.debug(f"Lengths - Data: {len(data)}, MAC: {len(mac_value)}, Padding: {padding_needed}")
+        logging.debug(f"Total length: {len(final_block)}")
+        logging.debug(f"Final padding value: {padding_needed - 1}")
+
+        # 5. הצפנה
         cipher = Cipher(
             algorithms.AES(key),
             modes.CBC(iv)
         ).encryptor()
         
-        ciphertext = cipher.update(padded_data) + cipher.finalize()
+        ciphertext = cipher.update(final_block) + cipher.finalize()
         
         return ciphertext
 
     except Exception as e:
         raise EncryptionError(f"Encryption failed: {e}")
-
-def generate_random() -> Tuple[int, bytes]:
-    """
-    Generate random data for TLS ClientHello/ServerHello.
     
-    Returns:
-        Tuple[int, bytes]: (GMT Unix time, 28 random bytes)
-    """
-    try:
-        gmt_unix_time = int(time.time())
-        random_bytes = secrets.token_bytes(28)
-        return gmt_unix_time, random_bytes
-    except Exception as e:
-        raise CryptoError(f"Failed to generate random data: {e}")
 
 def generate_pre_master_secret() -> bytes:
     """

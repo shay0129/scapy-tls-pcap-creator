@@ -34,7 +34,8 @@ from .packet import (
 
 from .verification import (
     verify_master_secret,
-    verify_key_pair
+    verify_key_pair,
+    verify_tls_mac
 )
 
 __all__ = [
@@ -65,5 +66,6 @@ __all__ = [
     
     # Verification utils
     'verify_master_secret',
-    'verify_key_pair'
+    'verify_key_pair',
+    'verify_tls_mac'
 ]

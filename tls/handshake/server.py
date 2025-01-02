@@ -25,7 +25,7 @@ from cryptography.hazmat.primitives import serialization, hashes
 from cryptography import x509
 
 from tls.utils.crypto import (
-    compare_to_original, generate_random,
+    compare_to_original,
     decrypt_pre_master_secret,
     encrypt_finished_message
 )
@@ -89,10 +89,13 @@ def create_server_hello(
     Returns:
         TLSServerHello: Configured hello message
     """
-    # Generate server random
-    session.server_GMT_unix_time, session.server_random_bytes = generate_random()
-    session.server_random = session.server_GMT_unix_time.to_bytes(4, 'big') + session.server_random_bytes
+    # Generate server random as one piece
+    session.server_random = os.urandom(32)  # Generate all 32 bytes at once
     logging.info(f"Generated server_random: {session.server_random.hex()}")
+    
+    # Extract GMT time and random bytes for TLSServerHello
+    gmt_time = int.from_bytes(session.server_random[:4], 'big')
+    random_bytes = session.server_random[4:]
 
     # Use default extensions if none provided
     if not extensions:
@@ -111,13 +114,13 @@ def create_server_hello(
         ),
     )""" 
 
+    # Create and return the ServerHello message
     return TLSServerHello(
         version=TLSVersion.TLS_1_2,
-        gmt_unix_time=session.server_GMT_unix_time,
-        random_bytes=session.server_random_bytes,
-        sid=os.urandom(32),
-        cipher=TLS_RSA_WITH_AES_128_CBC_SHA256.val,
-        ext=extensions.get_extension_list()
+        gmt_unix_time=gmt_time,
+        random_bytes=random_bytes,
+        cipher=TLS_RSA_WITH_AES_128_CBC_SHA256.val, # CipherSuite.id = 60 in decimal
+        ext=extensions.get_extension_list() if extensions else None
     )
 
 def prepare_certificate_chain(session) -> TLSCertificate:

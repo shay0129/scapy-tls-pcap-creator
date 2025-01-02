@@ -195,15 +195,24 @@ def handle_ssl_key_log(session) -> bool:
         # Validate parameters
         if not hasattr(session, 'client_random') or not hasattr(session, 'master_secret'):
             logging.warning("Missing required session parameters for key logging")
-            return True
+            return False
+            
+        # Validate values are not None
+        if session.client_random is None or session.master_secret is None:
+            logging.warning("Client random or master secret is None")
+            return False
             
         LoggingPaths.SSL_KEYLOG.parent.mkdir(parents=True, exist_ok=True)
         
+        # Convert client_random to hex
         client_random_hex = session.client_random.hex()
-        master_secret_hex = session.master_secret.hex() if isinstance(session.master_secret, bytes) else session.master_secret
         
-        with open(LoggingPaths.SSL_KEYLOG, "w") as f:
-            key_line = f"{'client_random'.upper()} {client_random_hex} {master_secret_hex}\n"
+        # Convert master_secret to hex
+        master_secret_hex = session.master_secret.hex() if isinstance(session.master_secret, bytes) else session.master_secret
+
+        # Append to file
+        with open(LoggingPaths.SSL_KEYLOG, "a") as f:
+            key_line = f"CLIENT_RANDOM {client_random_hex} {master_secret_hex}\n"
             f.write(key_line)
             
         logging.info(f"SSL keys logged to {LoggingPaths.SSL_KEYLOG}")
@@ -211,7 +220,7 @@ def handle_ssl_key_log(session) -> bool:
         
     except Exception as e:
         logging.error(f"Failed to write SSL keylog: {e}")
-        return True  # Non-critical failure
+        return False
 
 def verify_key_lengths(
     key_block: KeyBlock,

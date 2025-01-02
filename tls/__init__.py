@@ -2,13 +2,7 @@
 TLS protocol implementation package.
 Provides TLS session handling, protocol simulation, and packet capture capabilities.
 """
-
-from dataclasses import dataclass, field
-from typing import Optional
-from pathlib import Path
-from tls.cipher_suite import CipherSuite, CipherMode, CipherType
-
-from .session import UnifiedTLSSession
+from .session_state import SessionState
 from .constants import (
     TLSVersion,
     TLSRecord,
@@ -25,23 +19,18 @@ from .exceptions import (
     ConfigurationError,
     HandshakeError,
     CertificateError,
-    CryptoError
+    CryptoError,
+    StorageError,
+    PcapWriteError,
+    ValidationError,
+    TLSValidationError
 )
-from .pcap_writer import CustomPcapWriter, PcapWriterConfig
+from .packet_storage import PcapWriter, PcapWriterConfig
 from .config import NetworkConfig
-# SessionState dataclass
-@dataclass
-class SessionState:
-    """State information for TLS session"""
-    seq_num: int = 0
-    client_seq_num: int = 0
-    server_seq_num: int = 0
-    master_secret: Optional[bytes] = None
-    handshake_completed: bool = False
-    handshake_messages: list = field(default_factory=list)
+from .packet_validator import PacketValidator, PacketStats
 
 __version__ = '1.0.0'
-__author__ = 'Your Name'
+__author__ = 'Shay Mordechai'
 
 # Constants
 DEFAULT_SNI = "www.ctf-example.org"
@@ -51,13 +40,19 @@ DEFAULT_TLS_VERSION = TLSVersion.TLS_1_2
 __all__ = [
     # Main Classes
     'UnifiedTLSSession',
-    'CustomPcapWriter',
+    'PcapWriter',
     'NetworkConfig',
     'PcapWriterConfig',
     'SessionState',
+    'PacketValidator',
+    'PacketStats',
+
+    'KeyExchange',
+    'SignatureAlgorithm',
+    'EncryptionMethod',
+    'DigestAlgorithm',
     'CipherSuite',
     'CipherMode',
-    'CipherType',
     
     # Constants Classes
     'TLSVersion',
@@ -76,6 +71,10 @@ __all__ = [
     'HandshakeError',
     'CertificateError',
     'CryptoError',
+    'StorageError',
+    'PcapWriteError',
+    'ValidationError',
+    'TLSValidationError',
 
     # Package Constants
     'DEFAULT_SNI',

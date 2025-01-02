@@ -8,14 +8,8 @@ import sys
 from pathlib import Path
 from typing import NoReturn, Generator
 from contextlib import contextmanager
-from tls import (
-    CustomPcapWriter,
-    NetworkConfig,
-    TLSSessionError,
-    ConfigurationError,
-    UnifiedTLSSession
-)
-from tls.pcap_writer import CustomPcapWriter
+
+from tls.packet_storage import PcapWriter
 from tls.config import NetworkConfig
 from tls.exceptions import TLSSessionError, ConfigurationError
 from tls.session import UnifiedTLSSession
@@ -36,7 +30,7 @@ def exit_with_error(message: str, code: int) -> NoReturn:
 
 @contextmanager
 def session_context(
-    writer: CustomPcapWriter,
+    writer: PcapWriter,
     client_ip: str,
     server_ip: str,
     client_port: int,
@@ -63,10 +57,10 @@ def session_context(
                 logging.error(f"Session cleanup failed: {e}")
 
 
-def setup_environment(config: NetworkConfig) -> CustomPcapWriter:
+def setup_environment(config: NetworkConfig) -> PcapWriter:
     """Setup environment for TLS sessions"""
     try:
-        writer = CustomPcapWriter(config)
+        writer = PcapWriter(config)
         
         # Clear SSL keylog file
         if hasattr(config, 'SSL_KEYLOG_FILE'):
@@ -80,7 +74,7 @@ def setup_environment(config: NetworkConfig) -> CustomPcapWriter:
 
 
 def run_client_session(
-    writer: CustomPcapWriter,
+    writer: PcapWriter,
     client_ip: str,
     server_ip: str,
     client_port: int,
@@ -105,7 +99,7 @@ def run_client_session(
         raise TLSSessionError(f"Session failed for {client_ip}: {e}")
 
 
-def save_results(writer: CustomPcapWriter, config: NetworkConfig) -> None:
+def save_results(writer: PcapWriter, config: NetworkConfig) -> None:
     """Save and verify PCAP results"""
     try:
         writer.save_pcap(config.OUTPUT_PCAP)

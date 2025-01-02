@@ -110,6 +110,26 @@ class ValidationError(UtilityError):
     """Raised when validation operations fail"""
     pass
 
+# Storage Errors
+class StorageError(Exception):
+   """Base exception for storage operations"""
+   pass
+
+class PcapWriteError(StorageError):
+   """Error when writing PCAP file"""
+   pass
+
+
+# Validation Errors
+class ValidationError(Exception):
+   """Base exception for validation errors"""
+   pass
+
+class TLSValidationError(ValidationError):
+   """TLS record validation error"""
+   pass
+
+
 # Helper function to get error details
 def get_error_details(error: Exception) -> str:
     """

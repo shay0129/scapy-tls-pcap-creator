@@ -7,7 +7,8 @@ from cryptography.hazmat.primitives.asymmetric import padding as asymmetric_padd
 from cryptography.hazmat.primitives.asymmetric import rsa, utils
 from cryptography.hazmat.primitives import hashes
 from cryptography.exceptions import InvalidKey
-
+import hashlib
+from hmac import HMAC
 from dataclasses import dataclass, field
 from pathlib import Path
 import hmac
@@ -208,3 +209,14 @@ def verify_key_pair(
         
     except Exception as e:
         raise KeyPairError(f"Key pair verification failed: {e}")
+    
+def verify_tls_mac(mac_key, seq_num, content_type, version, data):
+    """Verify TLS MAC"""
+    mac_data = (
+        seq_num.to_bytes(8, 'big') +  
+        content_type.to_bytes(1, 'big') +  
+        version.to_bytes(2, 'big') +  
+        len(data).to_bytes(2, 'big') +  
+        data
+    )
+    return hmac.new(mac_key, mac_data, hashlib.sha256).digest()
