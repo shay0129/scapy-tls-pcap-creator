@@ -23,7 +23,8 @@ from .exceptions import (
     StorageError,
     PcapWriteError,
     ValidationError,
-    TLSValidationError
+    TLSValidationError,
+    MasterSecretError
 )
 from .packet_storage import PcapWriter, PcapWriterConfig
 from .config import NetworkConfig
@@ -75,6 +76,7 @@ __all__ = [
     'PcapWriteError',
     'ValidationError',
     'TLSValidationError',
+    'MasterSecretError'
 
     # Package Constants
     'DEFAULT_SNI',

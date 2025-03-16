@@ -44,7 +44,7 @@ __all__ = [
     'compare_to_original',
     'compute_mac',
     'encrypt_tls12_record_cbc',
-    'encrypt_finished_message'
+    'encrypt_finished_message',
     
     # Logging utils
     'setup_logging',

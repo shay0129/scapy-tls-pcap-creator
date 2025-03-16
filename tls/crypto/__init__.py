@@ -7,9 +7,8 @@ from .keys import (
     get_connection_params,
     create_tls_record,
     encrypt_and_send_application_data,
-    handle_ssl_key_log,
-    verify_key_lengths,
-    verify_key_pair
+    handle_ssl_key_log
+
 )
 
 __all__ = [
@@ -17,6 +16,4 @@ __all__ = [
     'create_tls_record',
     'encrypt_and_send_application_data',
     'handle_ssl_key_log'
-    'verify_key_lengths'
-    'verify_key_pair'
 ]

@@ -3,7 +3,7 @@ TLS certificate handling package.
 Provides certificate chain and verification functionality.
 """
 
-from .chain import setup_certificates, handle_master_secret
+from .chain import setup_certificates
 from .verify import (
     verify_server_public_key,
     verify_server_name,

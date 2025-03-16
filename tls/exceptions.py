@@ -71,6 +71,10 @@ class CertChainError(CertificateError):
     """Raised when certificate chain validation fails"""
     pass
 
+class ChainSetupError(CertificateError):
+    """Raised when certificate chain setup fails"""
+    pass
+
 # Protocol Errors
 class ProtocolError(TLSError):
     """Base exception for protocol-related errors"""
@@ -129,6 +133,11 @@ class TLSValidationError(ValidationError):
    """TLS record validation error"""
    pass
 
+
+# Key Errors
+class MasterSecretError(CertificateError):
+    """Raised when master secret operations fail"""
+    pass
 
 # Helper function to get error details
 def get_error_details(error: Exception) -> str:

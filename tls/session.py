@@ -11,7 +11,6 @@ from scapy.layers.inet import IP
 from typing import Optional
 import logging
 from pathlib import Path
-from tls.cipher_suite import CipherSuite, CipherMode
 from tls.session_state import SessionState
 from tls.handshake.client import (
     send_client_hello,
@@ -23,15 +22,14 @@ from tls.handshake.server import (
     send_server_change_cipher_spec
 )
 from tls.certificates.chain import (
-    setup_certificates,
-    handle_master_secret
+    setup_certificates
 )
+
 from tls.crypto import (
     encrypt_and_send_application_data,
     handle_ssl_key_log
 )
-from tls.cipher_suite import KeyExchange, SignatureAlgorithm, EncryptionMethod, DigestAlgorithm
-from tls.crypto.keys import verify_key_pair
+from tls.crypto.keys import verify_key_pair, handle_master_secret
 from tls.exceptions import (
     TLSSessionError,
     HandshakeError,
@@ -86,20 +84,7 @@ class UnifiedTLSSession:
         self.use_client_cert = use_client_cert
         self.tls_context = TLS(version=TLSVersion.TLS_1_2)
         self.SNI = GeneralConfig.DEFAULT_SNI
-        
-        # הוספת הגדרת ה-cipher suite
-        self.cipher_suite = CipherSuite(
-            id=60,  # TLS_RSA_WITH_AES_128_CBC_SHA256
-            key_exchange=KeyExchange.RSA,
-            signature=SignatureAlgorithm.RSA,
-            encryption=EncryptionMethod.AES,
-            block_size=16,
-            key_size=128,
-            export_key_size=128,
-            digest=DigestAlgorithm.SHA256,
-            mode=CipherMode.CBC
-        )
-        
+             
         # Initialize PRF for TLS 1.2
         self.prf = PRF(hash_name='SHA256', tls_version=TLSVersion.TLS_1_2)
 

@@ -11,13 +11,14 @@ import os
 from cryptography.hazmat.primitives.asymmetric import padding
 from scapy.layers.tls.record import TLSApplicationData
 from scapy.all import raw
-
+from scapy.layers.tls.session import TLSSession
+from tls.exceptions import MasterSecretError
+from tls.utils.crypto import decrypt_pre_master_secret
 from tls.utils.crypto import encrypt_tls12_record_cbc
 from tls.session_state import SessionState
 from tls.constants import (
     keys as keys_constants, LoggingPaths
 )
-
 
 class CryptoError(Exception):
     """Base exception for cryptographic operations"""
@@ -265,3 +266,117 @@ def verify_key_pair(public_key, private_key):
     # Decrypt with private key
     decrypted = private_key.decrypt(encrypted, padding.PKCS1v15())
     return test_data == decrypted
+
+
+def generate_master_secret(
+        session,
+        encrypted_pre_master_secret: bytes, 
+        client_random: bytes,
+        server_random: bytes
+    ) -> bytes:
+    """`
+    Generate master secret from pre-master secret as per RFC 5246 (TLS 1.2).
+    
+    master_secret = PRF(pre_master_secret, "master secret",
+                       ClientHello.random + ServerHello.random)[0..47];
+    
+    Args:
+        session: TLS session instance
+        encrypted_pre_master_secret: Encrypted pre-master secret
+        client_random: Client random bytes
+        server_random: Server random bytes
+        
+    Returns:
+        bytes: Generated 48-byte master secret
+        
+    Raises:
+        MasterSecretError: If generation fails
+    """
+    try:
+        # Decrypt pre-master secret
+        pre_master_secret = decrypt_pre_master_secret(
+            encrypted_pre_master_secret,
+            session.server_private_key
+        )
+        logging.info(f"Decrypted pre_master_secret: {pre_master_secret.hex()}")
+        
+        # Use scapy's PRF to compute master secret
+        # PRF internally uses the correct label "master secret" and handles the seed combination
+        master_secret = session.prf.compute_master_secret(
+            pre_master_secret, 
+            client_random,
+            server_random
+        )
+        
+        logging.info(f"Generated master secret: {master_secret.hex()}")
+        logging.info(f"Master secret length: {len(master_secret)} bytes")
+        
+        if len(master_secret) != 48:
+            raise MasterSecretError(f"Invalid master secret length: {len(master_secret)}, expected 48")
+            
+        return master_secret
+        
+    except Exception as e:
+        raise MasterSecretError(f"Master secret generation failed: {e}")
+    
+    
+def handle_master_secret(session: TLSSession) -> bool:
+    """
+    Handle master secret generation and validation.
+    
+    Args:
+        session (TLSSession): The TLS session instance containing required attributes.
+        
+    Returns:
+        bool: True if master secret was successfully generated and validated
+        
+    Raises:
+        MasterSecretError: If handling fails due to validation or unexpected issues.
+    """
+    def validate_session(session: TLSSession) -> None:
+        """Validate session attributes required for master secret generation."""
+        if not session.encrypted_pre_master_secret:
+            raise ValueError("Encrypted Pre-Master Secret is missing.")
+        if not session.client_random or len(session.client_random) != 32:
+            raise ValueError("Invalid or missing Client Random.")
+        if not session.server_random or len(session.server_random) != 32:
+            raise ValueError("Invalid or missing Server Random.")
+
+    try:
+        # Step 1: Validate session components
+        validate_session(session)
+
+        # Step 2: Log session details before processing
+        logging.info("Starting Master Secret generation.")
+        logging.debug(f"Encrypted Pre-Master Secret: {session.encrypted_pre_master_secret.hex()}")
+        logging.debug(f"Client Random: {session.client_random.hex()}")
+        logging.debug(f"Server Random: {session.server_random.hex()}")
+
+        # Step 3: Generate the master secret
+        session.master_secret = generate_master_secret(
+            session,
+            session.encrypted_pre_master_secret,
+            session.client_random,
+            session.server_random
+        )
+
+        # Step 4: Verify the master secret was properly set
+        if not hasattr(session, 'master_secret'):
+            raise MasterSecretError("Master secret not set on session")
+            
+        if len(session.master_secret) != 48:
+            raise MasterSecretError(f"Invalid master secret length: {len(session.master_secret)}")
+
+        # Step 5: Log success and the generated master secret
+        logging.info("Master Secret generation completed successfully.")
+        logging.debug(f"Generated Master Secret: {session.master_secret.hex()}")
+        logging.debug(f"Master Secret length: {len(session.master_secret)} bytes")
+
+        return True
+
+    except ValueError as ve:
+        logging.error(f"Validation error during Master Secret handling: {ve}")
+        return False
+    except Exception as e:
+        logging.exception("Unexpected error during Master Secret handling.")
+        return False
