@@ -2,15 +2,13 @@
 Logging utilities module.
 Configures and manages logging for TLS session simulation.
 """
-
-import logging.handlers
-from pathlib import Path
-from typing import Optional, Final, Union
+from typing import Optional, Union
 from datetime import datetime
+from pathlib import Path
+import logging.handlers
 import sys
-from tls.constants import (
-    LoggingConfig
-)
+
+from ..constants import LoggingConfig
 
 class LoggingError(Exception):
     """Base exception for logging operations"""

@@ -2,19 +2,16 @@
 Certificate chain management module.
 Handles loading and setup of certificates and master secret generation.
 """
-
+from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography import x509
 from dataclasses import dataclass
 from typing import List
 import logging
-from cryptography import x509
-from cryptography.hazmat.primitives.asymmetric import rsa
 
-from tls.utils.crypto import decrypt_pre_master_secret
-from tls.utils.cert import load_cert, load_server_cert_keys
-from tls.constants import CERTS_DIR
-from scapy.layers.tls.crypto.prf import PRF
-from tls.exceptions import ChainSetupError, MasterSecretError
-from tls.certificates.verify import (
+from ..utils.cert import load_cert, load_server_cert_keys
+from ..exceptions import ChainSetupError
+from ..constants import CertificatePaths
+from ..certificates.verify import (
     verify_server_public_key,
     verify_server_name,
     verify_certificate_chain
@@ -31,7 +28,6 @@ class CertificateChain:
     server_public_key: rsa.RSAPublicKey
     chain: List[x509.Certificate]
 
-from tls.constants import CertificatePaths  # במקום CERTS_DIR
 
 def load_certificate_chain() -> CertificateChain:
     try:

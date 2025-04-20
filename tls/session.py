@@ -2,44 +2,36 @@
 TLS Session module.
 Handles unified TLS session management for both client and server sides.
 """
-from scapy.layers.tls.record import TLS
 from scapy.layers.tls.crypto.prf import PRF
+from scapy.layers.tls.record import TLS
+from scapy.layers.inet import IP
 from scapy.compat import raw
 from scapy.packet import Raw
-# import ip
-from scapy.layers.inet import IP
 from typing import Optional
 import logging
 from pathlib import Path
-from tls.session_state import SessionState
-from tls.handshake.client import (
+
+from .exceptions import TLSSessionError, HandshakeError, CertificateError
+from .crypto.keys import verify_key_pair, handle_master_secret
+from .constants import TLSVersion, GeneralConfig, NetworkPorts
+from .crypto import (
+    encrypt_and_send_application_data,
+    handle_ssl_key_log
+)
+from .session_state import SessionState
+from .handshake.client import (
     send_client_hello,
     send_client_handshake_messages,
     send_client_change_cipher_spec
 )
-from tls.handshake.server import (
+from .handshake.server import (
     send_server_hello,
     send_server_change_cipher_spec
 )
-from tls.certificates.chain import (
+from .certificates.chain import (
     setup_certificates
 )
 
-from tls.crypto import (
-    encrypt_and_send_application_data,
-    handle_ssl_key_log
-)
-from tls.crypto.keys import verify_key_pair, handle_master_secret
-from tls.exceptions import (
-    TLSSessionError,
-    HandshakeError,
-    CertificateError
-)
-from tls.constants import (
-    TLSVersion,
-    GeneralConfig,
-    NetworkPorts
-)
 
 class UnifiedTLSSession:
     """Unified TLS session handler for client and server sides."""

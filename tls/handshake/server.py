@@ -2,12 +2,12 @@
 Server-side TLS handshake functions.
 Handles Server Hello, Key Exchange and ChangeCipherSpec messages.
 """
-
-from dataclasses import dataclass
-from typing import List, Optional, Final
-import logging
-import os
-
+from cryptography.hazmat.primitives.asymmetric import padding as asymmetric_padding
+from cryptography.hazmat.primitives import serialization, hashes
+from cryptography import x509
+from scapy.layers.tls.crypto.suites import TLS_RSA_WITH_AES_128_CBC_SHA256
+from scapy.layers.tls.record import TLSChangeCipherSpec
+from scapy.all import raw
 from scapy.layers.tls.handshake import (
     TLSServerHello, TLSCertificate, TLSCertificateRequest,
     TLSServerHelloDone, TLSFinished
@@ -16,21 +16,20 @@ from scapy.layers.tls.extensions import (
     TLS_Ext_ExtendedMasterSecret, TLS_Ext_EncryptThenMAC,
     TLS_Ext_SignatureAlgorithms
 )
-from scapy.layers.tls.crypto.suites import TLS_RSA_WITH_AES_128_CBC_SHA256
-from scapy.layers.tls.record import TLSChangeCipherSpec
-from scapy.all import raw
+from dataclasses import dataclass
+from typing import List, Optional
+import logging
+import os
 
-from cryptography.hazmat.primitives.asymmetric import padding as asymmetric_padding
-from cryptography.hazmat.primitives import serialization, hashes
-from cryptography import x509
 
-from tls.utils.crypto import (
+
+from ..utils.crypto import (
     compare_to_original,
     decrypt_pre_master_secret,
     encrypt_finished_message
 )
-from tls.constants import TLSVersion
-from tls.crypto.keys import KeyBlock
+from ..constants import TLSVersion
+from ..crypto.keys import KeyBlock
 
 class HandshakeError(Exception):
     """Base exception for handshake operations"""

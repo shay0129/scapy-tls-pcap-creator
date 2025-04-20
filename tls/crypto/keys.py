@@ -2,23 +2,19 @@
 Cryptographic operations module for TLS.
 Handles encryption of application data and key logging.
 """
-
-from dataclasses import dataclass
-from typing import Tuple
-from pathlib import Path
-import logging
-import os
 from cryptography.hazmat.primitives.asymmetric import padding
 from scapy.layers.tls.record import TLSApplicationData
-from scapy.all import raw
 from scapy.layers.tls.session import TLSSession
-from tls.exceptions import MasterSecretError
-from tls.utils.crypto import decrypt_pre_master_secret
-from tls.utils.crypto import encrypt_tls12_record_cbc
-from tls.session_state import SessionState
-from tls.constants import (
-    keys as keys_constants, LoggingPaths
-)
+from scapy.all import raw
+from dataclasses import dataclass
+from typing import Tuple
+import logging
+import os
+
+from ..utils.crypto import encrypt_tls12_record_cbc, decrypt_pre_master_secret
+from ..constants import keys as keys_constants, LoggingPaths
+from ..exceptions import MasterSecretError
+from ..session_state import SessionState
 
 class CryptoError(Exception):
     """Base exception for cryptographic operations"""

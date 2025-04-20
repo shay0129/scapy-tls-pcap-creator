@@ -39,22 +39,9 @@ DEFAULT_TLS_VERSION = TLSVersion.TLS_1_2
 
 # Export all public classes, functions and constants
 __all__ = [
-    # Main Classes
-    'UnifiedTLSSession',
-    'PcapWriter',
-    'NetworkConfig',
-    'PcapWriterConfig',
+    # Session State Classes
     'SessionState',
-    'PacketValidator',
-    'PacketStats',
 
-    'KeyExchange',
-    'SignatureAlgorithm',
-    'EncryptionMethod',
-    'DigestAlgorithm',
-    'CipherSuite',
-    'CipherMode',
-    
     # Constants Classes
     'TLSVersion',
     'TLSRecord',
@@ -77,6 +64,13 @@ __all__ = [
     'ValidationError',
     'TLSValidationError',
     'MasterSecretError'
+
+    # Main Classes
+    'PcapWriter',
+    'NetworkConfig',
+    'PcapWriterConfig',
+    'PacketValidator',
+    'PacketStats',    
 
     # Package Constants
     'DEFAULT_SNI',

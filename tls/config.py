@@ -3,28 +3,27 @@ Network Configuration Constants
 Contains all network-related configuration including IP addresses,
 HTTP requests/responses and file paths.
 """
-
 from dataclasses import dataclass
 from typing import ClassVar
 from pathlib import Path
 import ipaddress
-import logging
-from tls.constants import LoggingPaths, LoggingConfig
+
+from .constants import LoggingPaths, LoggingConfig
 
 @dataclass
 class NetworkConfig:
-    # IP Addresses (קבועים)
+    # IP Addresses (Constants)
     SERVER_IP: ClassVar[str] = '10.0.0.1'
     CLIENT1_IP: ClassVar[str] = '192.168.1.1'
     CLIENT2_IP: ClassVar[str] = '192.168.1.2'
     
-    # File paths (משתנים)
+    # File paths (Variables)
     output_pcap: Path
     ssl_keylog_file: Path
     log_path: Path
     log_level: int = LoggingConfig.LEVEL
     
-    # HTTP Messages (קבועים)
+    # HTTP Messages (CONSTANTS)
     GET_REQUEST: ClassVar[bytes] = (
         b"GET /resource HTTP/1.1\r\n"
         b"Host: server.local\r\n"

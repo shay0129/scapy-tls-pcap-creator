@@ -2,32 +2,20 @@
 Cryptographic utilities module.
 Provides encryption, MAC generation and other cryptographic functions for TLS 1.2.
 """
-
+from scapy.layers.tls.handshake import TLSFinished
+from cryptography.hazmat.primitives.asymmetric import padding as asymmetric_padding
 from cryptography.hazmat.primitives import constant_time, hashes, padding
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-from cryptography.hazmat.primitives.asymmetric import padding as asymmetric_padding
 from cryptography.hazmat.primitives.asymmetric import rsa
-from cryptography.exceptions import InvalidKey
-from Crypto.Cipher import AES
 from Crypto.Hash import HMAC, SHA256
-from Crypto.Util.Padding import pad
+from typing import Optional
 import struct
 import logging
-from typing import Final, Tuple, Optional
-import logging
-import struct
 import hmac
-import os
-import time
 import secrets
 import hashlib
 
-from scapy.layers.tls.handshake import TLSFinished
-
-from tls.constants import (
-    TLSRecord, CryptoConstants,
-    GeneralConfig, TLSVersion
-)
+from ..constants import TLSRecord, CryptoConstants, TLSVersion
 
 class CryptoError(Exception):
     """Base exception for cryptographic operations"""

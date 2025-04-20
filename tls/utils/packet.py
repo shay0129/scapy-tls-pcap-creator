@@ -2,11 +2,11 @@
 Packet utilities module.
 Provides functions for handling packet-related operations in TLS/TCP communication.
 """
-
-from typing import List, Dict, Optional, Final
-import logging
+from typing import List, Optional
 from enum import IntFlag
-from tls.constants import GeneralConfig
+import logging
+
+from ..constants import GeneralConfig
 
 class PacketError(Exception):
     """Base exception for packet operations"""

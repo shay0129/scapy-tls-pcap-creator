@@ -1,19 +1,21 @@
 """State information for TLS session"""
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from dataclasses import dataclass, field
 from typing import Optional, Tuple
+from scapy.layers.inet import TCP, IP
 from scapy.packet import Raw
 from scapy.compat import raw
-from scapy.layers.inet import TCP, IP
-import hmac
 from hmac import HMAC
 import hashlib
-from tls.utils.packet import flags_to_int
+import hmac
 import logging
 import random
-from tls.constants import TCPFlags
-from tls.exceptions import PcapWriteError
-from tls.utils.verification import verify_tls_mac
-from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+
+from .utils.verification import verify_tls_mac
+from .exceptions import PcapWriteError
+from .constants import TCPFlags
+from .utils.packet import flags_to_int
+
 
 @dataclass
 class ConnectionState:

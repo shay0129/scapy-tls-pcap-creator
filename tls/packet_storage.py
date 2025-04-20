@@ -2,7 +2,6 @@
 PCAP Writer module for network packet storage and management.
 Handles packet storage, saving to PCAP files, and basic packet statistics.
 """
-
 from dataclasses import dataclass
 from scapy.utils import wrpcap
 from scapy.packet import Packet
@@ -10,8 +9,8 @@ from pathlib import Path
 from typing import List, Dict
 import logging
 
-from tls.packet_validator import PacketValidator, PacketStats
-from tls.exceptions import StorageError, PcapWriteError
+from .packet_validator import PacketValidator, PacketStats
+from .exceptions import StorageError, PcapWriteError
 
 # Configuration
 @dataclass

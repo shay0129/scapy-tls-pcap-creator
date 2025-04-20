@@ -2,6 +2,9 @@
 Main script for running TLS sessions simulation.
 Creates two client sessions - one with certificate and one without.
 Captures traffic to PCAP file.
+
+Usage:
+python -m pcap_creator.tls.main
 """
 import logging
 import sys
@@ -9,11 +12,11 @@ from pathlib import Path
 from typing import NoReturn, Generator
 from contextlib import contextmanager
 
-from tls.packet_storage import PcapWriter
-from tls.config import NetworkConfig
-from tls.exceptions import TLSSessionError, ConfigurationError
-from tls.session import UnifiedTLSSession
-from tls.constants import (
+from .packet_storage import PcapWriter
+from .config import NetworkConfig
+from .exceptions import TLSSessionError, ConfigurationError
+from .session import UnifiedTLSSession
+from .constants import (
     NetworkPorts,
     NetworkAddresses,
     CHALLENGE_FILE,
@@ -21,7 +24,7 @@ from tls.constants import (
     LOG_FILE,
     LOGS_DIR
 )
-from tls.utils.logging import setup_logging
+from .utils.logging import setup_logging
 
 def exit_with_error(message: str, code: int) -> NoReturn:
     """Exit program with error message and code"""

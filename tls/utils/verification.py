@@ -2,21 +2,20 @@
 Verification utilities module.
 Provides functions for verifying master secrets, key pairs and other cryptographic materials.
 """
-
 from cryptography.hazmat.primitives.asymmetric import padding as asymmetric_padding
 from cryptography.hazmat.primitives.asymmetric import rsa, utils
 from cryptography.hazmat.primitives import hashes
 from cryptography.exceptions import InvalidKey
-import hashlib
-from hmac import HMAC
 from dataclasses import dataclass, field
-from pathlib import Path
-import hmac
 from typing import Union, Optional, List
-import logging
+from pathlib import Path
 from time import time
-from tls.constants import CryptoConstants
-from tls.utils.crypto import compare_to_original
+import hashlib
+import hmac
+import logging
+
+from ..constants import CryptoConstants
+from .crypto import compare_to_original
 
 class VerificationError(Exception):
     """Base exception for verification operations"""

@@ -2,7 +2,6 @@
 Packet validation module for TLS/TCP packets.
 Handles validation, statistics, and record type checking.
 """
-
 from dataclasses import dataclass
 from typing import Optional
 from scapy.layers.inet import TCP, IP
