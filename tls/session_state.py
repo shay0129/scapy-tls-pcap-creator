@@ -11,7 +11,7 @@ import hmac
 import logging
 import random
 
-from .utils.verification import verify_tls_mac
+from .verification import verify_tls_mac
 from .exceptions import PcapWriteError
 from .constants import TCPFlags
 from .utils.packet import flags_to_int

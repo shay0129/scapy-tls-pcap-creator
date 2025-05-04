@@ -14,8 +14,8 @@ import hashlib
 import hmac
 import logging
 
-from ..constants import CryptoConstants
-from .crypto import compare_to_original
+from .constants import CryptoConstants
+from .utils.crypto import compare_to_original
 
 class VerificationError(Exception):
     """Base exception for verification operations"""

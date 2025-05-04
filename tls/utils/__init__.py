@@ -32,7 +32,7 @@ from .packet import (
     get_mac_key_for_packet
 )
 
-from .verification import (
+from ..verification import (
     verify_master_secret,
     verify_key_pair,
     verify_tls_mac

@@ -89,49 +89,45 @@ class UnifiedTLSSession:
 
     def perform_handshake(self) -> bool:
         """Perform TLS handshake sequence."""
+        # Define the sequence of handshake steps
+        # Each tuple: (function, args_tuple, error_message, success_message)
+        handshake_steps = [
+            (send_client_hello, (self,),
+             "Failed to send Client Hello", "Client Hello sent successfully"),
+
+            (send_server_hello, (self,),
+             "Failed to receive Server Hello", "Server Hello received successfully"),
+
+            (send_client_handshake_messages, (self,),
+             "Failed to send Client Handshake Messages", "Client handshake messages sent successfully"),
+
+            # Note: Ensure self.server_public_key and self.server_private_key are set before this step
+            (verify_key_pair, (self.server_public_key, self.server_private_key),
+             "Server key pair verification failed", "Server key pair verified successfully"),
+
+            (handle_master_secret, (self,),
+             "Failed to handle Master Secret", "Master Secret handled successfully"),
+
+            (send_client_change_cipher_spec, (self,),
+             "Failed to send Client Change Cipher Spec", "Client Change Cipher Spec sent successfully"),
+
+            (send_server_change_cipher_spec, (self,),
+             "Failed to receive Server Change Cipher Spec", "Server Change Cipher Spec received successfully"),
+             
+            (handle_ssl_key_log, (self,),
+             "Failed to handle SSL Key Log", "SSL Key Log handled successfully"),
+        ]
+
         try:
             logging.info("Starting TLS Handshake...")
 
-            # Step 1: Send Client Hello
-            if not send_client_hello(self):
-                raise HandshakeError("Failed to send Client Hello")
-            logging.info("Client Hello sent successfully")
+            # Execute each step in the defined sequence
+            for func, args, error_msg, success_msg in handshake_steps:
+                if not func(*args):  # Unpack arguments and call the function
+                    raise HandshakeError(error_msg)
+                logging.info(success_msg)
 
-            # Step 2: Receive Server Hello
-            if not send_server_hello(self):
-                raise HandshakeError("Failed to receive Server Hello")
-            logging.info("Server Hello received successfully")
-
-            # Step 3: Send Client Handshake Messages
-            if not send_client_handshake_messages(self):
-                raise HandshakeError("Failed to send Client Handshake Messages")
-            logging.info("Client handshake messages sent successfully")
-
-            # Step 4: Handle Master Secret
-            if not verify_key_pair(self.server_public_key, self.server_private_key):
-                raise HandshakeError("Server key pair verification failed")
-            logging.info("Server key pair verified successfully")
-
-            if not handle_master_secret(self):
-                raise HandshakeError("Failed to handle Master Secret")
-            logging.info("Master Secret handled successfully")
-
-            # Step 5: Send Client Change Cipher Spec
-            if not send_client_change_cipher_spec(self):
-                raise HandshakeError("Failed to send Client Change Cipher Spec")
-            logging.info("Client Change Cipher Spec sent successfully")
-
-            # Step 6: Receive Server Change Cipher Spec
-            if not send_server_change_cipher_spec(self):
-                raise HandshakeError("Failed to receive Server Change Cipher Spec")
-            logging.info("Server Change Cipher Spec received successfully")
-
-            # Step 7: Handle SSL Key Log (Optional for Debugging)
-            if not handle_ssl_key_log(self):
-                raise HandshakeError("Failed to handle SSL Key Log")
-            logging.info("SSL Key Log handled successfully")
-
-            # Finalize handshake
+            # Finalize handshake if all steps succeeded
             self.state.handshake_completed = True
             logging.info("TLS Handshake completed successfully")
             return True
@@ -140,6 +136,18 @@ class UnifiedTLSSession:
             logging.error(f"TLS Handshake failed: {e}")
             self.state.handshake_completed = False
             return False
+        except AttributeError as e:
+            # Catch potential errors if attributes needed for args aren't set
+            logging.error(f"TLS Handshake failed due to missing attribute: {e}")
+            self.state.handshake_completed = False
+            return False
+        except Exception as e: # Catch any other unexpected errors during steps
+            logging.error(f"Unexpected error during TLS Handshake: {e}")
+            import traceback
+            traceback.print_exc() # Print full traceback for unexpected errors
+            self.state.handshake_completed = False
+            return False
+        
     def handle_network_packet(self, packet):
         """Handle incoming network packet and process TLS data if applicable"""
         # Check if it's a TLS packet
