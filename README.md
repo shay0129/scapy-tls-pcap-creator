@@ -97,9 +97,9 @@ This project showcases proficiency in:
 ---
 ## Usage
 
-The main script to run the TLS session simulation and generate the PCAP is typically `tls/main.py` (based on your original `python -m tls.main`).
+### Running the TLS Session Simulation
+
+Run the main script to generate PCAP files with TLS sessions:
 
 ```bash
-python -m tls.main 
-# Or if main.py is in the root after filtering and path renaming:
-# python main.py
+python -m tls.main

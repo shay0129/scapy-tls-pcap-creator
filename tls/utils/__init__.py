@@ -32,11 +32,10 @@ from .packet import (
     get_mac_key_for_packet
 )
 
-from ..verification import (
-    verify_master_secret,
-    verify_key_pair,
-    verify_tls_mac
-)
+# Instead, if needed, use dynamic imports:
+def get_verification_functions():
+    from ..verification import verify_master_secret
+    return verify_master_secret
 
 __all__ = [
     # Crypto utils
