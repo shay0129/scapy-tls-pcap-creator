@@ -1,5 +1,0 @@
-pycryptodome==3.21.0
-cryptography==44.0.0
-pyOpenSSL==24.3.0
-scapy==2.6.1
-setuptools==75.6.0

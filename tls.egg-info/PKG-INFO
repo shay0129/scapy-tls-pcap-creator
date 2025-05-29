@@ -1,9 +1,0 @@
-Metadata-Version: 2.4
-Name: tls
-Version: 0.1
-Requires-Dist: pycryptodome==3.21.0
-Requires-Dist: cryptography==44.0.0
-Requires-Dist: pyOpenSSL==24.3.0
-Requires-Dist: scapy==2.6.1
-Requires-Dist: setuptools==75.6.0
-Dynamic: requires-dist
