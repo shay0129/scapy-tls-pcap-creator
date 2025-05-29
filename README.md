@@ -92,7 +92,6 @@ This project showcases proficiency in:
     # Or if using setup.py from the original project, ensure it's adapted:
     # pip install -e . 
     ```
-    *(Based on your original README, you used `pip install -e .`. If this sub-project has its own `setup.py` or a relevant `requirements.txt`, specify that. Otherwise, list individual pip installs for Scapy, cryptography, etc.)*
 
 ---
 ## Usage
@@ -103,3 +102,30 @@ Run the main script to generate PCAP files with TLS sessions:
 
 ```bash
 python -m tls.main
+```
+
+This will:
+
+* Create two simulated TLS 1.2 sessions:
+  * One with a client certificate (Client 1)
+  * One without a client certificate (Client 2)
+* Generate a PCAP file (default location: `tls/output/capture.pcap`)
+* Create log files in the `tls/logs/` directory
+* Generate an SSL keylog file for decrypting the TLS traffic
+
+### Output Files
+
+* **PCAP file**: Contains the captured network packets (configurable path)
+* **Log files**: Detailed logs of the TLS handshake process
+* **SSL keylog file**: Contains the necessary secrets for decrypting TLS traffic
+
+### Viewing Results
+
+To analyze the generated PCAP with decrypted TLS data:
+
+1. Open the generated PCAP file with Wireshark
+2. Configure Wireshark to use the SSLKeyLog file:
+   - Go to Edit > Preferences > Protocols > TLS
+   - Set "(Pre)-Master-Secret log filename" to the path of the generated SSL keylog file
+3. You should now be able to view the decrypted TLS traffic
+
