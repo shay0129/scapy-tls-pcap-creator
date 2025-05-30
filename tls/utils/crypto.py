@@ -8,7 +8,7 @@ from cryptography.hazmat.primitives import constant_time, hashes, padding
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.primitives.asymmetric import rsa
 from Crypto.Hash import HMAC, SHA256
-from typing import Optional
+from typing import Optional, cast
 import struct
 import logging
 import hmac
@@ -85,14 +85,11 @@ def compute_mac(key: bytes, message: bytes, algorithm: Optional[hashes.HashAlgor
         CryptoError: If MAC computation fails
     """
     try:
-        if algorithm is None:
-            algorithm = hashes.SHA256()
-            
+        if algorithm is not None and not isinstance(algorithm, hashes.SHA256):
+            raise CryptoError("Only SHA256 is supported for compute_mac")
         validate_min_key_size(key, CryptoConstants.MIN_MAC_KEY_SIZE, "MAC key")
-        h = hmac.HMAC(key, algorithm)
-        h.update(message)
-        return h.finalize()
-        
+        mac = hmac.new(key, message, hashlib.sha256)
+        return mac.digest()
     except Exception as e:
         raise CryptoError(f"MAC computation failed: {e}")
 
@@ -128,10 +125,10 @@ def encrypt_tls12_record_cbc(data: bytes, key: bytes, iv: bytes, mac_key: bytes,
             padding_needed = block_size
 
         # בTLS, כל בתי הpadding צריכים להיות שווים לאורך הpadding פחות 1
-        padding = bytes([padding_needed - 1] * padding_needed)
+        padding_bytes = bytes([padding_needed - 1] * padding_needed)
         
         # 4. יצירת הבלוק הסופי
-        final_block = plaintext_with_mac + padding
+        final_block = plaintext_with_mac + padding_bytes
 
         logging.debug(f"Lengths - Data: {len(data)}, MAC: {len(mac_value)}, Padding: {padding_needed}")
         logging.debug(f"Total length: {len(final_block)}")
@@ -187,14 +184,11 @@ def P_hash(secret: bytes, seed: bytes, length: int) -> bytes:
     """
     try:
         result = bytearray()
-        A = seed
-        
+        a_value = seed
         while len(result) < length:
-            A = hmac.new(secret, A, hashlib.sha256).digest()
-            result.extend(hmac.new(secret, A + seed, hashlib.sha256).digest())
-            
+            a_value = hmac.new(secret, a_value, hashlib.sha256).digest()
+            result.extend(hmac.new(secret, a_value + seed, hashlib.sha256).digest())
         return bytes(result[:length])
-        
     except Exception as e:
         raise CryptoError(f"P_hash computation failed: {e}")
 
@@ -285,13 +279,15 @@ def encrypt_finished_message(finished_message: TLSFinished, key: bytes, iv: byte
 
         # Pad the message if necessary
         padder = padding.PKCS7(128).padder()
-        padded_data = padder.update(finished_message.vdata) + padder.finalize()
+        vdata = getattr(finished_message, 'vdata', b'')
+        vdata_bytes = bytes(vdata) if isinstance(vdata, (bytes, bytearray)) else b''
+        padded_data = padder.update(vdata_bytes) + padder.finalize()
 
         # Encrypt the padded data
         encrypted_data = encryptor.update(padded_data) + encryptor.finalize()
 
-        # Return the encrypted finished message
-        return TLSFinished(vdata=encrypted_data)
+        # Return the encrypted finished message as a new TLSFinished instance
+        return cast(TLSFinished, TLSFinished(vdata=encrypted_data))
 
     except Exception as e:
         raise EncryptionError(f"Failed to encrypt finished message: {e}")

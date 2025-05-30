@@ -3,6 +3,8 @@ Custom exceptions for TLS session handling.
 Contains exception hierarchy for different types of TLS-related errors.
 """
 
+# pyright: reportUnknownMemberType=false, reportUnknownVariableType=false, reportUnknownParameterType=false, reportUnknownArgumentType=false, reportAttributeAccessIssue=false, reportReturnType=false, reportUnusedVariable=false
+
 class TLSError(Exception):
     """Base exception for all TLS-related errors"""
     pass
@@ -110,10 +112,6 @@ class LoggingError(UtilityError):
     """Raised when logging operations fail"""
     pass
 
-class ValidationError(UtilityError):
-    """Raised when validation operations fail"""
-    pass
-
 # Storage Errors
 class StorageError(Exception):
    """Base exception for storage operations"""
@@ -155,7 +153,7 @@ def get_error_details(error: Exception) -> str:
             f"Error Args: {error.args}")
 
 # Additional helper functions for error handling
-def handle_session_error(error: Exception, session_id: str = None) -> TLSSessionError:
+def handle_session_error(error: Exception, session_id: str = "") -> TLSSessionError:
     """
     Handle and convert session-related errors.
     
@@ -169,7 +167,7 @@ def handle_session_error(error: Exception, session_id: str = None) -> TLSSession
     context = f" in session {session_id}" if session_id else ""
     return TLSSessionError(f"Session error{context}: {str(error)}")
 
-def handle_crypto_error(error: Exception, operation: str = None) -> CryptoError:
+def handle_crypto_error(error: Exception, operation: str = "") -> CryptoError:
     """
     Handle and convert cryptographic errors.
     
@@ -183,7 +181,7 @@ def handle_crypto_error(error: Exception, operation: str = None) -> CryptoError:
     context = f" during {operation}" if operation else ""
     return CryptoError(f"Cryptographic error{context}: {str(error)}")
 
-def handle_network_error(error: Exception, address: str = None) -> NetworkError:
+def handle_network_error(error: Exception, address: str = "") -> NetworkError:
     """
     Handle and convert network-related errors.
     

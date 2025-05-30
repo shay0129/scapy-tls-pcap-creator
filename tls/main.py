@@ -9,7 +9,7 @@ python -m pcap_creator.tls.main
 import logging
 import sys
 from pathlib import Path
-from typing import NoReturn, Generator
+from typing import NoReturn, Generator, Optional
 from contextlib import contextmanager
 
 from .packet_storage import PcapWriter
@@ -20,9 +20,7 @@ from .constants import (
     NetworkPorts,
     NetworkAddresses,
     CHALLENGE_FILE,
-    LoggingPaths,
-    LOG_FILE,
-    LOGS_DIR
+    LoggingPaths
 )
 from .utils.logging import setup_logging
 
@@ -63,7 +61,7 @@ def session_context(
 def setup_environment(config: NetworkConfig) -> PcapWriter:
     """Setup environment for TLS sessions"""
     try:
-        writer = PcapWriter(config)
+        writer = PcapWriter(config.pcap_writer_config)
         
         # Clear SSL keylog file
         if hasattr(config, 'SSL_KEYLOG_FILE'):
@@ -84,7 +82,7 @@ def run_client_session(
     use_client_cert: bool,
     request: bytes,
     response: bytes,
-    challenge_file: Path = None
+    challenge_file: Optional[Path] = None
 ) -> None:
     """Run a single client TLS session"""
     session_type = "certificate" if use_client_cert else "no certificate"
@@ -105,7 +103,7 @@ def run_client_session(
 def save_results(writer: PcapWriter, config: NetworkConfig) -> None:
     """Save and verify PCAP results"""
     try:
-        writer.save_pcap(config.OUTPUT_PCAP)
+        writer.save_pcap(str(config.OUTPUT_PCAP))
         writer.verify_and_log_packets()
         logging.info(f"Results saved to {config.OUTPUT_PCAP}")
         

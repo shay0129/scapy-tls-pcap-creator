@@ -1,7 +1,9 @@
+# pyright: reportUnknownMemberType=false, reportUnknownVariableType=false, reportUnknownParameterType=false, reportUnknownArgumentType=false, reportAttributeAccessIssue=false, reportReturnType=false, reportUnusedVariable=false, reportArgumentType=false, reportUnknownArgumentType=false
 """
 Client-side TLS handshake functions.
 Handles Client Hello, Key Exchange and ChangeCipherSpec messages.
 """
+
 from cryptography.hazmat.primitives.asymmetric import padding as asymmetric_padding
 from cryptography.hazmat.primitives import serialization, hashes
 from scapy.layers.tls.crypto.suites import TLS_RSA_WITH_AES_128_CBC_SHA256
@@ -15,9 +17,9 @@ from scapy.layers.tls.extensions import (
     TLS_Ext_SupportedGroups, TLS_Ext_SignatureAlgorithms,
     ServerName
 )
-from scapy.all import raw
-from dataclasses import dataclass
-from typing import List, Optional
+from scapy.compat import raw
+from dataclasses import dataclass, field
+from typing import Any, Optional
 import logging
 import os
 
@@ -51,48 +53,38 @@ class ChangeCipherSpecError(HandshakeError):
 class ClientExtensions:
     """TLS Client Extensions configuration"""
     server_name: str
-    supported_groups: List[str] = None
-    signature_algorithms: List[str] = None
+    supported_groups: list[str] = field(default_factory=list)
+    signature_algorithms: list[str] = field(default_factory=list)
     encrypt_then_mac: bool = True
 
-    def get_extension_list(self) -> List:
+    def get_extension_list(self) -> list[Any]:
         """Generate list of TLS extensions"""
-        extensions = [
+        extensions: list[Any] = [
             TLS_Ext_ServerName(
                 servernames=[ServerName(servername=self.server_name.encode())]
             )
         ]
-        
         if self.encrypt_then_mac:
             extensions.append(TLS_Ext_EncryptThenMAC())
-            
         if self.supported_groups:
             extensions.append(
                 TLS_Ext_SupportedGroups(groups=self.supported_groups)
             )
-            
         if self.signature_algorithms:
             extensions.append(
                 TLS_Ext_SignatureAlgorithms(sig_algs=self.signature_algorithms)
             )
-            
         return extensions
 
 def create_client_hello(
-    session,
+    session: object,
     extensions: Optional[ClientExtensions] = None
     ) -> TLSClientHello:
     """
-    Create Client Hello message.
-    
-    Args:
-        session: TLS session instance
-        extensions: Optional client extensions configuration
-        
-    Returns:
-        TLSClientHello: Configured hello message
+    Create a Client Hello message for TLS handshake.
     """
-    #cipher_suites = [session.cipher_suite.id]
+    if not session.SNI:
+        raise ClientHelloError("Server Name Indication (SNI) is required for Client Hello")
     
     # Generate client random as one piece
     session.client_random = os.urandom(32)  # Generate all 32 bytes at once
@@ -117,7 +109,7 @@ def create_client_hello(
         random_bytes=random_bytes
     )
 
-def send_client_hello(session) -> bytes:
+def send_client_hello(session: object) -> bytes:
     """
     Send Client Hello message to initiate TLS handshake.
     
@@ -141,10 +133,10 @@ def send_client_hello(session) -> bytes:
 
         logging.info(f"Client Hello sent from {session.client_ip}")
         return session.send_tls_packet(
-            session.client_ip, 
-            session.server_ip, 
-            session.client_port, 
-            session.server_port, 
+            session.client_ip,
+            session.server_ip,
+            session.client_port,
+            session.server_port,
             is_handshake=True
         )
 
@@ -152,7 +144,7 @@ def send_client_hello(session) -> bytes:
         raise ClientHelloError(f"Failed to send Client Hello: {e}")
 
 def create_client_certificate_and_key_exchange(
-        session
+        session: object
         ) -> tuple[TLSCertificate, TLSClientKeyExchange]:
     """
     Creates client certificate and key exchange messages for TLS handshake.
@@ -201,7 +193,7 @@ def create_client_certificate_and_key_exchange(
     except Exception as e:
         raise KeyExchangeError(f"Failed to create handshake messages: {e}")
 
-def send_client_handshake_messages(session) -> bytes:
+def send_client_handshake_messages(session: object) -> bytes:
     """
     Creates and sends client certificate and key exchange messages during TLS handshake.
     
@@ -243,7 +235,7 @@ def send_client_handshake_messages(session) -> bytes:
     except Exception as e:
         raise KeyExchangeError(f"Failed to send handshake messages: {e}")
 
-def create_client_finished(session) -> tuple[TLSFinished, TLSChangeCipherSpec]:
+def create_client_finished(session: object) -> tuple[TLSFinished, TLSChangeCipherSpec]:
     """
     Creates Server Finished and ChangeCipherSpec messages.
     
@@ -305,7 +297,7 @@ def create_client_finished(session) -> tuple[TLSFinished, TLSChangeCipherSpec]:
     except Exception as e:
         raise ChangeCipherSpecError(f"Failed to create finished messages: {e}")
 
-def send_client_change_cipher_spec(session) -> bytes:
+def send_client_change_cipher_spec(session: object) -> bytes:
     """
     Send Client ChangeCipherSpec and Finished messages.
     
@@ -329,8 +321,6 @@ def send_client_change_cipher_spec(session) -> bytes:
         # Update handshake state
         session.handshake_messages.append(raw(change_cipher_spec))
         session.handshake_messages.append(raw(client_finished))
-
-        # Update TLS context
         session.tls_context.msg = [change_cipher_spec, client_finished]
 
         logging.info("Client ChangeCipherSpec and Finished messages sent")
@@ -344,4 +334,4 @@ def send_client_change_cipher_spec(session) -> bytes:
 
     except Exception as e:
         raise ChangeCipherSpecError(f"Failed to send ChangeCipherSpec: {e}")
-    
+

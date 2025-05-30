@@ -105,7 +105,7 @@ def flags_to_str(flags: int) -> str:
     Returns:
         str: String representation of flags (e.g., 'PA' for PSH+ACK)
     """
-    result = []
+    result: List[str] = []
     if flags & TCPFlags.FIN:
         result.append('F')
     if flags & TCPFlags.SYN:
@@ -239,82 +239,3 @@ def get_mac_key_for_packet(
         
     except Exception as e:
         raise PacketError(f"Failed to get MAC key for packet: {e}")
-    
-
-def int_to_bytes_length(n: int) -> int:
-    """
-    Calculate byte length needed for integer.
-    
-    Args:
-        n: Integer to analyze
-        
-    Returns:
-        int: Number of bytes needed
-    """
-    return (n.bit_length() + 7) // 8
-
-def get_key_for_packet(packet_keys: list, packet_index: int) -> bytes:
-    """
-    Get encryption key for specific packet.
-    
-    Args:
-        packet_keys: List of keys
-        packet_index: Packet index
-        
-    Returns:
-        bytes: Key for specified packet
-        
-    Raises:
-        ValueError: If key not found
-    """
-    if 0 <= packet_index < len(packet_keys):
-        return packet_keys[packet_index]
-    raise ValueError(f"No key found for packet index {packet_index}")
-
-def get_mac_key_for_packet(packet_mac_keys: list, packet_index: int) -> bytes:
-    """
-    Get MAC key for CBC mode packet.
-    
-    Args:
-        packet_mac_keys: List of MAC keys
-        packet_index: Packet index
-        
-    Returns:
-        bytes: MAC key for specified packet
-        
-    Raises:
-        ValueError: If key not found
-    """
-    if 0 <= packet_index < len(packet_mac_keys):
-        return packet_mac_keys[packet_index]
-    raise ValueError(f"No MAC key found for packet index {packet_index}")
-
-def int_to_bytes_length(n: int) -> int:
-    """
-    Calculate byte length needed for integer.
-    
-    Args:
-        n: Integer to analyze
-        
-    Returns:
-        int: Number of bytes needed
-    """
-    return (n.bit_length() + 7) // 8
-
-def get_key_for_packet(packet_keys: list, packet_index: int) -> bytes:
-    """
-    Get encryption key for specific packet.
-    
-    Args:
-        packet_keys: List of keys
-        packet_index: Packet index
-        
-    Returns:
-        bytes: Key for specified packet
-        
-    Raises:
-        PacketError: If key not found
-    """
-    if 0 <= packet_index < len(packet_keys):
-        return packet_keys[packet_index]
-    raise PacketError(f"No key found for packet index {packet_index}")

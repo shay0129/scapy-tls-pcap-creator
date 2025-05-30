@@ -45,7 +45,7 @@ def setup_logging(
 
         # Create formatter
         formatter = logging.Formatter(format_str)
-        handlers = []
+        handlers: list[logging.Handler] = []
 
         # Add file handler if path provided
         if log_path:
@@ -185,22 +185,3 @@ def get_logger(name: str, level: int = LoggingConfig.LEVEL) -> logging.Logger:
     logger = logging.getLogger(name) 
     logger.setLevel(level) 
     return logger
-
-def print_message_content(message: bytes) -> None:
-    """
-    Print message content with binary data handling.
-    
-    Args:
-        message: Message to print
-    """
-    try:
-        decoded = message.decode('utf-8')
-        lines = decoded.split('\n')
-        for line in lines[:10]:
-            logging.info(line)
-        if len(lines) > 10:
-            logging.info("...")
-    except UnicodeDecodeError:
-        logging.info(f"Binary data (first 100 bytes): {message[:100].hex()}")
-        if len(message) > 100:
-            logging.info("...")

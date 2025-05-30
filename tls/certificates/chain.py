@@ -16,6 +16,7 @@ from ..certificates.verify import (
     verify_server_name,
     verify_certificate_chain
 )
+from tls.session_state import SessionState  # type: ignore[reportMissingTypeStubs]
 
 
 
@@ -107,7 +108,7 @@ def log_chain_info(chain: CertificateChain) -> None:
     )
     logging.info(f"CA cert subject: {chain.ca_cert.subject}")
 
-def setup_certificates(session) -> None:
+def setup_certificates(session: SessionState) -> None:
     """
     Setup and verify certificate chain.
     
@@ -122,14 +123,14 @@ def setup_certificates(session) -> None:
         chain = load_certificate_chain()
         
         # Verify chain
-        verify_chain_validity(chain, session.SNI)
+        verify_chain_validity(chain, session.SNI)  # type: ignore[reportUnknownMemberType,reportUnknownArgumentType]
         
         # Update session
-        session.ca_cert = chain.ca_cert
-        session.server_cert = chain.server_cert
-        session.server_private_key = chain.server_private_key
-        session.server_public_key = chain.server_public_key
-        session.cert_chain = chain.chain
+        session.ca_cert = chain.ca_cert  # type: ignore[reportAttributeAccessIssue]
+        session.server_cert = chain.server_cert  # type: ignore[reportAttributeAccessIssue]
+        session.server_private_key = chain.server_private_key  # type: ignore[reportAttributeAccessIssue]
+        session.server_public_key = chain.server_public_key  # type: ignore[reportAttributeAccessIssue]
+        session.cert_chain = chain.chain  # type: ignore[reportAttributeAccessIssue]
         
         # Log success
         log_chain_info(chain)

@@ -23,10 +23,9 @@ from .exceptions import (
     StorageError,
     PcapWriteError,
     ValidationError,
-    TLSValidationError,
-    MasterSecretError
+    TLSValidationError
 )
-from .packet_storage import PcapWriter, PcapWriterConfig
+from .packet_storage import PcapWriterConfig
 from .config import NetworkConfig
 from .packet_validator import PacketValidator, PacketStats
 
@@ -63,10 +62,6 @@ __all__ = [
     'PcapWriteError',
     'ValidationError',
     'TLSValidationError',
-    'MasterSecretError'
-
-    # Main Classes
-    'PcapWriter',
     'NetworkConfig',
     'PcapWriterConfig',
     'PacketValidator',

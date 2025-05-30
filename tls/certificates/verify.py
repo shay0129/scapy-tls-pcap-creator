@@ -37,7 +37,9 @@ class PublicKeyInfo:
         numbers = key.public_numbers()
         return cls(modulus=numbers.n, exponent=numbers.e)
 
-    def __eq__(self, other: 'PublicKeyInfo') -> bool:
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, PublicKeyInfo):
+            return NotImplemented
         return (self.modulus == other.modulus and
                 self.exponent == other.exponent)
 
@@ -83,8 +85,10 @@ def verify_server_public_key(
         if not server_public_key:
             raise PublicKeyError("Server public key is missing")
 
-        # Extract and compare public keys
-        cert_info = get_public_key_info(server_cert.public_key())
+        cert_pubkey = server_cert.public_key()
+        if not isinstance(cert_pubkey, rsa.RSAPublicKey):
+            raise PublicKeyError("Certificate public key is not RSA")
+        cert_info = get_public_key_info(cert_pubkey)
         loaded_info = get_public_key_info(server_public_key)
         
         log_key_comparison(cert_info, loaded_info)
@@ -125,11 +129,15 @@ def verify_certificate_chain(chain: List[x509.Certificate]) -> bool:
         # Verify signature
         try:
             root_public_key = root_ca.public_key()
-            root_public_key.verify(
+            if not hasattr(root_public_key, 'verify'):
+                raise ChainVerificationError("Root CA public key does not support verify()")
+            if server_cert.signature_hash_algorithm is None:
+                raise ChainVerificationError("Server certificate signature_hash_algorithm is None")
+            root_public_key.verify(  # type: ignore[reportUnknownMemberType,reportUnknownVariableType,reportAttributeAccessIssue,reportCallIssue]
                 server_cert.signature,
                 server_cert.tbs_certificate_bytes,
-                asymmetric_padding.PKCS1v15(),
-                server_cert.signature_hash_algorithm
+                asymmetric_padding.PKCS1v15(), # type: ignore[reportUnknownArgumentType]
+                server_cert.signature_hash_algorithm  # type: ignore[reportUnknownArgumentType]
             )
             logging.info("Certificate chain verification successful")
             return True
@@ -142,19 +150,22 @@ def verify_certificate_chain(chain: List[x509.Certificate]) -> bool:
 
 def get_certificate_names(cert: x509.Certificate) -> Set[str]:
     """Extract all valid names from certificate"""
-    names = set()
+    names: Set[str] = set()
     
     # Get Common Name
     for attr in cert.subject:
         if attr.oid == NameOID.COMMON_NAME:
-            names.add(attr.value)
+            # attr.value is always present in x509.NameAttribute
+            names.add(str(attr.value))
             
     # Get Subject Alternative Names
     try:
         san = cert.extensions.get_extension_for_oid(
             ExtensionOID.SUBJECT_ALTERNATIVE_NAME
         )
-        names.update(san.value.get_values_for_type(x509.DNSName))
+        # get_values_for_type is not in type stubs, so we suppress the error
+        values = san.value.get_values_for_type(x509.DNSName)  # type: ignore[attr-defined,call-arg]
+        names.update(str(v) for v in values)  # type: ignore[arg-type]
     except x509.ExtensionNotFound:
         pass
         
