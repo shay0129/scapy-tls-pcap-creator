@@ -57,7 +57,7 @@ class UnifiedTLSSession:
     server_random: Optional[bytes]
     client_random: Optional[bytes]
     cert_chain: list
-    ca_cert: Optional[Any]  # Add ca_cert attribute
+    ca_cert: Optional[Any]
 
     def __init__(
         self,

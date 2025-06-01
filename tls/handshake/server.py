@@ -15,7 +15,7 @@ from scapy.layers.tls.handshake import (
 )
 from scapy.layers.tls.extensions import (
     TLS_Ext_ExtendedMasterSecret, TLS_Ext_EncryptThenMAC,
-    TLS_Ext_SignatureAlgorithms
+    TLS_Ext_SignatureAlgorithms, TLS_Ext_ServerName, ServerName
 )
 from dataclasses import dataclass
 from typing import List, Optional, cast
@@ -23,8 +23,6 @@ from ..session_state import SessionState
 import logging
 import os
 from scapy.packet import Packet
-
-
 
 from ..utils.crypto import (
     compare_to_original,
@@ -57,10 +55,10 @@ class ServerExtensions:
     extended_master_secret: bool = True
     encrypt_then_mac: bool = True
 
-    def get_extension_list(self) -> List[object]:  # Add type argument
+    def get_extension_list(self) -> List[object]:
         """Generate list of TLS extensions"""
         extensions: List[object] = []
-        #TLS_Ext_ServerName(servernames=[ServerName(servername="Pasdaran.local")]), # need fix this extantion
+        extensions.append(TLS_Ext_ServerName(servernames=[ServerName(servername="Pasdaran.local")]))
         #TLS_Ext_SupportedGroups(groups=['secp256r1', 'x25519']), # relevant for ECDHE key exchange
         if self.signature_algorithms:
             extensions.append(

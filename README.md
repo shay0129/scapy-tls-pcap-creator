@@ -73,10 +73,34 @@ This project showcases proficiency in:
 ---
 ## Prerequisites
 
-* Python (version used during development, e.g., 3.8+)
+* Python 3.8 or higher (required)
 * Scapy
 * Cryptography library
 * (List any other specific Python libraries from your `requirements.txt` or `setup.py` that are essential for this part)
+
+---
+## Certificate and Key Management
+
+All certificate and key file paths are managed via the `CertificatePaths` class in the codebase. By default, certificates and keys are expected in `tls/certificates/certs/`:
+
+- `ca.crt`, `ca.key` (CA certificate and key)
+- `server.crt`, `server.key` (Server certificate and key)
+- `client.crt`, `client.key` (Client certificate and key)
+
+If any certificate or key is missing or invalid, the simulation will log a clear error and exit. Ensure all files are present and valid before running the simulation.
+
+---
+## SNI and Extension Support
+
+- **SNI (Server Name Indication)** is always set and included in both client and server hello messages.
+- The handshake supports and correctly handles TLS extensions, including SNI and others (e.g., supported groups, signature algorithms).
+
+---
+## Error Handling and Logging
+
+- The simulation includes robust error handling for missing/invalid certificates, keys, and handshake failures.
+- All errors and handshake steps are logged to files in `tls/logs/`.
+- Fast failure is implemented: the simulation will exit early if a critical error is detected.
 
 ---
 ## Installation
@@ -116,16 +140,53 @@ This will:
 ### Output Files
 
 * **PCAP file**: Contains the captured network packets (configurable path)
-* **Log files**: Detailed logs of the TLS handshake process
-* **SSL keylog file**: Contains the necessary secrets for decrypting TLS traffic
+* **Log files**: Detailed logs of the TLS handshake process (see `tls/logs/`)
+* **SSL keylog file**: Contains the necessary secrets for decrypting TLS traffic (see `tls/logs/ssl_key_log.log`)
 
-### Viewing Results
+---
+## Known Limitations
 
-To analyze the generated PCAP with decrypted TLS data:
+* The tool currently focuses on TLS 1.2 and does not support TLS 1.3.
+* Only RSA key exchange is implemented; other key exchange methods (e.g., Diffie-Hellman) are not supported.
+* Limited support for advanced TLS features like OCSP stapling, session resumption, and renegotiation.
 
-1. Open the generated PCAP file with Wireshark
-2. Configure Wireshark to use the SSLKeyLog file:
-   - Go to Edit > Preferences > Protocols > TLS
-   - Set "(Pre)-Master-Secret log filename" to the path of the generated SSL keylog file
-3. You should now be able to view the decrypted TLS traffic
+---
+## Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create a new branch for your feature or bugfix
+3. Make your changes and commit them
+4. Push to your forked repository
+5. Submit a pull request describing your changes
+
+Please ensure your code adheres to the existing style and includes appropriate tests.
+
+---
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+## Acknowledgments
+
+* Inspired by real-world network security challenges and the need for effective TLS traffic analysis tools.
+* Utilizes Scapy, a powerful Python library for network packet manipulation and analysis.
+* Leverages the `cryptography` library for robust and secure cryptographic operations.
+
+---
+## Troubleshooting
+
+If you encounter errors during simulation:
+
+* **Certificate or Key Not Found**: Ensure all required certificate and key files exist in `tls/certificates/certs/`.
+* **Permission Errors**: Run the tool with appropriate permissions to access files and directories.
+* **Import/Attribute Errors**: Make sure you are using the latest code, and that all dependencies are installed.
+* **Detailed Logs**: Check the log files in `tls/logs/` for detailed error messages and troubleshooting hints.
+* **Missing or invalid certificates/keys**: Ensure all required files are present in `tls/certificates/certs/` and are valid PEM files.
+* **PCAP not generated**: Check for errors in `tls/logs/tls_session.log` and ensure you have write permissions to the output directory.
+* **Wireshark decryption not working**: Make sure you are using the correct SSL keylog file and that the PCAP contains the expected TLS handshake.
+* **Python version errors**: Use Python 3.8 or higher.
+* **Other issues**: Review log files in `tls/logs/` for detailed error messages.
 
