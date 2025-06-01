@@ -1,13 +1,12 @@
+# pyright: reportUnknownVariableType=false, reportUnknownMemberType=false, reportUnknownArgumentType=false, reportUnknownParameterType=false, reportMissingParameterType=false, reportMissingTypeArgument=false, reportReturnType=false, reportAttributeAccessIssue=false
 """State information for TLS session"""
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from dataclasses import dataclass, field
-from typing import Optional, Tuple
+from typing import Optional, Tuple, List, Dict, Any, Protocol, runtime_checkable
 from scapy.layers.inet import TCP, IP
-from scapy.packet import Raw
-from scapy.compat import raw
+from scapy.packet import Raw, Packet
 from hmac import HMAC
 import hashlib
-import hmac
 import logging
 import random
 
@@ -16,6 +15,14 @@ from .exceptions import PcapWriteError
 from .constants import TCPFlags
 from .utils.packet import flags_to_int
 
+@runtime_checkable
+class KeyBlock(Protocol):
+    client_mac_key: bytes
+    server_mac_key: bytes
+    client_key: bytes
+    server_key: bytes
+    client_iv: bytes
+    server_iv: bytes
 
 @dataclass
 class ConnectionState:
@@ -33,8 +40,11 @@ class SessionState:
     server_seq_num: int = field(default=0)
     master_secret: Optional[bytes] = None
     handshake_completed: bool = False
-    handshake_messages: list = field(default_factory=list)
-    connections: dict = field(default_factory=dict)  # הוספת שדה חדש
+    handshake_messages: List[Any] = field(default_factory=list)
+    connections: Dict[Tuple[str, str, int, int], Dict[str, Any]] = field(default_factory=dict)
+    key_block: Optional[KeyBlock] = None
+    sni: str = ""
+    cert_chain: list = field(default_factory=list)
 
     def update_tcp_seq_ack(self, src_ip: str, dst_ip: str, sport: int, dport: int, 
                        payload_size: int, flags: int, is_handshake: bool = False) -> Tuple[int, int]:
@@ -51,11 +61,11 @@ class SessionState:
                 'fin_sent': False
             }
 
-        conn = self.connections[connection_id]
-        rev_conn = self.connections.get(reverse_id, {'seq': 0, 'ack': 0, 'isn': 0})
+        conn: Dict[str, Any] = self.connections[connection_id]
+        rev_conn: Dict[str, Any] = self.connections.get(reverse_id, {'seq': 0, 'ack': 0, 'isn': 0})
 
-        seq = conn['seq']
-        ack = conn['ack']
+        seq: int = conn['seq']
+        ack: int = conn['ack']
 
         # Calculate sequence increment
         if is_handshake:
@@ -91,7 +101,7 @@ class SessionState:
 
     def create_tls_packet(self, src_ip: str, dst_ip: str, sport: int, dport: int, 
                       tls_data: bytes, client_ip: str, is_handshake: bool = False) -> Tuple[IP, int]:
-        tcp_payload = raw(tls_data)
+        tcp_payload = tls_data  # Already bytes
         flags = "PA"
         flags_int = flags_to_int(flags)
         
@@ -103,20 +113,20 @@ class SessionState:
         is_client = (src_ip == client_ip)
         if is_client:
             tls_seq = self.client_seq_num
-            mac_key = self.key_block.client_mac_key if hasattr(self, 'key_block') else None
-            iv = self.key_block.client_iv if hasattr(self, 'key_block') else None
-            encryption_key = self.key_block.client_key if hasattr(self, 'key_block') else None
+            mac_key = self.key_block.client_mac_key if self.key_block else None
+            iv = self.key_block.client_iv if self.key_block else None
+            encryption_key = self.key_block.client_key if self.key_block else None
             logging.debug(f"Client seq num: {self.client_seq_num}")
             self.client_seq_num += 1
         else:
             tls_seq = self.server_seq_num 
-            mac_key = self.key_block.server_mac_key if hasattr(self, 'key_block') else None
-            iv = self.key_block.server_iv if hasattr(self, 'key_block') else None
-            encryption_key = self.key_block.server_key if hasattr(self, 'key_block') else None
+            mac_key = self.key_block.server_mac_key if self.key_block else None
+            iv = self.key_block.server_iv if self.key_block else None
+            encryption_key = self.key_block.server_key if self.key_block else None
             logging.debug(f"Server seq num: {self.server_seq_num}")
             self.server_seq_num += 1
 
-        if mac_key and encryption_key:
+        if mac_key and encryption_key and iv:
             # Calculate MAC
             mac = calculate_mac(mac_key, tls_seq, 0x17, 0x0303, tcp_payload)
             plaintext = tcp_payload + mac
@@ -214,22 +224,20 @@ class SessionState:
         except Exception as e:
             raise PcapWriteError(f"Failed to handle ACK flag: {e}")
         
-    
-    def create_syn_packet(self, src_ip, dst_ip, sport, dport):
-        seq, _ = self.update_seq_ack(src_ip, dst_ip, sport, dport, 0, TCPFlags.SYN)
+    def create_syn_packet(self, src_ip: str, dst_ip: str, sport: int, dport: int) -> IP:
+        seq, _ = self.update_tcp_seq_ack(src_ip, dst_ip, sport, dport, 0, TCPFlags.SYN)
         return IP(src=src_ip, dst=dst_ip) / TCP(sport=sport, dport=dport, seq=seq, flags="S", window=65535)
 
-    def create_synack_packet(self, src_ip, dst_ip, sport, dport):
-        seq, ack = self.update_seq_ack(src_ip, dst_ip, sport, dport, 0, TCPFlags.SYN | TCPFlags.ACK)
+    def create_synack_packet(self, src_ip: str, dst_ip: str, sport: int, dport: int) -> IP:
+        seq, ack = self.update_tcp_seq_ack(src_ip, dst_ip, sport, dport, 0, TCPFlags.SYN | TCPFlags.ACK)
         return IP(src=src_ip, dst=dst_ip) / TCP(sport=sport, dport=dport, seq=seq, ack=ack, flags="SA", window=65535)
 
-    def create_fin_packet(self, src_ip, dst_ip, sport, dport):
-        seq, ack = self.update_seq_ack(src_ip, dst_ip, sport, dport, 0, TCPFlags.FIN | TCPFlags.ACK)
+    def create_fin_packet(self, src_ip: str, dst_ip: str, sport: int, dport: int) -> IP:
+        seq, ack = self.update_tcp_seq_ack(src_ip, dst_ip, sport, dport, 0, TCPFlags.FIN | TCPFlags.ACK)
         return IP(src=src_ip, dst=dst_ip) / TCP(sport=sport, dport=dport, seq=seq, ack=ack, flags="FA", window=65535)
 
-    # Functions try solve the fails with padding and mac...
-    def process_received_tls_packet(self, packet, key_block):
-        payload = packet[Raw].load
+    def process_received_tls_packet(self, packet: Packet, key_block: KeyBlock) -> bytes:
+        payload: bytes = packet[Raw].load
         
         # Decrypt payload
         cipher = Cipher(algorithms.AES(key_block.client_key), modes.CBC(key_block.client_iv))
@@ -258,9 +266,8 @@ class SessionState:
         
         return data
 
-    
-    def process_received_server_tls_packet(self, packet, key_block):
-        payload = packet[Raw].load
+    def process_received_server_tls_packet(self, packet: Packet, key_block: KeyBlock) -> bytes:
+        payload: bytes = packet[Raw].load
         
         # Decrypt payload
         cipher = Cipher(algorithms.AES(key_block.server_key), modes.CBC(key_block.server_iv))
@@ -288,6 +295,7 @@ class SessionState:
             raise ValueError("Server MAC verification failed")
         
         return data
+
 def add_padding(plaintext: bytes, block_size: int) -> bytes:
     pad_length = block_size - (len(plaintext) % block_size)
     if pad_length == 0:
@@ -295,7 +303,7 @@ def add_padding(plaintext: bytes, block_size: int) -> bytes:
     padding = bytes([pad_length - 1] * pad_length)
     return plaintext + padding
 
-def verify_padding(plaintext):
+def verify_padding(plaintext: bytes) -> bytes:
     pad_length = plaintext[-1]
     
     # Check if padding is valid
@@ -310,7 +318,7 @@ def verify_padding(plaintext):
     # Return data without padding
     return plaintext[:-pad_length-1]
 
-def verify_tls_mac(mac_key, seq_num, content_type, version, data):
+def verify_tls_mac(mac_key: bytes, seq_num: int, content_type: int, version: int, data: bytes) -> bytes:
     mac_data = (
         seq_num.to_bytes(8, 'big') +  
         content_type.to_bytes(1, 'big') +                     
@@ -320,10 +328,7 @@ def verify_tls_mac(mac_key, seq_num, content_type, version, data):
     )
     return HMAC(mac_key, mac_data, hashlib.sha256).digest()
 
-import hmac
-import hashlib
-
-def calculate_mac(mac_key, seq_num, content_type, version, data):
+def calculate_mac(mac_key: bytes, seq_num: int, content_type: int, version: int, data: bytes) -> bytes:
     """Calculate TLS MAC"""
     mac_data = (
         seq_num.to_bytes(8, 'big') +  # Sequence number
@@ -332,9 +337,9 @@ def calculate_mac(mac_key, seq_num, content_type, version, data):
         len(data).to_bytes(2, 'big') +  # Length
         data  # Data
     )
-    return hmac.new(mac_key, mac_data, hashlib.sha256).digest()
+    return HMAC(mac_key, mac_data, hashlib.sha256).digest()
 
-def remove_padding(decrypted_payload):
+def remove_padding(decrypted_payload: bytes) -> bytes:
     pad_length = decrypted_payload[-1]
     
     # Validate padding

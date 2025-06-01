@@ -44,7 +44,6 @@ from .packet import (
 def get_verification_functions():
     from ..verification import verify_master_secret
     return verify_master_secret
-from ..verification import verify_master_secret
 
 __all__ = [
     # Crypto utils
@@ -73,6 +72,5 @@ __all__ = [
     'get_mac_key_for_packet',
     
     # Verification utils
-    'verify_master_secret',
     'verify_key_pair'
 ]

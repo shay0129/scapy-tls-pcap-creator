@@ -123,7 +123,7 @@ def setup_certificates(session: SessionState) -> None:
         chain = load_certificate_chain()
         
         # Verify chain
-        verify_chain_validity(chain, session.SNI)  # type: ignore[reportUnknownMemberType,reportUnknownArgumentType]
+        verify_chain_validity(chain, session.sni)
         
         # Update session
         session.ca_cert = chain.ca_cert  # type: ignore[reportAttributeAccessIssue]

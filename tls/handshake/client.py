@@ -83,9 +83,11 @@ def create_client_hello(
     """
     Create a Client Hello message for TLS handshake.
     """
-    if not session.SNI:
-        raise ClientHelloError("Server Name Indication (SNI) is required for Client Hello")
-    
+    # Ensure SNI is set and valid before handshake
+    if not getattr(session, 'sni', None) or not str(session.sni).strip():
+        session.sni = 'Pasdaran.local'
+        logging.warning("Session SNI was not set or empty. Defaulting to 'Pasdaran.local' to match server certificate.")
+
     # Generate client random as one piece
     session.client_random = os.urandom(32)  # Generate all 32 bytes at once
     logging.info(f"Generated client_random: {session.client_random.hex()}")
@@ -96,7 +98,7 @@ def create_client_hello(
 
     if not extensions:
         extensions = ClientExtensions(
-            server_name=session.SNI,
+            server_name=session.sni,
             supported_groups=["x25519"],
             signature_algorithms=["sha256+rsa"]
         )

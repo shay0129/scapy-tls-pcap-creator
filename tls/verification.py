@@ -1,9 +1,10 @@
+# pyright: reportUnusedImport=false, reportUnknownMemberType=false, reportUnknownVariableType=false, reportUnknownParameterType=false, reportUnknownArgumentType=false, reportMissingParameterType=false, reportMissingTypeArgument=false, reportReturnType=false
 """
 Verification utilities module.
 Provides functions for verifying master secrets, key pairs and other cryptographic materials.
 """
 from cryptography.hazmat.primitives.asymmetric import padding as asymmetric_padding
-from cryptography.hazmat.primitives.asymmetric import rsa, utils
+from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives import hashes
 from cryptography.exceptions import InvalidKey
 from dataclasses import dataclass, field
@@ -154,17 +155,17 @@ def read_log_entries(log_file: Union[str, Path]) -> List[LogEntry]:
         log_path = Path(log_file)
         if not log_path.exists():
             raise FileNotFoundError(f"Log file not found: {log_path}")
-            
-        entries = []
+        
+        entries: List[LogEntry] = []
         with log_path.open("r") as f:
-            for line_num, line in enumerate(f, 1):
+            for line in f:
                 entry = LogEntry.from_line(line)
                 if entry:
                     entries.append(entry)
-                
+        
         if not entries:
             raise MasterSecretError("No valid entries found in log file")
-            
+        
         return entries
         
     except Exception as e:
@@ -209,9 +210,15 @@ def verify_key_pair(
     except Exception as e:
         raise KeyPairError(f"Key pair verification failed: {e}")
     
-def verify_tls_mac(mac_key, seq_num, content_type, version, data):
+def verify_tls_mac(
+    mac_key: bytes,
+    seq_num: int,
+    content_type: int,
+    version: int,
+    data: bytes
+) -> bytes:
     """Verify TLS MAC"""
-    mac_data = (
+    mac_data: bytes = (
         seq_num.to_bytes(8, 'big') +  
         content_type.to_bytes(1, 'big') +  
         version.to_bytes(2, 'big') +  

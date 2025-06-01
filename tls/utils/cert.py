@@ -183,8 +183,14 @@ def verify_key_pair(private_key: rsa.RSAPrivateKey, public_key: rsa.RSAPublicKey
 def verify_cert_validity(cert: x509.Certificate, cert_path: Union[str, Path]) -> None:
     """Verify certificate is currently valid"""
     now = datetime.now(timezone.utc)
-    if now < cert.not_valid_before.replace(tzinfo=timezone.utc) or \
-       now > cert.not_valid_after.replace(tzinfo=timezone.utc):
+    # Use the new UTC-aware properties directly to avoid deprecation warning
+    not_valid_before = getattr(cert, 'not_valid_before_utc', None)
+    not_valid_after = getattr(cert, 'not_valid_after_utc', None)
+    if not_valid_before is None or not_valid_after is None:
+        # Fallback for older cryptography versions
+        not_valid_before = cert.not_valid_before.replace(tzinfo=timezone.utc)
+        not_valid_after = cert.not_valid_after.replace(tzinfo=timezone.utc)
+    if now < not_valid_before or now > not_valid_after:
         raise CertificateError(f"Certificate {cert_path} is not currently valid")
 
 def load_certificate_chain(

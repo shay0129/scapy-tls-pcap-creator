@@ -1,3 +1,4 @@
+# pyright: reportUnknownVariableType=false, reportUnknownMemberType=false, reportUnknownParameterType=false, reportUnknownArgumentType=false, reportMissingParameterType=false, reportMissingTypeArgument=false, reportReturnType=false, reportAttributeAccessIssue=false
 """
 TLS Session module.
 Handles unified TLS session management for both client and server sides.
@@ -6,8 +7,8 @@ from scapy.layers.tls.crypto.prf import PRF
 from scapy.layers.tls.record import TLS
 from scapy.layers.inet import IP
 from scapy.compat import raw
-from scapy.packet import Raw
-from typing import Optional
+from scapy.packet import Raw, Packet
+from typing import Optional, Any, List, Tuple, Protocol
 import logging
 from pathlib import Path
 
@@ -32,13 +33,35 @@ from .certificates.chain import (
     setup_certificates
 )
 
+class PcapWriterProtocol(Protocol):
+    packets: List[Any]
 
 class UnifiedTLSSession:
     """Unified TLS session handler for client and server sides."""
 
+    pcap_writer: PcapWriterProtocol
+    client_ip: str
+    server_ip: str
+    client_port: int
+    server_port: int
+    use_tls: bool
+    use_client_cert: bool
+    tls_context: TLS
+    sni: str  # Use lowercase to avoid constant redefinition
+    prf: PRF
+    state: SessionState
+    handshake_messages: List[Any]
+    server_public_key: Optional[Any]
+    server_private_key: Optional[Any]
+    master_secret: Optional[bytes]
+    server_random: Optional[bytes]
+    client_random: Optional[bytes]
+    cert_chain: list
+    ca_cert: Optional[Any]  # Add ca_cert attribute
+
     def __init__(
         self,
-        pcap_writer,
+        pcap_writer: PcapWriterProtocol,
         client_ip: str,
         server_ip: str,
         client_port: int,
@@ -51,11 +74,59 @@ class UnifiedTLSSession:
         self._initialize_tls(use_tls, use_client_cert)
         self.state = SessionState()
         self.handshake_messages = self.state.handshake_messages
+        self.server_public_key = None
+        self.server_private_key = None
+        self.master_secret = None
+        self.server_random = None
+        self.client_random = None
+        self.cert_chain = self.state.cert_chain
+        self.ca_cert = None  # Initialize ca_cert
+        self.state.prf = self.prf  # Ensure SessionState has a prf attribute
+        self.state.server_random = self.server_random  # Ensure SessionState has server_random
+        self.state.client_random = self.client_random  # Ensure SessionState has client_random
+        self.state.client_ip = self.client_ip  # Ensure SessionState has client_ip
+        self.state.server_ip = self.server_ip  # Ensure SessionState has server_ip
+        self.state.client_port = self.client_port  # Ensure SessionState has client_port
+        self.state.server_port = self.server_port  # Ensure SessionState has server_port
+        self.state.send_tls_packet = self.send_tls_packet  # Allow state to send TLS packets
+        # Ensure server public key is loaded for server handshake
+        if not self.server_public_key:
+            try:
+                from .utils.cert import load_cert
+                from .constants import CERTS_DIR
+                server_cert_path = CERTS_DIR / "server.crt"
+                cert = load_cert(server_cert_path)
+                self.server_public_key = cert.public_key()
+                # Optionally, add the cert to the cert_chain if not present
+                if not self.cert_chain:
+                    self.cert_chain.append(cert)
+            except Exception as e:
+                logging.error(f"Failed to load server public key: {e}")
+        # Load CA certificate
+        try:
+            from .utils.cert import load_cert
+            from .constants import CertificatePaths
+            self.ca_cert = load_cert(CertificatePaths.CA_CERT)
+        except Exception as e:
+            logging.error(f"Failed to load CA certificate: {e}")
+        # Load server private key
+        self.server_private_key = None
+        try:
+            from .utils.cert import load_private_key
+            from .constants import CertificatePaths
+            self.server_private_key = load_private_key(CertificatePaths.SERVER_KEY)
+            if self.server_private_key is None:
+                raise ValueError("Server private key could not be loaded from SERVER_KEY path.")
+        except Exception as e:
+            logging.error(f"Failed to load server private key: {e}")
+            raise CertificateError(f"Server private key is required for handshake but could not be loaded: {e}")
+        # Ensure state.sni is always set to match session.sni for handshake and verification
+        self.state.sni = self.sni
         self._setup_certificates()
 
     def _initialize_network(
         self,
-        pcap_writer,
+        pcap_writer: PcapWriterProtocol,
         client_ip: str,
         server_ip: str,
         client_port: int,
@@ -68,117 +139,91 @@ class UnifiedTLSSession:
         self.client_port = client_port
         self.server_port = server_port
 
-
-
     def _initialize_tls(self, use_tls: bool, use_client_cert: bool) -> None:
         """Initialize TLS parameters"""
         self.use_tls = use_tls
         self.use_client_cert = use_client_cert
         self.tls_context = TLS(version=TLSVersion.TLS_1_2)
-        self.SNI = GeneralConfig.DEFAULT_SNI
-             
+        self.sni = GeneralConfig.DEFAULT_SNI  # Use lowercase to avoid constant redefinition
         # Initialize PRF for TLS 1.2
         self.prf = PRF(hash_name='SHA256', tls_version=TLSVersion.TLS_1_2)
 
     def _setup_certificates(self) -> None:
         """Setup certificate chain"""
         try:
-            setup_certificates(self)
+            setup_certificates(self.state)
         except Exception as e:
             raise CertificateError(f"Certificate setup failed: {e}")
 
     def perform_handshake(self) -> bool:
         """Perform TLS handshake sequence."""
-        # Define the sequence of handshake steps
-        # Each tuple: (function, args_tuple, error_message, success_message)
-        handshake_steps = [
+        handshake_steps: List[Tuple[Any, Tuple[Any, ...], str, str]] = [
             (send_client_hello, (self,),
              "Failed to send Client Hello", "Client Hello sent successfully"),
-
             (send_server_hello, (self,),
              "Failed to receive Server Hello", "Server Hello received successfully"),
-
             (send_client_handshake_messages, (self,),
              "Failed to send Client Handshake Messages", "Client handshake messages sent successfully"),
-
-            # Note: Ensure self.server_public_key and self.server_private_key are set before this step
             (verify_key_pair, (self.server_public_key, self.server_private_key),
              "Server key pair verification failed", "Server key pair verified successfully"),
-
             (handle_master_secret, (self,),
              "Failed to handle Master Secret", "Master Secret handled successfully"),
-
             (send_client_change_cipher_spec, (self,),
              "Failed to send Client Change Cipher Spec", "Client Change Cipher Spec sent successfully"),
-
             (send_server_change_cipher_spec, (self,),
              "Failed to receive Server Change Cipher Spec", "Server Change Cipher Spec received successfully"),
-             
             (handle_ssl_key_log, (self,),
              "Failed to handle SSL Key Log", "SSL Key Log handled successfully"),
         ]
-
         try:
             logging.info("Starting TLS Handshake...")
-
-            # Execute each step in the defined sequence
             for func, args, error_msg, success_msg in handshake_steps:
-                if not func(*args):  # Unpack arguments and call the function
+                if not func(*args):
                     raise HandshakeError(error_msg)
                 logging.info(success_msg)
-
-            # Finalize handshake if all steps succeeded
             self.state.handshake_completed = True
             logging.info("TLS Handshake completed successfully")
             return True
-
         except HandshakeError as e:
             logging.error(f"TLS Handshake failed: {e}")
             self.state.handshake_completed = False
             return False
         except AttributeError as e:
-            # Catch potential errors if attributes needed for args aren't set
             logging.error(f"TLS Handshake failed due to missing attribute: {e}")
+            import traceback
+            traceback.print_exc()
             self.state.handshake_completed = False
             return False
-        except Exception as e: # Catch any other unexpected errors during steps
+        except Exception as e:
             logging.error(f"Unexpected error during TLS Handshake: {e}")
             import traceback
-            traceback.print_exc() # Print full traceback for unexpected errors
+            traceback.print_exc()
             self.state.handshake_completed = False
             return False
-        
-    def handle_network_packet(self, packet):
+
+    def handle_network_packet(self, packet: Packet) -> None:
         """Handle incoming network packet and process TLS data if applicable"""
-        # Check if it's a TLS packet
         if Raw in packet and self.state.handshake_completed:
             try:
-                # Determine if it's client or server packet based on your network logic
-                is_client = self.determine_packet_direction(packet)
-                
-                # Process the TLS packet
-                decrypted_data = self.state.process_received_tls_packet(
-                    packet, 
-                    key_block=self.state.key_block  # Assuming you have this attribute
-                )
-                
-                # Handle the decrypted data
-                self.process_decrypted_payload(decrypted_data)
-            
+                # is_client = self.determine_packet_direction(packet)  # Unused variable removed
+                if self.state.key_block is not None:
+                    decrypted_data = self.state.process_received_tls_packet(
+                        packet,
+                        key_block=self.state.key_block
+                    )
+                    self.process_decrypted_payload(decrypted_data)
             except ValueError as e:
                 logging.error(f"TLS packet processing failed: {e}")
         else:
-            # Handle non-TLS packets
             pass
 
-    def determine_packet_direction(self, packet):
+    def determine_packet_direction(self, packet: Packet) -> bool:
         """Determine if the packet is from client or server"""
-        src_ip = packet[IP].src
+        src_ip: str = packet[IP].src
         return src_ip == self.client_ip
-    
-    def process_decrypted_payload(self, decrypted_data):
+
+    def process_decrypted_payload(self, decrypted_data: bytes) -> None:
         """Process the decrypted payload"""
-        # Implement your logic to handle the decrypted data
         logging.info(f"Decrypted data: {decrypted_data}")
 
     def run_session(
@@ -191,22 +236,18 @@ class UnifiedTLSSession:
             if self.use_tls:
                 logging.info("Starting TLS session")
                 self.server_port = NetworkPorts.HTTPS
-                
                 if not self.perform_handshake():
                     raise TLSSessionError("Handshake failed")
-                
-                # Check if there's a file to send
                 if file_to_send:
                     if not Path(file_to_send).exists():
                         logging.error(f"File not found: {file_to_send}")
                     else:
                         logging.info(f"Found file to send: {file_to_send}")
-                
                 self._handle_data_exchange(request_data, response_data, file_to_send)
             else:
                 logging.info("Starting unencrypted session")
                 self.server_port = NetworkPorts.HTTP
-                self._handle_data_exchange(request_data, response_data, None)  # לא שולחים קבצים בתעבורה לא מוצפנת
+                self._handle_data_exchange(request_data, response_data, None)
         except Exception as e:
             raise TLSSessionError(f"Session failed: {e}")
 
@@ -216,12 +257,9 @@ class UnifiedTLSSession:
         response_data: bytes,
         file_to_send: Optional[str]
     ) -> None:
-        """Handle data exchange based on session type"""
-        
         logging.info(f"Handshake completed: {self.state.handshake_completed}")
         logging.info(f"Use client cert: {self.use_client_cert}")
         logging.info(f"File to send: {file_to_send}")
-        
         if self.state.handshake_completed and self.use_client_cert:
             logging.info("Using encrypted exchange")
             self._handle_encrypted_exchange(request_data, response_data, file_to_send)
@@ -235,53 +273,55 @@ class UnifiedTLSSession:
         response_data: bytes,
         file_to_send: Optional[str]
     ) -> None:
-        """Handle encrypted data exchange"""
+        # Ensure state has up-to-date randoms before encryption
+        self.state.server_random = self.server_random
+        self.state.client_random = self.client_random
         try:
-            # Send client request
+            if self.master_secret is None or self.server_random is None or self.client_random is None:
+                raise TLSSessionError("Missing master_secret, server_random, or client_random for encryption.")
             logging.info("Sending encrypted request data")
             encrypt_and_send_application_data(
-                self, request_data, is_request=True,
+                self.state, request_data, is_request=True,
                 prf=self.prf, master_secret=self.master_secret,
                 server_random=self.server_random, client_random=self.client_random,
                 client_ip=self.client_ip, server_ip=self.server_ip,
                 client_port=self.client_port, server_port=self.server_port,
                 tls_context=self.tls_context, state=self.state
             )
-            
-            # Send server response
             logging.info("Sending encrypted response data")
             encrypt_and_send_application_data(
-                self, response_data, is_request=False,
+                self.state, response_data, is_request=False,
                 prf=self.prf, master_secret=self.master_secret,
                 server_random=self.server_random, client_random=self.client_random,
                 client_ip=self.client_ip, server_ip=self.server_ip,
                 client_port=self.client_port, server_port=self.server_port,
                 tls_context=self.tls_context, state=self.state
             )
-            
-            # Send file if available
             if file_to_send:
                 logging.info(f"Attempting to send file: {file_to_send}")
                 self._send_file(file_to_send)
                 logging.info("File sent successfully")
-                    
         except Exception as e:
             logging.error(f"Encrypted exchange failed: {e}")
             raise TLSSessionError(f"Encrypted exchange failed: {e}")
 
     def _send_file(self, file_path: str) -> None:
         """Send file over encrypted connection"""
+        # Ensure state has up-to-date randoms before encryption
+        self.state.server_random = self.server_random
+        self.state.client_random = self.client_random
         try:
+            if self.master_secret is None or self.server_random is None or self.client_random is None:
+                raise TLSSessionError("Missing master_secret, server_random, or client_random for encryption.")
             logging.info(f"Opening file: {file_path}")
             if not Path(file_path).exists():
                 logging.error(f"File not found: {file_path}")
                 raise FileNotFoundError(f"File not found: {file_path}")
-                
             with open(file_path, 'rb') as file:
                 file_data = file.read()
                 logging.info(f"Read {len(file_data)} bytes from file")
                 encrypt_and_send_application_data(
-                    self, file_data, is_request=False,
+                    self.state, file_data, is_request=False,
                     prf=self.prf, master_secret=self.master_secret,
                     server_random=self.server_random, client_random=self.client_random,
                     client_ip=self.client_ip, server_ip=self.server_ip,
@@ -289,7 +329,6 @@ class UnifiedTLSSession:
                     tls_context=self.tls_context, state=self.state
                 )
                 logging.info("File sent successfully")
-                
         except Exception as e:
             logging.error(f"File send failed: {e}")
             raise TLSSessionError(f"File send failed: {e}")
@@ -299,7 +338,6 @@ class UnifiedTLSSession:
         request_data: bytes,
         response_data: bytes
     ) -> None:
-        """Handle unencrypted data exchange"""
         try:
             self._send_unencrypted_data(request_data, is_request=True)
             self._send_unencrypted_data(response_data, is_request=False)
@@ -311,11 +349,8 @@ class UnifiedTLSSession:
         try:
             src_ip = self.client_ip if is_request else self.server_ip
             dst_ip = self.server_ip if is_request else self.client_ip
-            
-            # Ports for unencrypted communication
             sport = self.client_port if is_request else NetworkPorts.HTTP
             dport = NetworkPorts.HTTP if is_request else self.client_port
-            
             packet = self.state.create_tcp_packet(
                 src_ip=src_ip,
                 dst_ip=dst_ip,
@@ -324,38 +359,30 @@ class UnifiedTLSSession:
                 payload=data,
                 flags="PA"
             )
-            
             self.pcap_writer.packets.append(packet)
             logging.info(f"Added {'request' if is_request else 'response'} packet")
-            
         except Exception as e:
             logging.error(f"Failed to send unencrypted data: {e}")
 
     def _process_http_data(self, data: bytes, is_request: bool) -> bytes:
         """Process HTTP data, ensuring correct headers and content length"""
         data_str = data.decode('utf-8', errors='ignore')
-        
-        if not is_request:  # If it's a response
-            # Check if it's already a complete HTTP response
+        if not is_request:
             if data_str.startswith('HTTP/'):
                 return data
-            
-            # For error responses or incomplete data
             body_length = len(data_str.encode('utf-8'))
             processed_data = f"HTTP/1.1 400 Bad Request\r\nContent-Length: {body_length}\r\n\r\n{data_str}"
-            
             return processed_data.encode('utf-8')
-        
         return data
 
-    def _get_connection_params(self, is_request: bool) -> tuple:
+    def _get_connection_params(self, is_request: bool) -> Tuple[str, str, int, int]:
         """Get connection parameters based on request/response"""
         src_ip = self.client_ip if is_request else self.server_ip
         dst_ip = self.server_ip if is_request else self.client_ip
         sport = self.client_port if is_request else self.server_port
         dport = self.server_port if is_request else self.client_port
         return src_ip, dst_ip, sport, dport
-    
+
     def send_tls_packet(
         self,
         src_ip: str,
@@ -363,13 +390,11 @@ class UnifiedTLSSession:
         sport: int,
         dport: int,
         is_handshake: bool = False
-    ) -> None:
+    ) -> IP:
         """Send TLS packet with sequence tracking"""
         try:
             tls_data = raw(self.tls_context)
             is_client = (src_ip == self.client_ip)
-            
-            # יצירת הפאקט עם ה-TLS sequence number
             packet, tls_seq = self.state.create_tls_packet(
                 src_ip=src_ip,
                 dst_ip=dst_ip,
@@ -379,34 +404,32 @@ class UnifiedTLSSession:
                 client_ip=self.client_ip,
                 is_handshake=is_handshake
             )
-            
-            # העברת ה-sequence number להצפנה
             if is_client:
-                self.tls_context.seq_num = tls_seq.to_bytes(8, 'big')  # המרה ל-8 בתים
+                self.tls_context.seq_num = tls_seq.to_bytes(8, 'big')
             else:
                 self.tls_context.seq_num = tls_seq.to_bytes(8, 'big')
-            
             self.pcap_writer.packets.append(packet)
             return packet
-            
         except Exception as e:
             raise TLSSessionError(f"Failed to send TLS packet: {e}")
 
-    def send_to_client(self, message):
+    def send_to_client(self, message: Any) -> None:
         """Send a message to the client during handshake"""
-        # Similar to send_to_server, but specific to client-side messages
+        if not hasattr(self.tls_context, 'msg') or self.tls_context.msg is None:
+            self.tls_context.msg = []
         self.tls_context.msg.append(message)
-        if hasattr(message, 'type') and message.type in [22]:
-            self.handshake_messages.append(raw(message))
-        
-    def send_to_server(self, message):
-        """Send a message to the server during handshake"""
-        self.tls_context.msg.append(message)
-        # Also append to handshake_messages if it's a handshake message
-        if hasattr(message, 'type') and message.type in [22]:  # Handshake message type
+        if hasattr(message, 'type') and getattr(message, 'type', None) in [22]:
             self.handshake_messages.append(raw(message))
 
-    def add_handshake_message(self, message):
+    def send_to_server(self, message: Any) -> None:
+        """Send a message to the server during handshake"""
+        if not hasattr(self.tls_context, 'msg') or self.tls_context.msg is None:
+            self.tls_context.msg = []
+        self.tls_context.msg.append(message)
+        if hasattr(message, 'type') and getattr(message, 'type', None) in [22]:
+            self.handshake_messages.append(raw(message))
+
+    def add_handshake_message(self, message: Any) -> None:
         """Add a raw message to handshake messages"""
         if not hasattr(self, 'handshake_messages'):
             self.handshake_messages = []

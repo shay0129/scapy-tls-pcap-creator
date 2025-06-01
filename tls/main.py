@@ -4,7 +4,7 @@ Creates two client sessions - one with certificate and one without.
 Captures traffic to PCAP file.
 
 Usage:
-python -m pcap_creator.tls.main
+python -m tls.main
 """
 import logging
 import sys
@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import NoReturn, Generator, Optional
 from contextlib import contextmanager
 
-from .packet_storage import PcapWriter
+from .packet_storage import PcapWriter, PcapWriterConfig
 from .config import NetworkConfig
 from .exceptions import TLSSessionError, ConfigurationError
 from .session import UnifiedTLSSession
@@ -61,15 +61,17 @@ def session_context(
 def setup_environment(config: NetworkConfig) -> PcapWriter:
     """Setup environment for TLS sessions"""
     try:
-        writer = PcapWriter(config.pcap_writer_config)
-        
+        # Construct PcapWriterConfig from config (only valid parameters: log_path, log_level)
+        writer_config = PcapWriterConfig(
+            log_path=Path(config.log_path) if hasattr(config, 'log_path') else Path("tls_session.log"),
+            log_level=getattr(config, 'log_level', logging.INFO)
+        )
+        writer = PcapWriter(writer_config)
         # Clear SSL keylog file
         if hasattr(config, 'SSL_KEYLOG_FILE'):
             Path(LoggingPaths.SSL_KEYLOG).write_text('')
             logging.info(f"Cleared SSL keylog file: {LoggingPaths.SSL_KEYLOG}")
-            
         return writer
-        
     except Exception as e:
         raise ConfigurationError(f"Environment setup failed: {e}")
 
@@ -87,15 +89,11 @@ def run_client_session(
     """Run a single client TLS session"""
     session_type = "certificate" if use_client_cert else "no certificate"
     logging.info(f"\n--- Client Session ({session_type}) ---")
-    
     try:
         with session_context(writer, client_ip, server_ip, client_port, use_client_cert) as session:
-            session_args = [request, response]
-            if challenge_file and challenge_file.exists():
-                session_args.append(str(challenge_file))
-            session.run_session(*session_args)
+            file_to_send = str(challenge_file) if challenge_file and challenge_file.exists() else None
+            session.run_session(request, response, file_to_send)
             logging.info(f"Session completed successfully for {client_ip}")
-            
     except Exception as e:
         raise TLSSessionError(f"Session failed for {client_ip}: {e}")
 
