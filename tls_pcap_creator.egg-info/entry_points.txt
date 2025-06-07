@@ -1,0 +1,2 @@
+[console_scripts]
+tls-pcap-creator = tls.main:main

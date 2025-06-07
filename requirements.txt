@@ -1,0 +1,13 @@
+# TLS PCAP Creator Dependencies
+# Production dependencies with pinned versions for reproducibility
+
+# Core networking and packet manipulation
+scapy==2.6.1
+
+# Cryptography libraries
+cryptography==44.0.0
+pycryptodome==3.21.0
+pyOpenSSL==24.3.0
+
+# Build and packaging tools
+setuptools==75.6.0
